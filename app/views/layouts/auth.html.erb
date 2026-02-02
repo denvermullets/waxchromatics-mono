@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "WaxChromatics" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-woodsmoke-950 text-woodsmoke-50 min-h-screen">
+    <div class="flex min-h-screen">
+      <%# Left side — form %>
+      <div class="flex w-full flex-col justify-between px-8 py-10 lg:w-1/2">
+        <div class="flex flex-1 flex-col justify-center mx-auto w-full max-w-sm">
+          <%= yield %>
+        </div>
+
+        <p class="text-center text-sm text-woodsmoke-400">
+          <% if controller_name == "sessions" %>
+            Don't have an account?
+            <%= link_to "Sign up", new_registration_path, class: "font-medium text-crusta-400 hover:text-crusta-300" %>
+          <% else %>
+            Already have an account?
+            <%= link_to "Sign in", new_session_path, class: "font-medium text-crusta-400 hover:text-crusta-300" %>
+          <% end %>
+        </p>
+      </div>
+
+      <%# Right side — image panel %>
+      <div class="hidden lg:block lg:w-1/2 p-4">
+        <div class="relative h-full overflow-hidden rounded-3xl">
+          <%= image_tag "thom-holmes-RqASow2Y6Os-unsplash.jpg", class: "absolute inset-0 h-full w-full object-cover", alt: "Vinyl record shop" %>
+          <div class="absolute inset-0 bg-woodsmoke-950/40"></div>
+          <div class="relative flex h-full items-end justify-between p-10">
+            <div>
+              <p class="text-5xl font-bold text-crusta-400">wax</p>
+              <p class="text-5xl font-bold text-woodsmoke-50">chromatics</p>
+              <p class="mt-4 text-woodsmoke-200">Your vinyl collection, organized.</p>
+            </div>
+            <p class="text-xs text-woodsmoke-300/60 self-end">
+              Photo by <a href="https://unsplash.com/@thomholmes?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" class="underline hover:text-woodsmoke-200" target="_blank" rel="noopener noreferrer">Thom Holmes</a> on <a href="https://unsplash.com/photos/brown-wooden-dining-table-inside-room-RqASow2Y6Os?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" class="underline hover:text-woodsmoke-200" target="_blank" rel="noopener noreferrer">Unsplash</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

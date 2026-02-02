@@ -13,3 +13,5 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+Dir[Rails.root.join('test/test_helpers/**/*.rb')].each { |f| require f }
