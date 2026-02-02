@@ -1,0 +1,36 @@
+<div class="mb-6">
+  <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Key Releases</h3>
+  <% if @key_releases.present? && @key_releases.any? %>
+    <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
+      <ul class="space-y-2">
+        <% @key_releases.each do |release| %>
+          <li class="flex items-center gap-3 text-sm">
+            <div class="shrink-0 w-10 h-10 rounded bg-woodsmoke-700 flex items-center justify-center overflow-hidden">
+              <svg class="w-5 h-5 text-woodsmoke-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zm0-9c-1.1 0-2 .9-2 2h-1.5c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5H14c0-1.1-.9-2-2-2z"/>
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0 flex justify-between items-center">
+              <span class="text-woodsmoke-200 truncate mr-2"><%= release.title %></span>
+              <% if release.released.present? %>
+                <span class="text-woodsmoke-500 shrink-0"><%= release.released %></span>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900 space-y-3">
+      <% 4.times do %>
+        <div class="flex items-center gap-3">
+          <div class="shrink-0 w-10 h-10 rounded bg-woodsmoke-700 animate-pulse"></div>
+          <div class="flex-1 flex justify-between items-center">
+            <div class="h-3 rounded bg-woodsmoke-700 animate-pulse" style="width: <%= [60, 45, 70, 55].sample %>%"></div>
+            <div class="w-10 h-3 rounded bg-woodsmoke-700 animate-pulse ml-3"></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
