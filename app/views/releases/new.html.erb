@@ -1,20 +1,8 @@
 <div class="max-w-2xl">
   <h1 class="text-3xl font-bold text-woodsmoke-50">Add a Release</h1>
-  <p class="mt-2 text-woodsmoke-300">Search Discogs or add one manually.</p>
+  <p class="mt-2 text-woodsmoke-300">Create a release manually.</p>
 
-  <%# Search stub — UI only, not wired up yet %>
-  <div class="mt-8 p-6 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
-    <h2 class="text-lg font-semibold text-woodsmoke-100">Search Discogs</h2>
-    <div class="mt-3 flex gap-3">
-      <input type="text" disabled autocomplete="off" placeholder="Search by artist, album, or barcode..." class="flex-1 rounded-lg border border-woodsmoke-700 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
-      <button disabled class="rounded-lg px-5 py-2.5 bg-woodsmoke-700 text-woodsmoke-400 font-semibold cursor-not-allowed">Search</button>
-    </div>
-    <p class="mt-2 text-xs text-woodsmoke-500">Coming soon — Discogs integration is not yet available.</p>
-  </div>
-
-  <%# Manual create form %>
   <div class="mt-8">
-    <h2 class="text-lg font-semibold text-woodsmoke-100">Or create manually</h2>
 
     <% if @release.errors.any? %>
       <div class="mt-4 py-2 px-3 bg-crusta-950 text-crusta-300 font-medium rounded-lg" id="errors">
