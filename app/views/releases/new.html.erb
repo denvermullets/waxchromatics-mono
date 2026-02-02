@@ -26,8 +26,8 @@
 
     <%= form_with model: @release, class: "mt-4 space-y-5" do |form| %>
       <div>
-        <%= form.label :master_title, "Master title", class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_field :master_title, required: true, autofocus: true, placeholder: "Master release title", value: params.dig(:release, :master_title), class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+        <%= form.label :release_group_title, "Release group", class: "block text-sm font-semibold text-woodsmoke-100" %>
+        <%= form.text_field :release_group_title, required: true, autofocus: true, placeholder: "Release group title", value: params.dig(:release, :release_group_title), class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
       </div>
 
       <div>

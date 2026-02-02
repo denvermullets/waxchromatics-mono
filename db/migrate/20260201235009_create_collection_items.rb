@@ -6,7 +6,10 @@ class CreateCollectionItems < ActiveRecord::Migration[8.1]
       t.string :condition
       t.text :notes
       t.decimal :purchase_price, precision: 10, scale: 2
+      t.decimal :sale_price, precision: 10, scale: 2
       t.date :purchase_date
+      t.date :sale_date
+      t.string :status
 
       t.timestamps
     end

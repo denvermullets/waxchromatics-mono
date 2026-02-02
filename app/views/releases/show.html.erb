@@ -7,8 +7,8 @@
 
   <dl class="mt-6 space-y-4">
     <div>
-      <dt class="text-sm text-woodsmoke-400">Master</dt>
-      <dd class="text-woodsmoke-100"><%= @release.master.title %></dd>
+      <dt class="text-sm text-woodsmoke-400">Release group</dt>
+      <dd class="text-woodsmoke-100"><%= @release.release_group.title %></dd>
     </div>
 
     <% if @release.released.present? %>

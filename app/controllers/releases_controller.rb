@@ -9,7 +9,7 @@ class ReleasesController < ApplicationController
 
   def create
     @release = Release.new(release_params)
-    assign_master
+    assign_release_group
     if @release.save
       redirect_to @release, notice: 'Release created.'
     else
@@ -27,10 +27,10 @@ class ReleasesController < ApplicationController
     params.require(:release).permit(:title, :released, :country, :notes, :status)
   end
 
-  def assign_master
-    master_title = params[:release][:master_title].presence
-    return unless master_title
+  def assign_release_group
+    title = params[:release][:release_group_title].presence
+    return unless title
 
-    @release.master = Master.find_or_create_by!(title: master_title)
+    @release.release_group = ReleaseGroup.find_or_create_by!(title: title)
   end
 end
