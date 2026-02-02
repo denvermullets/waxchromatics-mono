@@ -1,0 +1,13 @@
+<% if notice = flash[:notice] %>
+  <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+<% end %>
+
+<div class="max-w-2xl">
+  <h1 class="text-3xl font-bold text-woodsmoke-50">Welcome back, <%= Current.user.username %></h1>
+  <p class="mt-2 text-woodsmoke-300">What would you like to do?</p>
+
+  <div class="mt-8 flex gap-4">
+    <%= link_to "Add a Release", new_release_path, class: "rounded-lg px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold transition-colors" %>
+    <%= link_to "My Collection", "#", class: "rounded-lg px-5 py-2.5 border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 font-semibold transition-colors" %>
+  </div>
+</div>

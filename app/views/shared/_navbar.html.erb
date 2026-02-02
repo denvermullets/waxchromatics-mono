@@ -1,0 +1,13 @@
+<nav class="fixed top-0 inset-x-0 z-50 bg-woodsmoke-900 border-b border-woodsmoke-800">
+  <div class="container mx-auto px-5 flex items-center justify-between h-14">
+    <div class="flex items-center gap-6">
+      <%= link_to root_path, class: "flex items-center gap-1 text-lg font-bold" do %>
+        <span class="text-crusta-400">wax</span><span class="text-woodsmoke-50">chromatics</span>
+      <% end %>
+
+      <%= link_to "Add Release", new_release_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
+    </div>
+
+    <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-woodsmoke-400 hover:text-woodsmoke-50 cursor-pointer transition-colors" %>
+  </div>
+</nav>
