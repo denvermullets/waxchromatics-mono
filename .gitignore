@@ -39,3 +39,4 @@
 node_modules/
 
 /lib/sql/
+.DS_STORE

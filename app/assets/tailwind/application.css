@@ -1,1 +1,91 @@
 @import "tailwindcss";
+
+@theme {
+  /* black */
+  /* main black is woodsmoke-950 */
+  --color-woodsmoke-50: #f6f6f6;
+  --color-woodsmoke-100: #e7e7e7;
+  --color-woodsmoke-200: #d1d1d1;
+  --color-woodsmoke-300: #b0b0b0;
+  --color-woodsmoke-400: #888888;
+  --color-woodsmoke-500: #6d6d6d;
+  --color-woodsmoke-600: #5d5d5d;
+  --color-woodsmoke-700: #4f4f4f;
+  --color-woodsmoke-800: #454545;
+  --color-woodsmoke-900: #3d3d3d;
+  --color-woodsmoke-950: #181818;
+
+  /* grey */
+  --color-wax-grey: #282828;
+
+  /* oranges */
+  /* main orange is crusta-400 */
+  --color-crusta-50: #fef5ee;
+  --color-crusta-100: #fde9d7;
+  --color-crusta-200: #fad0ae;
+  --color-crusta-300: #f6ae7b;
+  --color-crusta-400: #f17f41;
+  --color-crusta-500: #ee6121;
+  --color-crusta-600: #df4817;
+  --color-crusta-700: #b93515;
+  --color-crusta-800: #932b19;
+  --color-crusta-900: #772717;
+  --color-crusta-950: #40110a;
+
+  /* turquoises */
+  /* main turquoise is turquoise-300 */
+  --color-bright-turquoise-50: #effefa;
+  --color-bright-turquoise-100: #c9fef3;
+  --color-bright-turquoise-200: #93fce8;
+  --color-bright-turquoise-300: #41f1d7;
+  --color-bright-turquoise-400: #23dec9;
+  --color-bright-turquoise-500: #0ac2b0;
+  --color-bright-turquoise-600: #059c90;
+  --color-bright-turquoise-700: #097c74;
+  --color-bright-turquoise-800: #0c635e;
+  --color-bright-turquoise-900: #0f524e;
+  --color-bright-turquoise-950: #013230;
+
+  /* blues */
+  /* main blue is ribbon-500 */
+  --color-blue-ribbon-50: #eff2ff;
+  --color-blue-ribbon-100: #dce2fd;
+  --color-blue-ribbon-200: #c1cdfc;
+  --color-blue-ribbon-300: #96aefa;
+  --color-blue-ribbon-400: #6483f6;
+  --color-blue-ribbon-500: #415bf1;
+  --color-blue-ribbon-600: #2a39e6;
+  --color-blue-ribbon-700: #2227d3;
+  --color-blue-ribbon-800: #2222ab;
+  --color-blue-ribbon-900: #212387;
+  --color-blue-ribbon-950: #191952;
+
+  /* purples */
+  --color-prelude-50: #fbf8fc;
+  --color-prelude-100: #f4eff8;
+  --color-prelude-200: #ece2f2;
+  --color-prelude-300: #ddcbe7;
+  --color-prelude-400: #cdb4db;
+  --color-prelude-500: #af88c4;
+  --color-prelude-600: #996db0;
+  --color-prelude-700: #835898;
+  --color-prelude-800: #6e4c7d;
+  --color-prelude-900: #5a3e65;
+  --color-prelude-950: #3d2447;
+
+  /* pink */
+  --color-azalea-50: #fef1f6;
+  --color-azalea-100: #fee5ee;
+  --color-azalea-200: #ffc8dd;
+  --color-azalea-300: #ffa1c3;
+  --color-azalea-400: #ff669a;
+  --color-azalea-500: #fb3975;
+  --color-azalea-600: #eb174d;
+  --color-azalea-700: #cd0935;
+  --color-azalea-800: #a90b2e;
+  --color-azalea-900: #8d0e29;
+  --color-azalea-950: #570013;
+
+  /* Fonts */
+  /* --font-display: "Inter var", system-ui, sans-serif; */
+}
