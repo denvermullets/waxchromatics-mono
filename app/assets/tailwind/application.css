@@ -87,5 +87,6 @@
   --color-azalea-950: #570013;
 
   /* Fonts */
-  /* --font-display: "Inter var", system-ui, sans-serif; */
+  --font-sans: "JetBrains Mono", monospace;
+  --font-mono: "JetBrains Mono", monospace;
 }
