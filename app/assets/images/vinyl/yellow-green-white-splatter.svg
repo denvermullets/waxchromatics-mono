@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="ygw-sheen" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#ff6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#040" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="ygw-disc">
+      <circle cx="100" cy="100" r="96"/>
+    </clipPath>
+    <clipPath id="ygw-vinyl">
+      <path d="M100,4 a96,96 0 1,1 0,192 a96,96 0 1,1 0,-192 Z M100,72 a28,28 0 1,0 0,56 a28,28 0 1,0 0,-56 Z" fill-rule="evenodd"/>
+    </clipPath>
+  </defs>
+
+  <!-- Base: split yellow/green -->
+  <circle cx="100" cy="100" r="96" fill="#1a5c2a"/>
+  <rect x="0" y="0" width="100" height="200" fill="#e8d430" clip-path="url(#ygw-disc)"/>
+
+  <!-- White splatter streaks radiating from center -->
+  <g clip-path="url(#ygw-vinyl)" fill="#f0ece4" opacity="0.8">
+    <!-- Streaks at various angles, thin near center, wider and jagged toward edge -->
+    <path d="M100,72 L97,30 L99,18 L101,25 L103,72 Z"/>
+    <path d="M100,72 L104,40 L106,10 L108,15 L107,35 L105,72 Z"/>
+    <path d="M118,76 L145,28 L150,12 L152,20 L148,35 L120,78 Z"/>
+    <path d="M122,80 L155,42 L160,30 L158,48 L124,82 Z"/>
+    <path d="M126,88 L170,60 L182,48 L178,58 L165,70 L128,90 Z"/>
+    <path d="M128,96 L175,85 L192,78 L190,84 L172,90 L128,98 Z"/>
+    <path d="M128,106 L180,115 L195,120 L188,122 L175,118 L128,108 Z"/>
+    <path d="M126,114 L168,140 L180,155 L175,152 L162,138 L124,116 Z"/>
+    <path d="M120,120 L152,160 L158,178 L154,175 L148,158 L118,122 Z"/>
+    <path d="M112,126 L128,170 L132,190 L128,188 L124,168 L110,128 Z"/>
+    <path d="M100,128 L98,175 L97,195 L95,190 L96,170 L98,128 Z"/>
+    <path d="M88,126 L68,172 L60,192 L62,185 L70,165 L90,124 Z"/>
+    <path d="M82,120 L50,160 L38,180 L42,175 L55,155 L84,118 Z"/>
+    <path d="M76,112 L32,135 L15,148 L20,142 L38,130 L78,110 Z"/>
+    <path d="M74,100 L25,105 L8,108 L12,102 L30,100 L74,98 Z"/>
+    <path d="M76,88 L30,65 L14,52 L22,56 L38,68 L78,90 Z"/>
+    <path d="M80,80 L48,42 L38,25 L44,30 L55,48 L82,82 Z"/>
+    <path d="M90,76 L72,35 L65,14 L70,20 L78,42 L92,78 Z"/>
+    <!-- Thinner accent streaks -->
+    <path d="M115,74 L135,22 L137,15 L138,22 L136,28 L116,76 Z" opacity="0.6"/>
+    <path d="M128,102 L185,98 L196,96 L192,100 L182,100 L128,104 Z" opacity="0.6"/>
+    <path d="M115,126 L140,180 L142,192 L138,188 L135,175 L113,128 Z" opacity="0.6"/>
+    <path d="M85,126 L58,180 L54,194 L56,188 L62,172 L87,124 Z" opacity="0.6"/>
+    <path d="M74,94 L18,82 L6,78 L12,80 L25,84 L76,96 Z" opacity="0.6"/>
+  </g>
+
+  <!-- Grooves -->
+  <g clip-path="url(#ygw-vinyl)" opacity="0.3">
+    <circle cx="100" cy="100" r="92" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="87" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="82" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="77" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="72" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="67" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="62" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="57" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="52" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="47" fill="none" stroke="#000" stroke-width="0.3"/>
+  </g>
+
+  <circle cx="100" cy="100" r="96" fill="url(#ygw-sheen)"/>
+  <circle cx="100" cy="100" r="28" fill="#111"/>
+  <circle cx="100" cy="100" r="27" fill="none" stroke="#222" stroke-width="0.5"/>
+  <circle cx="100" cy="100" r="3" fill="#333"/>
+  <circle cx="100" cy="100" r="1.5" fill="#555"/>
+</svg>
