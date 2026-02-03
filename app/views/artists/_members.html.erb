@@ -1,0 +1,18 @@
+<% if @members.any? %>
+  <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Members</h3>
+    <div class="flex flex-wrap gap-2">
+      <% @members.each do |member| %>
+        <% member_name = member.is_a?(Hash) ? (member["member_name"] || member["name"]) : member.to_s %>
+        <% member_id = member.is_a?(Hash) ? (member["member_artist_id"] || member["id"]) : nil %>
+        <% if member_id %>
+          <%= link_to artist_path(member_id), class: "px-2 py-1 text-xs rounded bg-woodsmoke-800 text-crusta-400 hover:text-crusta-300 hover:bg-woodsmoke-700 transition-colors" do %>
+            <%= member_name %>
+          <% end %>
+        <% else %>
+          <span class="px-2 py-1 text-xs rounded bg-woodsmoke-800 text-woodsmoke-300"><%= member_name %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

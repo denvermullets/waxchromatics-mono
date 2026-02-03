@@ -1,6 +1,6 @@
-class CreateMasters < ActiveRecord::Migration[8.1]
+class CreateReleaseGroups < ActiveRecord::Migration[8.1]
   def change
-    create_table :masters do |t|
+    create_table :release_groups do |t|
       t.integer :discogs_id
       t.string :title, null: false
       t.integer :year
@@ -8,6 +8,6 @@ class CreateMasters < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :masters, :discogs_id, unique: true
+    add_index :release_groups, :discogs_id, unique: true
   end
 end

@@ -32,6 +32,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_235009) do
     t.date "purchase_date"
     t.decimal "purchase_price", precision: 10, scale: 2
     t.bigint "release_id", null: false
+    t.date "sale_date"
+    t.decimal "sale_price", precision: 10, scale: 2
+    t.string "status"
     t.datetime "updated_at", null: false
     t.index ["collection_id", "release_id"], name: "index_collection_items_on_collection_id_and_release_id"
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
@@ -58,21 +61,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_235009) do
     t.index ["parent_label_id"], name: "index_labels_on_parent_label_id"
   end
 
-  create_table "masters", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.integer "discogs_id"
-    t.bigint "main_release_id"
-    t.string "title", null: false
-    t.datetime "updated_at", null: false
-    t.integer "year"
-    t.index ["discogs_id"], name: "index_masters_on_discogs_id", unique: true
-  end
-
   create_table "release_artists", force: :cascade do |t|
-    t.string "anv"
     t.bigint "artist_id", null: false
     t.datetime "created_at", null: false
-    t.string "join_string"
     t.integer "position"
     t.bigint "release_id", null: false
     t.string "role"
@@ -86,10 +77,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_235009) do
     t.datetime "created_at", null: false
     t.text "descriptions"
     t.string "name"
-    t.integer "qty"
+    t.integer "quantity"
     t.bigint "release_id", null: false
     t.datetime "updated_at", null: false
     t.index ["release_id"], name: "index_release_formats_on_release_id"
+  end
+
+  create_table "release_groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "discogs_id"
+    t.bigint "main_release_id"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year"
+    t.index ["discogs_id"], name: "index_release_groups_on_discogs_id", unique: true
   end
 
   create_table "release_labels", force: :cascade do |t|
@@ -107,14 +108,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_235009) do
     t.string "country"
     t.datetime "created_at", null: false
     t.integer "discogs_id"
-    t.bigint "master_id"
     t.text "notes"
+    t.bigint "release_group_id"
     t.string "released"
     t.string "status"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["discogs_id"], name: "index_releases_on_discogs_id", unique: true
-    t.index ["master_id"], name: "index_releases_on_master_id"
+    t.index ["release_group_id"], name: "index_releases_on_release_group_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -157,7 +158,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_235009) do
   add_foreign_key "release_formats", "releases"
   add_foreign_key "release_labels", "labels"
   add_foreign_key "release_labels", "releases"
-  add_foreign_key "releases", "masters"
+  add_foreign_key "releases", "release_groups"
   add_foreign_key "sessions", "users"
   add_foreign_key "tracks", "releases"
 end

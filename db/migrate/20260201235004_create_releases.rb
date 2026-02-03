@@ -7,7 +7,7 @@ class CreateReleases < ActiveRecord::Migration[8.1]
       t.string :country
       t.text :notes
       t.string :status
-      t.references :master, foreign_key: true
+      t.references :release_group, foreign_key: true
 
       t.timestamps
     end

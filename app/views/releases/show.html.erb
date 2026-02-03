@@ -1,0 +1,46 @@
+<% if notice = flash[:notice] %>
+  <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+<% end %>
+
+<div class="max-w-2xl">
+  <h1 class="text-3xl font-bold text-woodsmoke-50"><%= @release.title %></h1>
+
+  <dl class="mt-6 space-y-4">
+    <div>
+      <dt class="text-sm text-woodsmoke-400">Release group</dt>
+      <dd class="text-woodsmoke-100"><%= @release.release_group.title %></dd>
+    </div>
+
+    <% if @release.released.present? %>
+      <div>
+        <dt class="text-sm text-woodsmoke-400">Released</dt>
+        <dd class="text-woodsmoke-100"><%= @release.released %></dd>
+      </div>
+    <% end %>
+
+    <% if @release.country.present? %>
+      <div>
+        <dt class="text-sm text-woodsmoke-400">Country</dt>
+        <dd class="text-woodsmoke-100"><%= @release.country %></dd>
+      </div>
+    <% end %>
+
+    <% if @release.status.present? %>
+      <div>
+        <dt class="text-sm text-woodsmoke-400">Status</dt>
+        <dd class="text-woodsmoke-100"><%= @release.status %></dd>
+      </div>
+    <% end %>
+
+    <% if @release.notes.present? %>
+      <div>
+        <dt class="text-sm text-woodsmoke-400">Notes</dt>
+        <dd class="text-woodsmoke-100"><%= @release.notes %></dd>
+      </div>
+    <% end %>
+  </dl>
+
+  <div class="mt-8">
+    <%= link_to "← Back to releases", releases_path, class: "text-sm text-crusta-400 hover:text-crusta-300" %>
+  </div>
+</div>

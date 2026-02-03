@@ -1,5 +1,5 @@
 class Release < ApplicationRecord
-  belongs_to :master, optional: true
+  belongs_to :release_group
   has_many :tracks, dependent: :destroy
   has_many :release_artists, dependent: :destroy
   has_many :artists, through: :release_artists
