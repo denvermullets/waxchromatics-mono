@@ -29,7 +29,19 @@ class DashboardController < ApplicationController
       artists = local_results.offset((page - 1) * PER_PAGE).limit(PER_PAGE)
       { artists: artists, total_pages: (total.to_f / PER_PAGE).ceil, total_count: total }
     else
-      WaxApiClient::SearchArtists.call(query: query, page: page)
+      result = WaxApiClient::SearchArtists.call(query: query, page: page)
+      enqueue_artist_ingestion(result[:artists])
+      result
+    end
+  end
+
+  def enqueue_artist_ingestion(artists)
+    return if artists.blank?
+
+    artists.each do |artist|
+      next unless artist.is_a?(Hash) && artist['id'].present?
+
+      IngestArtistJob.perform_later(artist)
     end
   end
 end
