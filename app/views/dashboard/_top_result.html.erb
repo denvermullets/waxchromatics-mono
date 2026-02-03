@@ -1,6 +1,7 @@
 <div class="mb-6">
   <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Top Result</h3>
-  <div class="relative p-5 rounded-xl border border-woodsmoke-800 hover:border-crusta-400 transition-colors bg-woodsmoke-900 flex gap-5 cursor-pointer">
+  <% top_artist_link = @top_artist.is_a?(Artist) ? artist_path(@top_artist) : artist_path(@top_artist["id"]) %>
+  <%= link_to top_artist_link, data: { turbo_frame: "_top" }, class: "relative p-5 rounded-xl border border-woodsmoke-800 hover:border-crusta-400 transition-colors bg-woodsmoke-900 flex gap-5 cursor-pointer block no-underline" do %>
     <div class="shrink-0 w-56 h-56 rounded-lg bg-woodsmoke-700 flex items-center justify-center overflow-hidden">
       <svg class="w-20 h-20 text-woodsmoke-500" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
@@ -35,5 +36,5 @@
     <svg class="absolute bottom-4 right-4 w-5 h-5 text-woodsmoke-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
     </svg>
-  </div>
+  <% end %>
 </div>
