@@ -1,0 +1,77 @@
+<% release_label = @labels.first %>
+<% release_format = @formats.first %>
+<% descriptions = release_format&.descriptions&.split(";")&.map(&:strip)&.reject(&:blank?) || [] %>
+<% speed = descriptions.find { |d| d.match?(/rpm/i) } %>
+<% packaging = descriptions.find { |d| d.match?(/gatefold|sleeve|jacket|box/i) } %>
+
+<div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-900 overflow-hidden text-sm">
+  <%# Row 1: Label / Catalog # %>
+  <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Label</span>
+      <span class="text-woodsmoke-50 font-medium"><%= release_label&.label&.name || "—" %></span>
+    </div>
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Catalog #</span>
+      <span class="text-crusta-400 font-medium"><%= release_label&.catalog_number.presence || "—" %></span>
+    </div>
+  </div>
+
+  <div class="border-t border-woodsmoke-800"></div>
+
+  <%# Row 2: Format / Speed %>
+  <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Format</span>
+      <span class="text-woodsmoke-50 font-medium">
+        <%= [(release_format&.quantity.to_i > 1) ? "#{release_format.quantity.to_i}×" : nil, release_format&.name].compact.join(" ") %>
+      </span>
+    </div>
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Speed</span>
+      <span class="text-woodsmoke-50 font-medium"><%= speed || "—" %></span>
+    </div>
+  </div>
+
+  <div class="border-t border-woodsmoke-800"></div>
+
+  <%# Row 3: Country / Year %>
+  <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Country</span>
+      <span class="text-woodsmoke-50 font-medium"><%= @release.country.presence || "—" %></span>
+    </div>
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Year</span>
+      <span class="text-crusta-400 font-medium"><%= @release.released.presence || "—" %></span>
+    </div>
+  </div>
+
+  <div class="border-t border-woodsmoke-800"></div>
+
+  <%# Row 4: Weight / Color %>
+  <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Weight</span>
+      <span class="text-woodsmoke-50 font-medium">—</span>
+    </div>
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Color</span>
+      <span class="text-woodsmoke-50 font-medium"><%= release_format&.color.presence || "—" %></span>
+    </div>
+  </div>
+
+  <div class="border-t border-woodsmoke-800"></div>
+
+  <%# Row 5: Packaging / Barcode %>
+  <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Packaging</span>
+      <span class="text-woodsmoke-50 font-medium"><%= packaging || "—" %></span>
+    </div>
+    <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+      <span class="text-woodsmoke-400">Barcode</span>
+      <span class="text-crusta-400 font-medium">—</span>
+    </div>
+  </div>
+</div>

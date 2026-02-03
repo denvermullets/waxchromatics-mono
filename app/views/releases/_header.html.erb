@@ -1,0 +1,38 @@
+<%# Badges %>
+<div class="flex flex-wrap items-center gap-2">
+  <% if @release.status.present? %>
+    <span class="px-2.5 py-1 text-xs font-medium rounded border border-woodsmoke-700 text-woodsmoke-300"><%= @release.status %></span>
+  <% end %>
+
+  <% @formats.each do |release_format| %>
+    <% format_label = [(release_format.quantity.to_i > 1) ? "#{release_format.quantity.to_i}×" : nil, release_format.name].compact.join(" ") %>
+    <% if release_format.descriptions.present? %>
+      <% format_label = [format_label, release_format.descriptions].join(", ") %>
+    <% end %>
+    <span class="px-2.5 py-1 text-xs font-medium rounded bg-crusta-900/30 text-crusta-400"><%= format_label %></span>
+  <% end %>
+
+  <% country_year = [@release.country, @release.released].compact_blank.join(" · ") %>
+  <% if country_year.present? %>
+    <span class="px-2.5 py-1 text-xs font-medium rounded border border-woodsmoke-700 text-woodsmoke-300"><%= country_year %></span>
+  <% end %>
+
+  <% if @release_group %>
+    <%= link_to release_group_path(@release_group), class: "px-2.5 py-1 text-xs font-medium rounded border border-woodsmoke-700 text-crusta-400 hover:text-crusta-300 hover:border-crusta-400 transition-colors" do %>
+      ← View all versions
+    <% end %>
+  <% end %>
+</div>
+
+<%# Artist credits %>
+<% if @artists.any? %>
+  <div class="mt-3 flex flex-wrap gap-1 text-sm">
+    <% @artists.each_with_index do |artist, i| %>
+      <% if i > 0 %><span class="text-woodsmoke-500">,</span><% end %>
+      <%= link_to artist.name, artist_path(artist), class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+    <% end %>
+  </div>
+<% end %>
+
+<%# Title %>
+<h1 class="mt-1 text-3xl font-bold text-woodsmoke-50"><%= @release.title %></h1>
