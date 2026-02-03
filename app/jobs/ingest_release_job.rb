@@ -100,7 +100,8 @@ class IngestReleaseJob < ApplicationJob
       format_record.update!(
         name: format_data['name'],
         quantity: format_data['qty']&.to_i,
-        descriptions: format_data['descriptions']
+        descriptions: format_data['descriptions'],
+        color: format_data['text_string']
       )
     end
   end
