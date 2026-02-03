@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: '/jobs'
+
   resource :session, only: %i[new create destroy]
   resource :registration, only: %i[new create]
   resources :passwords, param: :token
   resources :releases, only: %i[index new create show]
   resources :artists, only: %i[show]
+  resources :release_groups, only: %i[show]
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

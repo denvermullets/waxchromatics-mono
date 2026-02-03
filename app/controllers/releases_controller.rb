@@ -18,7 +18,17 @@ class ReleasesController < ApplicationController
   end
 
   def show
-    @release = Release.find(params[:id])
+    @release = Release.includes(
+      :release_formats, :tracks,
+      release_labels: :label,
+      release_artists: :artist,
+      release_group: :releases
+    ).find(params[:id])
+    @artists = @release.artists
+    @release_group = @release.release_group
+    @tracklist = @release.tracks.order(:sequence)
+    @formats = @release.release_formats
+    @labels = @release.release_labels.includes(:label)
   end
 
   private

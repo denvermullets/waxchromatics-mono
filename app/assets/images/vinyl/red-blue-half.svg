@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="rbh-sheen" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#a6a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#201" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="rbh-disc">
+      <circle cx="100" cy="100" r="96"/>
+    </clipPath>
+    <clipPath id="rbh-vinyl">
+      <path d="M100,4 a96,96 0 1,1 0,192 a96,96 0 1,1 0,-192 Z M100,72 a28,28 0 1,0 0,56 a28,28 0 1,0 0,-56 Z" fill-rule="evenodd"/>
+    </clipPath>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="#c0271e"/>
+  <rect x="100" y="0" width="100" height="200" fill="#1a3ab5" clip-path="url(#rbh-disc)"/>
+  <g clip-path="url(#rbh-vinyl)" opacity="0.35">
+    <circle cx="100" cy="100" r="92" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="87" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="82" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="77" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="72" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="67" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="62" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="57" fill="none" stroke="#000" stroke-width="0.3"/>
+    <circle cx="100" cy="100" r="52" fill="none" stroke="#000" stroke-width="0.4"/>
+    <circle cx="100" cy="100" r="47" fill="none" stroke="#000" stroke-width="0.3"/>
+  </g>
+  <circle cx="100" cy="100" r="96" fill="url(#rbh-sheen)"/>
+  <circle cx="100" cy="100" r="28" fill="#111"/>
+  <circle cx="100" cy="100" r="27" fill="none" stroke="#222" stroke-width="0.5"/>
+  <circle cx="100" cy="100" r="3" fill="#333"/>
+  <circle cx="100" cy="100" r="1.5" fill="#555"/>
+</svg>
