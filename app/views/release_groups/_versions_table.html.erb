@@ -6,7 +6,7 @@
       <% @releases.each do |release| %>
         <%= link_to release_path(release), class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-800 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors" do %>
           <div class="flex items-start gap-4">
-            <%= render "shared/cover_art", size: :md %>
+            <%= render "shared/cover_art", size: :md, vinyl_svg: release.release_formats.first&.vinyl_image_path %>
 
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 text-sm">

@@ -21,7 +21,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <%# Left column: cover, notes, actions %>
     <div class="lg:col-span-1 space-y-4">
-      <%= render "shared/cover_art", size: :xl %>
+      <%= render "shared/cover_art", size: :xl, vinyl_svg: @formats.first&.vinyl_image_path %>
 
       <% if @release.notes.present? %>
         <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
