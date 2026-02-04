@@ -5,12 +5,12 @@
 
   <%# Title, badges, artist %>
   <div class="flex-1 min-w-0">
+    <h1 class="text-3xl font-bold text-woodsmoke-50 mb-3"><%= @release_group.title %></h1>
+
     <div class="flex flex-wrap gap-2 mb-3">
       <span class="px-2.5 py-1 text-xs font-medium rounded bg-crusta-900/30 text-crusta-400">Main Release</span>
       <span class="px-2.5 py-1 text-xs font-medium rounded bg-woodsmoke-800 text-woodsmoke-300"><%= @releases.size %> Versions</span>
     </div>
-
-    <h1 class="text-3xl font-bold text-woodsmoke-50"><%= @release_group.title %></h1>
 
     <% if @artists.any? %>
       <div class="mt-2 flex flex-wrap gap-1 text-sm">
@@ -28,7 +28,6 @@
 <% if @main_release %>
   <div class="mt-6 p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
     <% main_label = @main_release.release_labels.first %>
-    <% main_format = @main_release.release_formats.first %>
 
     <div class="grid grid-cols-2 gap-x-8 gap-y-3 text-sm">
       <% if main_label&.label %>
@@ -45,19 +44,6 @@
         </div>
       <% end %>
 
-      <% if main_format %>
-        <div class="flex items-baseline justify-between gap-2">
-          <span class="text-woodsmoke-400">Format</span>
-          <span class="text-woodsmoke-50 text-right"><%= [main_format.name, main_format.descriptions].compact_blank.join(", ") %></span>
-        </div>
-      <% end %>
-
-      <% if main_format&.color.present? %>
-        <div class="flex items-baseline justify-between gap-2">
-          <span class="text-woodsmoke-400">Color</span>
-          <span class="text-woodsmoke-50 text-right"><%= main_format.color %></span>
-        </div>
-      <% end %>
 
       <% if @main_release.country.present? %>
         <div class="flex items-baseline justify-between gap-2">

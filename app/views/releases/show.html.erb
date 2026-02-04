@@ -12,7 +12,7 @@
       <span>/</span>
     <% end %>
     <% if @release_group %>
-      <%= link_to @release_group.title, release_group_path(@release_group), class: "hover:text-crusta-400 transition-colors" %>
+      <%= link_to @release_group.title, artist_release_group_path(@artists.first, @release_group), class: "hover:text-crusta-400 transition-colors" %>
       <span>/</span>
     <% end %>
     <span class="text-woodsmoke-300"><%= @labels.first&.catalog_number.presence || @release.title %></span>

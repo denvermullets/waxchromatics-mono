@@ -17,9 +17,16 @@
         <% if @top_artist.profile.present? %>
           <p class="mt-3 text-sm text-woodsmoke-300 leading-relaxed"><%= truncate(@top_artist.profile, length: 200) %></p>
         <% end %>
-        <% if @top_artist.releases.any? %>
+        <% release_group_count = @top_artist.releases.distinct.count(:release_group_id) %>
+        <% if release_group_count > 0 %>
           <span class="inline-block mt-3 px-2 py-1 text-xs font-medium rounded bg-woodsmoke-800 text-woodsmoke-300">
-            <%= @top_artist.releases.count %> releases
+            <%= release_group_count %> <%= "release".pluralize(release_group_count) %>
+          </span>
+        <% end %>
+        <% variant_count = @top_artist.releases.count %>
+        <% if variant_count > 0 %>
+          <span class="inline-block mt-3 px-2 py-1 text-xs font-medium rounded bg-woodsmoke-800 text-woodsmoke-300">
+            <%= variant_count %> <%= "variant".pluralize(variant_count) %>
           </span>
         <% end %>
       <% else %>
