@@ -5,8 +5,21 @@
     <div class="space-y-2">
       <% @releases.each do |release| %>
         <%= link_to release_path(release), class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-800 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors" do %>
-          <div class="flex items-start gap-4">
-            <%= render "shared/cover_art", size: :md, vinyl_svg: release.release_formats.first&.vinyl_image_path %>
+          <div class="flex items-start gap-12">
+            <% vinyl_svg = release.release_formats.first&.vinyl_image_path %>
+            <% cover_thumb = release.cover_art_url || @release_group.cover_art_url %>
+            <% if cover_thumb.present? && vinyl_svg.present? %>
+              <div class="shrink-0 relative w-28 h-24">
+                <div class="absolute top-0 -right-[25%] w-full h-full">
+                  <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
+                </div>
+                <div class="relative w-[80%] h-full rounded bg-woodsmoke-700 overflow-hidden">
+                  <%= image_tag cover_thumb, alt: release.title, class: "w-full h-full object-cover" %>
+                </div>
+              </div>
+            <% else %>
+              <%= render "shared/cover_art", thumb: cover_thumb, alt: release.title, size: :md, vinyl_svg: vinyl_svg %>
+            <% end %>
 
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 text-sm">

@@ -1,7 +1,7 @@
 <%# Cover art + title/badges/artist side-by-side %>
 <div class="flex flex-col sm:flex-row gap-6">
-  <%# Cover placeholder %>
-  <%= render "shared/cover_art", size: :lg %>
+  <%# Cover art %>
+  <%= render "shared/cover_art", thumb: @release_group.cover_art_url, alt: @release_group.title, size: :lg %>
 
   <%# Title, badges, artist %>
   <div class="flex-1 min-w-0">

@@ -67,6 +67,10 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
+  # Log to STDOUT so Solid Queue worker output is visible in the terminal
+  config.logger = ActiveSupport::Logger.new($stdout)
+  config.log_level = :info
+
   # Annotate rendered view with file names.
   config.action_view.annotate_rendered_view_with_filenames = true
 

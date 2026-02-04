@@ -6,6 +6,7 @@ class IngestReleaseJob < ApplicationJob
     return if data.blank? || data['id'].blank?
 
     release = upsert_release(data)
+    FetchReleaseCoverArtJob.perform_later(release.id)
     create_tracks(release, data['release_tracks'] || [])
     create_release_artists(release, data['release_artists'] || [])
     create_release_labels(release, data['release_labels'] || [])
