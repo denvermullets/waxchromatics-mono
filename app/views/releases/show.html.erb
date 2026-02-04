@@ -29,13 +29,6 @@
         <%= render "shared/cover_art", size: :xl, vinyl_svg: @formats.first&.vinyl_image_path %>
       <% end %>
 
-      <% if @release.notes.present? %>
-        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Notes</h3>
-          <p class="text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line"><%= @release.notes %></p>
-        </div>
-      <% end %>
-
       <div class="flex gap-3">
         <button class="flex-1 px-4 py-2.5 rounded-lg bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer">
           Add to Wantlist
@@ -45,18 +38,13 @@
         </button>
       </div>
 
-      <% contributors = @artists.reject { |a| a.id == @artist.id } %>
-      <% if contributors.any? %>
-        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Credits</h3>
-          <div class="flex flex-wrap gap-1 text-sm">
-            <% contributors.each_with_index do |artist, i| %>
-              <% if i > 0 %><span class="text-woodsmoke-500">,</span><% end %>
-              <%= link_to artist.name, artist_path(artist), class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
-            <% end %>
-          </div>
+      <% if @release.notes.present? %>
+        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Notes</h3>
+          <p class="text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line"><%= @release.notes %></p>
         </div>
       <% end %>
+
     </div>
 
     <%# Right column: badges, title, info, tracklist %>
@@ -64,6 +52,7 @@
       <%= render "releases/header" %>
       <%= render "releases/info_table" %>
       <%= render "releases/matrix_runout" %>
+      <%= render "releases/credits" %>
       <%= render "releases/tracklist" %>
     </div>
   </div>
