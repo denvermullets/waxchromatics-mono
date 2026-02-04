@@ -21,7 +21,13 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <%# Left column: cover, notes, actions %>
     <div class="lg:col-span-1 space-y-4">
-      <%= render "shared/cover_art", size: :xl, vinyl_svg: @formats.first&.vinyl_image_path %>
+      <% if @release.cover_art_url.present? %>
+        <div class="w-full aspect-square rounded-xl border border-woodsmoke-700 overflow-hidden bg-woodsmoke-700">
+          <%= image_tag @release.cover_art_url, alt: @release.title, class: "w-full h-full object-cover" %>
+        </div>
+      <% else %>
+        <%= render "shared/cover_art", size: :xl, vinyl_svg: @formats.first&.vinyl_image_path %>
+      <% end %>
 
       <% if @release.notes.present? %>
         <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_03_143854) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_03_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -85,13 +85,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_143854) do
   end
 
   create_table "release_groups", force: :cascade do |t|
+    t.string "cover_art_url"
     t.datetime "created_at", null: false
     t.integer "discogs_id"
     t.bigint "main_release_id"
+    t.string "musicbrainz_id"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.integer "year"
     t.index ["discogs_id"], name: "index_release_groups_on_discogs_id", unique: true
+    t.index ["musicbrainz_id"], name: "index_release_groups_on_musicbrainz_id", unique: true
   end
 
   create_table "release_labels", force: :cascade do |t|
@@ -107,8 +110,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_143854) do
 
   create_table "releases", force: :cascade do |t|
     t.string "country"
+    t.string "cover_art_url"
     t.datetime "created_at", null: false
     t.integer "discogs_id"
+    t.string "musicbrainz_id"
     t.text "notes"
     t.bigint "release_group_id"
     t.string "released"
@@ -116,6 +121,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_143854) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["discogs_id"], name: "index_releases_on_discogs_id", unique: true
+    t.index ["musicbrainz_id"], name: "index_releases_on_musicbrainz_id", unique: true
     t.index ["release_group_id"], name: "index_releases_on_release_group_id"
   end
 

@@ -1,7 +1,7 @@
 <% local_release_group = ReleaseGroup.find_by(discogs_id: master["id"]) %>
 
 <% card_content = capture do %>
-  <%= render "shared/cover_art", thumb: master["thumb"], alt: master["title"], size: :md %>
+  <%= render "shared/cover_art", thumb: (local_release_group&.cover_art_url || master["thumb"]), alt: master["title"], size: :md %>
 
   <div class="flex-1 min-w-0">
     <div class="flex items-start justify-between gap-2">

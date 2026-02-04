@@ -11,7 +11,8 @@ class IngestArtistDiscographyJob < ApplicationJob
       master_discogs_id = master['id']
       next if master_discogs_id.blank?
 
-      upsert_release_group(master, master_discogs_id)
+      release_group = upsert_release_group(master, master_discogs_id)
+      FetchReleaseGroupCoverArtJob.perform_later(release_group.id)
       IngestMasterReleasesJob.perform_later(master_discogs_id)
     end
 
@@ -33,6 +34,7 @@ class IngestArtistDiscographyJob < ApplicationJob
       main_release_id: master['main_release']
     )
     rg.save!
+    rg
   rescue ActiveRecord::RecordNotUnique
     rg = ReleaseGroup.find_by!(discogs_id: discogs_id)
     rg.update!(
@@ -40,5 +42,6 @@ class IngestArtistDiscographyJob < ApplicationJob
       year: master['year'],
       main_release_id: master['main_release']
     )
+    rg
   end
 end
