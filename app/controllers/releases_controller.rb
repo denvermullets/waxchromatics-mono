@@ -25,6 +25,7 @@ class ReleasesController < ApplicationController
       release_artists: :artist,
       release_group: :releases
     ).find(params[:id])
+    @artist = Artist.find(params[:artist_id])
     @artists = @release.artists
     @release_group = @release.release_group
     @tracklist = @release.tracks.order(:sequence)

@@ -8,11 +8,11 @@
     <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
     <span>/</span>
     <% if @artists.any? %>
-      <%= link_to @artists.first.name, artist_path(@artists.first), class: "hover:text-crusta-400 transition-colors" %>
+      <%= link_to @artist.name, artist_path(@artist), class: "hover:text-crusta-400 transition-colors" %>
       <span>/</span>
     <% end %>
     <% if @release_group %>
-      <%= link_to @release_group.title, artist_release_group_path(@artists.first, @release_group), class: "hover:text-crusta-400 transition-colors" %>
+      <%= link_to @release_group.title, artist_release_group_path(@artist, @release_group), class: "hover:text-crusta-400 transition-colors" %>
       <span>/</span>
     <% end %>
     <span class="text-woodsmoke-300"><%= @labels.first&.catalog_number.presence || @release.title %></span>
@@ -44,6 +44,19 @@
           Add to Collection
         </button>
       </div>
+
+      <% contributors = @artists.reject { |a| a.id == @artist.id } %>
+      <% if contributors.any? %>
+        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Credits</h3>
+          <div class="flex flex-wrap gap-1 text-sm">
+            <% contributors.each_with_index do |artist, i| %>
+              <% if i > 0 %><span class="text-woodsmoke-500">,</span><% end %>
+              <%= link_to artist.name, artist_path(artist), class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <%# Right column: badges, title, info, tracklist %>
