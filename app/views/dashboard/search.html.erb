@@ -1,61 +1,31 @@
 <%= turbo_frame_tag "search-results" do %>
+  <%# Turbo Stream subscription for real-time updates from background jobs %>
+  <%= turbo_stream_from "search_updates" %>
+
   <% if @query.present? %>
-    <% if @artists.any? %>
-      <div class="mt-4">
-        <p class="text-sm text-woodsmoke-400 mb-4">
-          Showing results for <span class="font-bold text-woodsmoke-200">"<%= @query %>"</span>
-          <span class="text-woodsmoke-500">(<%= @total_count %> found)</span>
-        </p>
+    <div class="mt-4">
+      <p class="text-sm text-woodsmoke-400 mb-4">
+        Showing results for <span class="font-bold text-woodsmoke-200">"<%= @query %>"</span>
+      </p>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <%# Left column %>
-          <div class="lg:col-span-2">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <%# Left column %>
+        <div class="lg:col-span-2 space-y-8">
+          <% if @top_artist.present? %>
             <%= render "dashboard/top_result" %>
+          <% end %>
 
-            <div>
-              <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">All Artists</h3>
-              <ul class="space-y-3">
-                <% @artists.each do |artist| %>
-                  <%= render "dashboard/artist_row", artist: artist %>
-                <% end %>
-              </ul>
+          <%= render "dashboard/local_results_section" %>
+          <%= render "dashboard/external_results_section" %>
+        </div>
 
-              <% if @total_pages > 1 %>
-                <div class="mt-6 flex items-center justify-between">
-                  <% if @page > 1 %>
-                    <%= link_to search_path(query: @query, page: @page - 1), data: { turbo_frame: "search-results" }, class: "px-4 py-2 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
-                      &larr; Previous
-                    <% end %>
-                  <% else %>
-                    <span></span>
-                  <% end %>
-
-                  <span class="text-sm text-woodsmoke-400">Page <%= @page %> of <%= @total_pages %></span>
-
-                  <% if @page < @total_pages %>
-                    <%= link_to search_path(query: @query, page: @page + 1), data: { turbo_frame: "search-results" }, class: "px-4 py-2 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
-                      Next &rarr;
-                    <% end %>
-                  <% else %>
-                    <span></span>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-
-          <%# Right column %>
-          <div class="lg:col-span-1">
-            <%= render "dashboard/related_artists" %>
-            <%= render "dashboard/key_releases" %>
-            <%= render "dashboard/search_tips" %>
-          </div>
+        <%# Right column %>
+        <div class="lg:col-span-1">
+          <%= render "dashboard/related_artists" %>
+          <%= render "dashboard/key_releases" %>
+          <%= render "dashboard/search_tips" %>
         </div>
       </div>
-    <% else %>
-      <div class="mt-4 p-8 text-center">
-        <p class="text-woodsmoke-400">No artists found for "<%= @query %>"</p>
-      </div>
-    <% end %>
+    </div>
   <% end %>
 <% end %>

@@ -6,42 +6,47 @@ class DashboardController < ApplicationController
   def search
     @query = params[:query].to_s.strip
     @page = [params[:page].to_i, 1].max
-    result = search_artists(@query, @page)
-    @artists = result[:artists]
-    @total_pages = result[:total_pages]
-    @total_count = result[:total_count]
-    @top_artist = @artists.first
-    @key_releases = if @top_artist.is_a?(Artist)
-                      @top_artist.releases.limit(4)
-                    else
-                      []
-                    end
+    return if @query.blank?
+
+    # Always query both sources
+    @local_results = search_local_artists(@query, @page)
+    @external_results = search_external_artists(@query, @page)
+
+    # Fire ingest for FIRST external result only
+    enqueue_first_artist_ingest(@external_results[:artists].first)
+
+    # Top result prefers local
+    @top_artist = @local_results[:artists].first
+    @key_releases = @top_artist&.releases&.limit(4) || []
   end
 
   private
 
-  def search_artists(query, page)
-    return { artists: [], total_pages: 0, total_count: 0 } if query.blank?
-
-    local_results = Artist.where('name ILIKE ?', "%#{query}%")
-    if local_results.any?
-      total = local_results.count
-      artists = local_results.offset((page - 1) * PER_PAGE).limit(PER_PAGE)
-      { artists: artists, total_pages: (total.to_f / PER_PAGE).ceil, total_count: total }
-    else
-      result = WaxApiClient::SearchArtists.call(query: query, page: page)
-      enqueue_artist_ingestion(result[:artists])
-      result
-    end
+  def search_local_artists(query, page)
+    results = Artist.where('name ILIKE ?', "%#{query}%")
+    total = results.count
+    artists = results.offset((page - 1) * PER_PAGE).limit(PER_PAGE)
+    { artists: artists, total_pages: (total.to_f / PER_PAGE).ceil, total_count: total }
   end
 
-  def enqueue_artist_ingestion(artists)
-    return if artists.blank?
+  def search_external_artists(query, page)
+    WaxApiClient::SearchArtists.call(query: query, page: page)
+  end
 
-    artists.each do |artist|
-      next unless artist.is_a?(Hash) && artist['id'].present?
+  def enqueue_first_artist_ingest(artist_data)
+    return if artist_data.blank? || !artist_data.is_a?(Hash)
 
-      IngestArtistJob.perform_later(artist)
-    end
+    discogs_id = artist_data['id']
+    return if discogs_id.blank?
+    return if Artist.exists?(discogs_id: discogs_id)
+    return if PendingIngest.exists?(discogs_id: discogs_id, resource_type: 'Artist')
+
+    PendingIngest.create!(
+      discogs_id: discogs_id,
+      resource_type: 'Artist',
+      status: 'pending',
+      metadata: artist_data
+    )
+    IngestArtistJob.perform_later(artist_data)
   end
 end
