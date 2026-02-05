@@ -3,6 +3,8 @@
 @theme {
   /* black */
   /* main black is woodsmoke-950 */
+
+  /* text color */
   --color-woodsmoke-50: #f6f6f6;
   --color-woodsmoke-100: #e7e7e7;
   --color-woodsmoke-200: #d1d1d1;
@@ -10,9 +12,13 @@
   --color-woodsmoke-400: #888888;
   --color-woodsmoke-500: #6d6d6d;
   --color-woodsmoke-600: #5d5d5d;
+  /* vinyl bg */
   --color-woodsmoke-700: #4f4f4f;
   --color-woodsmoke-800: #454545;
+  /* release table bg */
   --color-woodsmoke-900: #3d3d3d;
+  --color-woodsmoke-925: #292929;
+  /* bg color */
   --color-woodsmoke-950: #181818;
 
   /* grey */

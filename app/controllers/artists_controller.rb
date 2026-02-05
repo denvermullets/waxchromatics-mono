@@ -14,7 +14,7 @@ class ArtistsController < ApplicationController
 
     @artist = local_artist
     @api_artist = result[:artist]
-    @masters = result[:masters]
+    @masters = result[:masters].sort_by { |m| m['year'].to_i }
     @pagy = result[:pagy]
     @local_releases = local_artist&.releases || Release.none
   end

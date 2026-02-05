@@ -4,7 +4,7 @@
   <% if @releases.any? %>
     <div class="space-y-2">
       <% @releases.each do |release| %>
-        <%= link_to release_path(release), class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-800 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors" do %>
+        <%= link_to artist_release_group_release_path(@artist, @release_group, release), class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors" do %>
           <div class="flex items-start gap-12">
             <% vinyl_svg = release.release_formats.first&.vinyl_image_path %>
             <% cover_thumb = release.cover_art_url || @release_group.cover_art_url %>
@@ -13,7 +13,7 @@
                 <div class="absolute top-0 -right-[25%] w-full h-full">
                   <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
                 </div>
-                <div class="relative w-[80%] h-full rounded bg-woodsmoke-700 overflow-hidden">
+                <div class="relative w-[80%] h-full rounded bg-woodsmoke-925 overflow-hidden">
                   <%= image_tag cover_thumb, alt: release.title, class: "w-full h-full object-cover" %>
                 </div>
               </div>
@@ -64,7 +64,7 @@
       <% end %>
     </div>
   <% else %>
-    <div class="p-8 text-center rounded-xl border border-woodsmoke-800 bg-woodsmoke-900">
+    <div class="p-8 text-center rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
       <p class="text-woodsmoke-400">No versions found.</p>
     </div>
   <% end %>

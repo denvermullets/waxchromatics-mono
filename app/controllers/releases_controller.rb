@@ -1,6 +1,6 @@
 class ReleasesController < ApplicationController
   def index
-    @releases = Release.order(created_at: :desc)
+    @releases = Release.includes(:release_group, release_artists: :artist).order(created_at: :desc)
   end
 
   def new
@@ -11,7 +11,8 @@ class ReleasesController < ApplicationController
     @release = Release.new(release_params)
     assign_release_group
     if @release.save
-      redirect_to @release, notice: 'Release created.'
+      redirect_to artist_release_group_release_path(@release.artists.first, @release.release_group, @release),
+                  notice: 'Release created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -24,6 +25,7 @@ class ReleasesController < ApplicationController
       release_artists: :artist,
       release_group: :releases
     ).find(params[:id])
+    @artist = Artist.find(params[:artist_id])
     @artists = @release.artists
     @release_group = @release.release_group
     @tracklist = @release.tracks.order(:sequence)
