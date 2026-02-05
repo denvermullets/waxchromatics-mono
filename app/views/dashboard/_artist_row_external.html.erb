@@ -1,81 +1,75 @@
 <% discogs_id = artist_data['id'] %>
 <% pending = PendingIngest.find_by(discogs_id: discogs_id, resource_type: 'Artist') %>
 <% local_artist = Artist.find_by(discogs_id: discogs_id) %>
+<% artist_name = local_artist&.name || artist_data['name'] || artist_data['title'] %>
+<% artist_thumb = artist_data['thumb'] %>
 
 <%= turbo_frame_tag "external-artist-#{discogs_id}" do %>
-  <li class="relative rounded-lg border border-woodsmoke-700 bg-woodsmoke-800
-             <%= pending&.processing? ? 'opacity-60' : 'hover:border-crusta-400' %> transition-colors">
-    <% if local_artist %>
-      <%# Now exists locally - clickable %>
-      <%= link_to artist_path(local_artist), data: { turbo_frame: "_top" }, class: "p-3 flex items-center gap-3 no-underline cursor-pointer" do %>
-        <div class="shrink-0 w-20 h-20 rounded bg-woodsmoke-700 flex items-center justify-center overflow-hidden">
-          <svg class="w-10 h-10 text-woodsmoke-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-          </svg>
-        </div>
+  <% if local_artist %>
+    <%= link_to artist_path(local_artist), data: { turbo_frame: "_top" }, class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors no-underline" do %>
+      <div class="flex items-start gap-4">
+        <%= render "shared/cover_art", thumb: artist_thumb, alt: artist_name, size: :md %>
 
         <div class="flex-1 min-w-0">
-          <p class="font-semibold text-woodsmoke-50"><%= local_artist.name %></p>
+          <div class="flex items-start justify-between gap-2">
+            <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
+          </div>
           <% if local_artist.real_name.present? %>
             <p class="text-sm text-woodsmoke-400"><%= local_artist.real_name %></p>
           <% end %>
           <% if local_artist.profile.present? %>
             <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(local_artist.profile, length: 80) %></p>
           <% end %>
-        </div>
-
-        <span class="ml-auto text-xs text-green-400">Ready</span>
-
-        <svg class="absolute bottom-3 right-3 w-4 h-4 text-woodsmoke-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-        </svg>
-      <% end %>
-    <% elsif pending&.processing? %>
-      <%# Pending - not clickable %>
-      <div class="p-3 flex items-center gap-3">
-        <div class="shrink-0 w-20 h-20 rounded bg-woodsmoke-700 flex items-center justify-center overflow-hidden">
-          <svg class="w-10 h-10 text-woodsmoke-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-          </svg>
-        </div>
-
-        <div class="flex-1 min-w-0">
-          <p class="font-semibold text-woodsmoke-50"><%= artist_data['name'] || artist_data['title'] %></p>
-          <% if artist_data['real_name'].present? %>
-            <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
-          <% end %>
-          <% if artist_data['profile'].present? %>
-            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist_data['profile'].to_s, length: 80) %></p>
-          <% end %>
-        </div>
-
-        <span class="ml-auto flex items-center gap-2 text-xs text-woodsmoke-400">
-          <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          Importing...
-        </span>
-      </div>
-    <% else %>
-      <%# Not ingesting - just display (first result auto-imports) %>
-      <div class="p-3 flex items-center gap-3">
-        <div class="shrink-0 w-20 h-20 rounded bg-woodsmoke-700 flex items-center justify-center overflow-hidden">
-          <svg class="w-10 h-10 text-woodsmoke-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-          </svg>
-        </div>
-
-        <div class="flex-1 min-w-0">
-          <p class="font-semibold text-woodsmoke-50"><%= artist_data['name'] || artist_data['title'] %></p>
-          <% if artist_data['real_name'].present? %>
-            <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
-          <% end %>
-          <% if artist_data['profile'].present? %>
-            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist_data['profile'].to_s, length: 80) %></p>
-          <% end %>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="px-1.5 py-0.5 text-xs rounded bg-green-900/30 text-green-400 font-medium">Ready</span>
+          </div>
         </div>
       </div>
     <% end %>
-  </li>
+  <% elsif pending&.processing? %>
+    <div class="block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 opacity-60 transition-colors">
+      <div class="flex items-start gap-4">
+        <%= render "shared/cover_art", thumb: artist_thumb, alt: artist_name, size: :md %>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between gap-2">
+            <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
+          </div>
+          <% if artist_data['real_name'].present? %>
+            <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
+          <% end %>
+          <% if artist_data['profile'].present? %>
+            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist_data['profile'].to_s, length: 80) %></p>
+          <% end %>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300 font-medium flex items-center gap-1.5">
+              <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Importing…
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 transition-colors">
+      <div class="flex items-start gap-4">
+        <%= render "shared/cover_art", thumb: artist_thumb, alt: artist_name, size: :md %>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between gap-2">
+            <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
+          </div>
+          <% if artist_data['real_name'].present? %>
+            <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
+          <% end %>
+          <% if artist_data['profile'].present? %>
+            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist_data['profile'].to_s, length: 80) %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 <% end %>

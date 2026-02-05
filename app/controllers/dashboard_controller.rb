@@ -8,16 +8,26 @@ class DashboardController < ApplicationController
     @page = [params[:page].to_i, 1].max
     return if @query.blank?
 
-    # Always query both sources
+    # Only fetch local results initially - external loads via lazy Turbo Frame
     @local_results = search_local_artists(@query, @page)
-    @external_results = search_external_artists(@query, @page)
 
-    # Fire ingest for FIRST external result only
-    enqueue_first_artist_ingest(@external_results[:artists].first)
-
-    # Top result prefers local
+    # Top result from local
     @top_artist = @local_results[:artists].first
     @key_releases = @top_artist&.releases&.limit(4) || []
+  end
+
+  def external_search
+    @query = params[:query].to_s.strip
+    @page = [params[:page].to_i, 1].max
+
+    if @query.blank?
+      @external_results = { artists: [], total_pages: 0, total_count: 0 }
+    else
+      @external_results = search_external_artists(@query, @page)
+      enqueue_first_artist_ingest(@external_results[:artists].first)
+    end
+
+    render partial: 'dashboard/external_results_content'
   end
 
   private

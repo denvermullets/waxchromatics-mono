@@ -4,11 +4,11 @@
     <span class="text-woodsmoke-500">(<%= @local_results[:total_count] %>)</span>
   </h3>
   <% if @local_results[:artists].any? %>
-    <ul class="space-y-3">
+    <div class="flex flex-col gap-3">
       <% @local_results[:artists].each do |artist| %>
         <%= render "dashboard/artist_row_local", artist: artist %>
       <% end %>
-    </ul>
+    </div>
   <% else %>
     <p class="text-sm text-woodsmoke-500 py-4">No local results</p>
   <% end %>

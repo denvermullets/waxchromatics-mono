@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   get 'search', to: 'dashboard#search'
+  get 'search/external', to: 'dashboard#external_search', as: :external_search
 
   # Authenticated users land here; unauthenticated go to login
   root 'dashboard#show'
