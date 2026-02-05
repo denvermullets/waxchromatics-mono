@@ -33,8 +33,23 @@ class DashboardController < ApplicationController
   private
 
   def search_local_artists(query, page)
-    results = Artist.where('name ILIKE ?', "%#{query}%")
-    total = results.count
+    # Strip Discogs-style numeric indicators like (2), (3) from the query for matching
+    normalized_query = query.gsub(/\s*\(\d+\)\s*$/, '').strip
+
+    exact_match_sql = <<~SQL.squish
+      CASE WHEN REGEXP_REPLACE(artists.name, '\\s*\\(\\d+\\)\\s*$', '') ILIKE ? THEN 0 ELSE 1 END
+    SQL
+
+    results = Artist
+              .where('name ILIKE ?', "%#{normalized_query}%")
+              .left_joins(:release_artists)
+              .group('artists.id')
+              .order(
+                Arel.sql(ActiveRecord::Base.sanitize_sql_array([exact_match_sql, normalized_query])),
+                Arel.sql('COUNT(release_artists.id) DESC')
+              )
+
+    total = Artist.where('name ILIKE ?', "%#{normalized_query}%").count
     artists = results.offset((page - 1) * PER_PAGE).limit(PER_PAGE)
     { artists: artists, total_pages: (total.to_f / PER_PAGE).ceil, total_count: total }
   end
