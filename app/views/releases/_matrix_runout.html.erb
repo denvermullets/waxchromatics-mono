@@ -1,18 +1,32 @@
-<%# Matrix / Runout — placeholder until data is captured %>
+<% filtered_identifiers = @identifiers.reject { |i| i.description == "CD" } %>
+<% grouped_identifiers = filtered_identifiers.group_by(&:identifier_type) %>
+
 <div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
   <div class="flex items-baseline justify-between mb-4">
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Matrix / Runout</h3>
-    <span class="text-xs text-woodsmoke-500">Pressing Plant: Unknown</span>
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Identifiers</h3>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-    <div class="px-4 py-3 rounded-lg border border-woodsmoke-700 bg-woodsmoke-800">
-      <span class="text-xs text-woodsmoke-500">Side A:</span>
-      <span class="ml-2 text-sm text-woodsmoke-300 font-mono">—</span>
+  <% if filtered_identifiers.empty? %>
+    <p class="text-sm text-woodsmoke-500">No identifiers available</p>
+  <% else %>
+    <div class="divide-y divide-woodsmoke-800">
+      <% grouped_identifiers.each_with_index do |(type, identifiers), index| %>
+        <div class="<%= index > 0 ? 'pt-5' : '' %> <%= index < grouped_identifiers.size - 1 ? 'pb-5' : '' %>">
+          <h4 class="text-xs font-medium text-woodsmoke-400 mb-3"><%= type %></h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <% identifiers.each do |identifier| %>
+              <div>
+                <% if identifier.description.present? %>
+                  <span class="text-xs text-woodsmoke-500 block mb-1"><%= identifier.description %></span>
+                <% end %>
+                <div class="px-4 py-3 rounded-lg border border-woodsmoke-700 bg-woodsmoke-950">
+                  <span class="text-sm text-woodsmoke-300 font-mono break-all"><%= identifier.value %></span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
-    <div class="px-4 py-3 rounded-lg border border-woodsmoke-700 bg-woodsmoke-800">
-      <span class="text-xs text-woodsmoke-500">Side B:</span>
-      <span class="ml-2 text-sm text-woodsmoke-300 font-mono">—</span>
-    </div>
-  </div>
+  <% end %>
 </div>

@@ -7,10 +7,7 @@ class IngestReleaseJob < ApplicationJob
 
     release = upsert_release(data)
     FetchReleaseCoverArtJob.perform_later(release.id)
-    create_tracks(release, data['release_tracks'] || [])
-    create_release_artists(release, data['release_artists'] || [])
-    create_release_labels(release, data['release_labels'] || [])
-    create_release_formats(release, data['release_formats'] || [])
+    Releases::IngestAssociationsService.call(release: release, data: data)
   end
 
   private
@@ -46,64 +43,5 @@ class IngestReleaseJob < ApplicationJob
     return nil if master_id.blank?
 
     ReleaseGroup.find_by(discogs_id: master_id)
-  end
-
-  def create_tracks(release, tracks_data)
-    tracks_data.each do |track_data|
-      sequence = track_data['sequence']
-      next if sequence.blank?
-
-      track = release.tracks.find_or_initialize_by(sequence: sequence)
-      track.update!(
-        title: track_data['title'],
-        position: track_data['position'],
-        duration: track_data['duration']
-      )
-    end
-  end
-
-  def create_release_artists(release, artists_data)
-    artists_data.each do |artist_data|
-      artist_discogs_id = artist_data['artist_id']
-      next if artist_discogs_id.blank?
-
-      artist = find_or_upsert(Artist, artist_discogs_id) do |a|
-        a.name = artist_data['artist_name'] || a.name || 'Unknown'
-      end
-
-      ra = release.release_artists.find_or_initialize_by(artist: artist)
-      ra.update!(
-        position: artist_data['position'],
-        role: artist_data['role'].presence
-      )
-    end
-  end
-
-  def create_release_labels(release, labels_data)
-    labels_data.each do |label_data|
-      label_discogs_id = label_data['label_id']
-      next if label_discogs_id.blank?
-
-      label = find_or_upsert(Label, label_discogs_id) do |l|
-        l.name = label_data['label_name'] || l.name || 'Unknown'
-      end
-
-      rl = release.release_labels.find_or_initialize_by(label: label)
-      rl.update!(catalog_number: label_data['catno'])
-    end
-  end
-
-  def create_release_formats(release, formats_data)
-    formats_data.each_with_index do |format_data, index|
-      existing = release.release_formats.offset(index).first
-      format_record = existing || release.release_formats.build
-
-      format_record.update!(
-        name: format_data['name'],
-        quantity: format_data['qty']&.to_i,
-        descriptions: format_data['descriptions'],
-        color: format_data['text_string']
-      )
-    end
   end
 end

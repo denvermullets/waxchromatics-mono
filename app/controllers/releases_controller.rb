@@ -20,7 +20,7 @@ class ReleasesController < ApplicationController
 
   def show
     @release = Release.includes(
-      :release_formats, :tracks,
+      :release_formats, :tracks, :release_identifiers,
       release_labels: :label,
       release_artists: :artist,
       release_group: :releases
@@ -31,6 +31,7 @@ class ReleasesController < ApplicationController
     @tracklist = @release.tracks.order(:sequence)
     @formats = @release.release_formats
     @labels = @release.release_labels.includes(:label)
+    @identifiers = @release.release_identifiers
   end
 
   private

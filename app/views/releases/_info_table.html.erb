@@ -3,6 +3,7 @@
 <% descriptions = release_format&.descriptions&.split(";")&.map(&:strip)&.reject(&:blank?) || [] %>
 <% speed = descriptions.find { |d| d.match?(/rpm/i) } %>
 <% packaging = descriptions.find { |d| d.match?(/gatefold|sleeve|jacket|box/i) } %>
+<% barcode = @identifiers.find { |i| i.identifier_type == "Barcode" } %>
 
 <div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden text-sm">
   <%# Row 1: Label / Catalog # %>
@@ -71,7 +72,7 @@
     </div>
     <div class="flex items-baseline justify-between gap-2 px-5 py-3">
       <span class="text-woodsmoke-400">Barcode</span>
-      <span class="text-crusta-400 font-medium">—</span>
+      <span class="text-crusta-400 font-medium"><%= barcode&.value.presence || "—" %></span>
     </div>
   </div>
 </div>

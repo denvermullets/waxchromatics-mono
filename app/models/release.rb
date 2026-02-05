@@ -6,6 +6,7 @@ class Release < ApplicationRecord
   has_many :release_labels, dependent: :destroy
   has_many :labels, through: :release_labels
   has_many :release_formats, dependent: :destroy
+  has_many :release_identifiers, dependent: :destroy
   has_many :collection_items, dependent: :destroy
 
   validates :title, presence: true

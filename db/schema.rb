@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_03_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_05_104542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -97,6 +97,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_200000) do
     t.index ["musicbrainz_id"], name: "index_release_groups_on_musicbrainz_id", unique: true
   end
 
+  create_table "release_identifiers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.integer "discogs_id"
+    t.string "identifier_type"
+    t.bigint "release_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "value"
+    t.index ["discogs_id"], name: "index_release_identifiers_on_discogs_id", unique: true
+    t.index ["release_id", "identifier_type"], name: "index_release_identifiers_on_release_id_and_identifier_type"
+    t.index ["release_id"], name: "index_release_identifiers_on_release_id"
+  end
+
   create_table "release_labels", force: :cascade do |t|
     t.string "catalog_number"
     t.datetime "created_at", null: false
@@ -163,6 +176,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_200000) do
   add_foreign_key "release_artists", "artists"
   add_foreign_key "release_artists", "releases"
   add_foreign_key "release_formats", "releases"
+  add_foreign_key "release_identifiers", "releases"
   add_foreign_key "release_labels", "labels"
   add_foreign_key "release_labels", "releases"
   add_foreign_key "releases", "release_groups"
