@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_05_104542) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_05_122403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,6 +59,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_05_104542) do
     t.datetime "updated_at", null: false
     t.index ["discogs_id"], name: "index_labels_on_discogs_id", unique: true
     t.index ["parent_label_id"], name: "index_labels_on_parent_label_id"
+  end
+
+  create_table "pending_ingests", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "discogs_id", null: false
+    t.json "metadata"
+    t.string "resource_type", default: "Artist", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discogs_id", "resource_type"], name: "index_pending_ingests_on_discogs_id_and_resource_type", unique: true
   end
 
   create_table "release_artists", force: :cascade do |t|

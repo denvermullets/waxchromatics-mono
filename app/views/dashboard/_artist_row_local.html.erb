@@ -1,0 +1,19 @@
+<%= turbo_frame_tag "external-artist-#{artist.discogs_id}" do %>
+  <%= link_to artist_path(artist), data: { turbo_frame: "_top" }, class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors no-underline" do %>
+    <div class="flex items-start gap-4">
+      <%= render "shared/cover_art", thumb: nil, alt: artist.name, size: :md %>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-2">
+          <p class="font-semibold text-woodsmoke-50 truncate"><%= artist.name %></p>
+        </div>
+        <% if artist.real_name.present? %>
+          <p class="text-sm text-woodsmoke-400"><%= artist.real_name %></p>
+        <% end %>
+        <% if artist.profile.present? %>
+          <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist.profile, length: 80) %></p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

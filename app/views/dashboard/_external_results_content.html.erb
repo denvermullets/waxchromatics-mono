@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "external-results", class: "flex flex-col gap-3" do %>
+  <% if @external_results[:artists].any? %>
+    <% @external_results[:artists].each do |artist_data| %>
+      <%= render "dashboard/artist_row_external", artist_data: artist_data %>
+    <% end %>
+  <% end %>
+<% end %>

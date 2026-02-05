@@ -13,15 +13,15 @@ development:
   primary:
     <<: *default
     database: waxc_development
-  # cache:
-  #   <<: *cache
-  #   database: myapp_development_cache
+  cache:
+    <<: *cache
+    database: waxc_development_cache
   queue:
     <<: *queue
     database: waxc_queue
   cable:
     <<: *default
-    database: waxc_development
+    database: waxc_development_cable
     migrations_paths: db/cable_migrate
 test:
   <<: *default
