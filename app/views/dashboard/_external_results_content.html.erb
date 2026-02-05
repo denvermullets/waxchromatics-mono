@@ -1,17 +1,7 @@
-<%= turbo_frame_tag "external-results" do %>
-  <section class="mt-8">
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">
-      From Discogs
-      <span class="text-woodsmoke-500">(<%= @external_results[:total_count] %>)</span>
-    </h3>
-    <% if @external_results[:artists].any? %>
-      <div class="flex flex-col gap-3" id="external-artists">
-        <% @external_results[:artists].each do |artist_data| %>
-          <%= render "dashboard/artist_row_external", artist_data: artist_data %>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="text-sm text-woodsmoke-500 py-4">No external results</p>
+<%= turbo_frame_tag "external-results", class: "flex flex-col gap-3" do %>
+  <% if @external_results[:artists].any? %>
+    <% @external_results[:artists].each do |artist_data| %>
+      <%= render "dashboard/artist_row_external", artist_data: artist_data %>
     <% end %>
-  </section>
+  <% end %>
 <% end %>
