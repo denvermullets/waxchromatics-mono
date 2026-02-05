@@ -13,9 +13,6 @@
         <% if artist.profile.present? %>
           <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist.profile, length: 80) %></p>
         <% end %>
-        <div class="flex flex-wrap gap-1 mt-2">
-          <span class="px-1.5 py-0.5 text-xs rounded bg-green-900/30 text-green-400 font-medium">Ready</span>
-        </div>
       </div>
     </div>
   <% end %>

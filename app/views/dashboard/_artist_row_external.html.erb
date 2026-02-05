@@ -20,9 +20,6 @@
           <% if local_artist.profile.present? %>
             <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(local_artist.profile, length: 80) %></p>
           <% end %>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="px-1.5 py-0.5 text-xs rounded bg-green-900/30 text-green-400 font-medium">Ready</span>
-          </div>
         </div>
       </div>
     <% end %>
@@ -54,13 +51,14 @@
       </div>
     </div>
   <% else %>
-    <div class="block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 transition-colors">
+    <%= button_to ingest_artist_path, params: { artist: { id: discogs_id, name: artist_name, thumb: artist_thumb } }, class: "group block w-full text-left p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors cursor-pointer" do %>
       <div class="flex items-start gap-4">
         <%= render "shared/cover_art", thumb: artist_thumb, alt: artist_name, size: :md %>
 
         <div class="flex-1 min-w-0">
           <div class="flex items-start justify-between gap-2">
             <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
+            <span class="shrink-0 px-2 py-0.5 text-xs rounded-full bg-crusta-900/30 text-crusta-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Click to ingest</span>
           </div>
           <% if artist_data['real_name'].present? %>
             <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
@@ -70,6 +68,6 @@
           <% end %>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 <% end %>

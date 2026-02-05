@@ -20,14 +20,29 @@ class DashboardController < ApplicationController
     @query = params[:query].to_s.strip
     @page = [params[:page].to_i, 1].max
 
-    if @query.blank?
-      @external_results = { artists: [], total_pages: 0, total_count: 0 }
-    else
-      @external_results = search_external_artists(@query, @page)
-      enqueue_first_artist_ingest(@external_results[:artists].first)
-    end
+    @external_results = if @query.blank?
+                          { artists: [], total_pages: 0, total_count: 0 }
+                        else
+                          search_external_artists(@query, @page)
+                        end
 
     render partial: 'dashboard/external_results_content'
+  end
+
+  def ingest_artist
+    artist_data = params.expect(artist: %i[id name thumb]).to_h
+    discogs_id = artist_data['id'].to_i
+    enqueue_artist_ingest(artist_data.merge('id' => discogs_id))
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "external-artist-#{discogs_id}",
+          partial: 'dashboard/artist_row_importing',
+          locals: { artist_data: artist_data, discogs_id: discogs_id }
+        )
+      end
+    end
   end
 
   private
@@ -58,7 +73,7 @@ class DashboardController < ApplicationController
     WaxApiClient::SearchArtists.call(query: query, page: page)
   end
 
-  def enqueue_first_artist_ingest(artist_data)
+  def enqueue_artist_ingest(artist_data)
     return if artist_data.blank? || !artist_data.is_a?(Hash)
 
     discogs_id = artist_data['id']
