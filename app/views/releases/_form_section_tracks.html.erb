@@ -1,15 +1,18 @@
-<div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925 p-5" data-controller="section-toggle nested-form" data-section-toggle-empty-text-value="No tracks added yet.">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-lg font-semibold text-woodsmoke-100">Tracklist</h2>
+<div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925"
+     data-controller="section-toggle nested-form"
+     data-section-toggle-empty-text-value="No tracks added yet."
+     data-section-toggle-format-value="tracklist">
+  <div class="flex items-baseline justify-between mb-4">
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Tracklist</h3>
     <button type="button"
-            class="text-sm text-crusta-400 hover:text-crusta-300"
+            class="text-xs text-crusta-400 hover:text-crusta-300"
             data-section-toggle-target="toggleBtn"
             data-action="click->section-toggle#toggle">Edit</button>
   </div>
 
-  <%# Display state %>
+  <%# Display state — tracklist rows %>
   <div data-section-toggle-target="display">
-    <p class="text-sm text-woodsmoke-400">No tracks added yet.</p>
+    <p class="text-sm text-woodsmoke-500">No tracks added yet.</p>
   </div>
 
   <%# Edit state %>

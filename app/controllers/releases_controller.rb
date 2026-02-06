@@ -58,13 +58,13 @@ class ReleasesController < ApplicationController
   end
 
   def assign_release_group
-    title = params[:release][:release_group_title].presence
-    return unless title
+    title = @release.title
+    return if title.blank?
 
     rg = ReleaseGroup.find_or_initialize_by(title: title)
     if rg.new_record?
-      rg.year = params[:release][:release_group_year].presence
-      rg.cover_art_url = params[:release][:release_group_cover_art_url].presence
+      rg.year = @release.released.presence
+      rg.cover_art_url = @release.cover_art_url.presence
       rg.save!
     end
     @release.release_group = rg

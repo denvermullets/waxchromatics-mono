@@ -1,7 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "results", "hiddenField", "selectedName"]
+  static targets = [
+    "input",
+    "results",
+    "hiddenField",
+    "selectedName",
+    "selectedDisplay",
+    "searchWrapper"
+  ]
   static values = { url: String }
 
   connect() {
@@ -44,14 +51,25 @@ export default class extends Controller {
 
   select(event) {
     event.preventDefault()
-    const { artistId, artistName } = event.target.dataset
+    const button = event.target.closest("[data-artist-id]")
+    if (!button) return
+
+    const { artistId, artistName } = button.dataset
 
     this.hiddenFieldTarget.value = artistId
     this.selectedNameTarget.textContent = artistName
-    this.selectedNameTarget.classList.remove("hidden")
-    this.inputTarget.value = ""
+    this.selectedDisplayTarget.classList.remove("hidden")
+    this.selectedDisplayTarget.classList.add("flex")
+    this.searchWrapperTarget.classList.add("hidden")
     this.resultsTarget.innerHTML = ""
     this.resultsTarget.classList.add("hidden")
+    this.inputTarget.value = ""
+  }
+
+  change(event) {
+    event.preventDefault()
+    this.searchWrapperTarget.classList.remove("hidden")
+    this.inputTarget.focus()
   }
 
   escapeHtml(text) {
