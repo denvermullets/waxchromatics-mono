@@ -5,6 +5,11 @@ class ArtistsController < ApplicationController
     extract_api_details
   end
 
+  def search
+    artists = Artist.where('name ILIKE ?', "%#{params[:q]}%").order(:name).limit(10)
+    render json: artists.map { |a| { id: a.id, name: a.name } }
+  end
+
   private
 
   def load_artist

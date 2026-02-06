@@ -1,0 +1,60 @@
+<div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925 p-5" data-controller="section-toggle nested-form" data-section-toggle-empty-text-value="No credits added yet.">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-lg font-semibold text-woodsmoke-100">Credits</h2>
+    <button type="button"
+            class="text-sm text-crusta-400 hover:text-crusta-300"
+            data-section-toggle-target="toggleBtn"
+            data-action="click->section-toggle#toggle">Edit</button>
+  </div>
+
+  <%# Display state %>
+  <div data-section-toggle-target="display">
+    <p class="text-sm text-woodsmoke-400">No credits added yet.</p>
+  </div>
+
+  <%# Edit state %>
+  <div class="hidden space-y-3" data-section-toggle-target="edit">
+    <div data-nested-form-target="container">
+      <% @release.release_artists.each do |ra| %>
+        <%= form.fields_for :release_artists, ra do |raf| %>
+          <div class="flex gap-3 items-end mb-3" data-nested-form-row>
+            <div class="flex-1">
+              <label class="block text-xs text-woodsmoke-400">Artist</label>
+              <%= raf.collection_select :artist_id, @artists_list, :id, :name, { include_blank: "Select artist..." }, class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs text-woodsmoke-400">Role</label>
+              <%= raf.text_field :role, placeholder: "e.g. Producer", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <%= raf.hidden_field :_destroy %>
+            <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <template data-nested-form-target="template">
+      <div class="flex gap-3 items-end mb-3" data-nested-form-row>
+        <div class="flex-1">
+          <label class="block text-xs text-woodsmoke-400">Artist</label>
+          <select name="release[release_artists_attributes][NEW_RECORD][artist_id]" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+            <option value="">Select artist...</option>
+            <% @artists_list.each do |artist| %>
+              <option value="<%= artist.id %>"><%= artist.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs text-woodsmoke-400">Role</label>
+          <input type="text" name="release[release_artists_attributes][NEW_RECORD][role]" placeholder="e.g. Producer" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+        </div>
+        <input type="hidden" name="release[release_artists_attributes][NEW_RECORD][_destroy]" value="0">
+        <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+      </div>
+    </template>
+
+    <button type="button"
+            class="text-sm text-crusta-400 hover:text-crusta-300"
+            data-action="click->nested-form#add">+ Add Credit</button>
+  </div>
+</div>

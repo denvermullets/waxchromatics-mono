@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resource :registration, only: %i[new create]
   resources :passwords, param: :token
   resources :releases, only: %i[index new create]
+  get 'artists/search', to: 'artists#search', as: :search_artists
   resources :artists, only: %i[show] do
     resources :release_groups, only: %i[show], path: 'release-groups' do
       resources :releases, only: %i[show]

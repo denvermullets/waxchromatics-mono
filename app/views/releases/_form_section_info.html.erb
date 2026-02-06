@@ -1,0 +1,56 @@
+<div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925 p-5" data-controller="section-toggle">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-lg font-semibold text-woodsmoke-100">Release Info</h2>
+    <button type="button"
+            class="text-sm text-crusta-400 hover:text-crusta-300"
+            data-section-toggle-target="toggleBtn"
+            data-action="click->section-toggle#toggle">Edit</button>
+  </div>
+
+  <%# Display state %>
+  <div data-section-toggle-target="display">
+    <table class="w-full text-sm">
+      <tbody class="divide-y divide-woodsmoke-800">
+        <tr><td class="py-2 text-woodsmoke-400 w-1/3">Title</td><td class="py-2 text-woodsmoke-200"><%= @release.title.presence || "--" %></td></tr>
+        <tr><td class="py-2 text-woodsmoke-400">Released</td><td class="py-2 text-woodsmoke-200"><%= @release.released.presence || "--" %></td></tr>
+        <tr><td class="py-2 text-woodsmoke-400">Country</td><td class="py-2 text-woodsmoke-200"><%= @release.country.presence || "--" %></td></tr>
+        <tr><td class="py-2 text-woodsmoke-400">Status</td><td class="py-2 text-woodsmoke-200"><%= @release.status.presence || "--" %></td></tr>
+        <tr><td class="py-2 text-woodsmoke-400">Cover Art</td><td class="py-2 text-woodsmoke-200"><%= @release.cover_art_url.presence || "--" %></td></tr>
+        <tr><td class="py-2 text-woodsmoke-400">Notes</td><td class="py-2 text-woodsmoke-200"><%= @release.notes.presence || "--" %></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Edit state %>
+  <div class="hidden space-y-4" data-section-toggle-target="edit">
+    <div>
+      <%= form.label :title, class: "block text-sm font-semibold text-woodsmoke-100" %>
+      <%= form.text_field :title, required: true, placeholder: "Album title", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :released, class: "block text-sm font-semibold text-woodsmoke-100" %>
+      <%= form.text_field :released, placeholder: "e.g. 2003", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :country, class: "block text-sm font-semibold text-woodsmoke-100" %>
+      <%= form.text_field :country, placeholder: "e.g. US", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :status, class: "block text-sm font-semibold text-woodsmoke-100" %>
+      <%= form.text_field :status, placeholder: "e.g. Accepted", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :cover_art_url, "Cover Art URL", class: "block text-sm font-semibold text-woodsmoke-100" %>
+      <%= form.text_field :cover_art_url, placeholder: "https://...", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= form.label :notes, class: "block text-sm font-semibold text-woodsmoke-100" %>
+      <%= form.text_area :notes, rows: 3, placeholder: "Any notes about this release", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+  </div>
+</div>
