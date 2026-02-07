@@ -1,0 +1,47 @@
+<div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden text-sm" data-controller="section-toggle">
+  <%# Display state — info table style %>
+  <div data-section-toggle-target="display">
+    <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+      <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+        <span class="text-woodsmoke-400">Real Name</span>
+        <span class="text-woodsmoke-50 font-medium"><%= @artist.real_name.presence || "\u2014" %></span>
+      </div>
+      <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+        <span class="text-woodsmoke-400">Discogs ID</span>
+        <span class="text-crusta-400 font-medium"><%= @artist.discogs_id.presence || "\u2014" %></span>
+      </div>
+    </div>
+    <div class="border-t border-woodsmoke-800"></div>
+    <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
+      <div class="px-5 py-3"></div>
+      <div class="flex items-baseline justify-between gap-2 px-5 py-3">
+        <button type="button"
+                class="ml-auto text-xs text-crusta-400 hover:text-crusta-300"
+                data-section-toggle-target="toggleBtn"
+                data-action="click->section-toggle#toggle">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <%# Edit state %>
+  <div class="hidden p-5 space-y-4" data-section-toggle-target="edit">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Artist Details</span>
+      <button type="button"
+              class="text-xs text-crusta-400 hover:text-crusta-300"
+              data-section-toggle-target="toggleBtn"
+              data-action="click->section-toggle#toggle">Done</button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :real_name, "Real Name", class: "block text-xs text-woodsmoke-400" %>
+        <%= form.text_field :real_name, placeholder: "e.g. John Smith", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+      </div>
+      <div>
+        <%= form.label :discogs_id, "Discogs ID", class: "block text-xs text-woodsmoke-400" %>
+        <%= form.number_field :discogs_id, placeholder: "e.g. 12345", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+      </div>
+    </div>
+  </div>
+</div>

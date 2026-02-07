@@ -1,0 +1,23 @@
+<div data-controller="release-group-search"
+     data-release-group-search-url-value="<%= search_release_groups_path %>">
+  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Discography</h2>
+
+  <%# Search input %>
+  <div class="relative mb-4">
+    <input type="text"
+           placeholder="Search for a release group to associate..."
+           autocomplete="off"
+           class="block w-full rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none"
+           data-release-group-search-target="input"
+           data-action="input->release-group-search#search">
+
+    <div class="absolute z-10 mt-1 w-full rounded-lg border border-woodsmoke-800 bg-woodsmoke-900 shadow-lg max-h-48 overflow-y-auto hidden"
+         data-release-group-search-target="results"></div>
+  </div>
+
+  <%# Hidden fields container for selected release_group_ids %>
+  <div data-release-group-search-target="hiddenFields"></div>
+
+  <%# Selected release group cards %>
+  <div class="space-y-3" data-release-group-search-target="container"></div>
+</div>
