@@ -5,18 +5,35 @@ class ArtistsController < ApplicationController
     extract_api_details
   end
 
+  def search
+    artists = Artist.where('name ILIKE ?', "%#{params[:q]}%").order(:name).limit(10)
+    render json: artists.map { |a| { id: a.id, name: a.name } }
+  end
+
   private
 
   def load_artist
-    local_artist = Artist.find_by(id: params[:id]) || Artist.find_by(discogs_id: params[:id])
-    discogs_id = local_artist&.discogs_id || params[:id]
-    result = WaxApiClient::ArtistDiscography.call(id: discogs_id, page: @page)
+    @artist = Artist.find_by(id: params[:id]) || Artist.find_by(discogs_id: params[:id])
+    @local_releases = @artist&.releases || Release.none
+    load_discography
+    load_api_sidebar
+  end
 
-    @artist = local_artist
+  def load_discography
+    per_page = 25
+    all_groups = @artist&.release_groups&.order(:year) || ReleaseGroup.none
+    @total_pages = (all_groups.count.to_f / per_page).ceil.clamp(1..)
+    @release_groups = all_groups.offset((@page - 1) * per_page).limit(per_page)
+  end
+
+  def load_api_sidebar
+    discogs_id = @artist&.discogs_id
+    return unless discogs_id
+
+    result = WaxApiClient::ArtistDiscography.call(id: discogs_id, page: 1)
     @api_artist = result[:artist]
-    @masters = result[:masters].sort_by { |m| m['year'].to_i }
-    @pagy = result[:pagy]
-    @local_releases = local_artist&.releases || Release.none
+  rescue StandardError
+    @api_artist = nil
   end
 
   def extract_api_details

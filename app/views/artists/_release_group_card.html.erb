@@ -1,0 +1,20 @@
+<% release_count = release_group.releases.size %>
+
+<%= link_to artist_release_group_path(@artist, release_group), class: "block p-4 rounded-lg border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4" do %>
+  <%= render "shared/cover_art", thumb: release_group.cover_art_url, alt: release_group.title, size: :md %>
+
+  <div class="flex-1 min-w-0">
+    <div class="flex items-start justify-between gap-2">
+      <p class="font-semibold text-woodsmoke-50 truncate"><%= release_group.title %></p>
+      <% if release_group.year.present? && release_group.year > 0 %>
+        <span class="shrink-0 text-xs text-woodsmoke-400"><%= release_group.year %></span>
+      <% end %>
+    </div>
+
+    <div class="flex flex-wrap gap-1 mt-2">
+      <% if release_count > 0 %>
+        <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300"><%= release_count %> <%= "version".pluralize(release_count) %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,27 @@
+<div data-controller="artist-search"
+     data-artist-search-url-value="<%= search_artists_path %>">
+  <%= form.hidden_field :primary_artist_id, data: { artist_search_target: "hiddenField" } %>
+
+  <div class="hidden items-center gap-2" data-artist-search-target="selectedDisplay">
+    <span class="text-sm text-crusta-400 font-medium" data-artist-search-target="selectedName"></span>
+    <button type="button"
+            class="text-xs text-woodsmoke-500 hover:text-crusta-400"
+            data-action="click->artist-search#change">(change)</button>
+  </div>
+
+  <div data-artist-search-target="searchWrapper" class="relative">
+    <input type="text"
+           placeholder="Search for an artist..."
+           autocomplete="off"
+           class="block w-full rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none"
+           data-artist-search-target="input"
+           data-action="input->artist-search#search">
+
+    <div class="absolute z-10 mt-1 w-full rounded-lg border border-woodsmoke-800 bg-woodsmoke-900 shadow-lg max-h-48 overflow-y-auto hidden"
+         data-artist-search-target="results"></div>
+  </div>
+
+  <% if @release.errors[:release_artists].any? || (@release.artists.empty? && @release.errors.any?) %>
+    <p class="mt-1 text-xs text-crusta-400">An artist is required.</p>
+  <% end %>
+</div>

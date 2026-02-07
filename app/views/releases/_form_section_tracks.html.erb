@@ -1,0 +1,68 @@
+<div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925"
+     data-controller="section-toggle nested-form"
+     data-section-toggle-empty-text-value="No tracks added yet."
+     data-section-toggle-format-value="tracklist">
+  <div class="flex items-baseline justify-between mb-4">
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Tracklist</h3>
+    <button type="button"
+            class="text-xs text-crusta-400 hover:text-crusta-300"
+            data-section-toggle-target="toggleBtn"
+            data-action="click->section-toggle#toggle">Edit</button>
+  </div>
+
+  <%# Display state — tracklist rows %>
+  <div data-section-toggle-target="display">
+    <p class="text-sm text-woodsmoke-500">No tracks added yet.</p>
+  </div>
+
+  <%# Edit state %>
+  <div class="hidden space-y-3" data-section-toggle-target="edit">
+    <div data-nested-form-target="container">
+      <% @release.tracks.each_with_index do |track, index| %>
+        <%= form.fields_for :tracks, track do |tf| %>
+          <div class="flex gap-3 items-end mb-3" data-nested-form-row>
+            <div class="w-20">
+              <label class="block text-xs text-woodsmoke-400">Position</label>
+              <%= tf.text_field :position, placeholder: "A1", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs text-woodsmoke-400">Title</label>
+              <%= tf.text_field :title, placeholder: "Track title", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <div class="w-24">
+              <label class="block text-xs text-woodsmoke-400">Duration</label>
+              <%= tf.text_field :duration, placeholder: "3:45", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <%= tf.hidden_field :sequence, value: track.sequence || index + 1 %>
+            <%= tf.hidden_field :_destroy %>
+            <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <template data-nested-form-target="template">
+      <div class="flex gap-3 items-end mb-3" data-nested-form-row>
+        <div class="w-20">
+          <label class="block text-xs text-woodsmoke-400">Position</label>
+          <input type="text" name="release[tracks_attributes][NEW_RECORD][position]" placeholder="A1" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs text-woodsmoke-400">Title</label>
+          <input type="text" name="release[tracks_attributes][NEW_RECORD][title]" placeholder="Track title" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+        </div>
+        <div class="w-24">
+          <label class="block text-xs text-woodsmoke-400">Duration</label>
+          <input type="text" name="release[tracks_attributes][NEW_RECORD][duration]" placeholder="3:45" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+        </div>
+        <input type="hidden" name="release[tracks_attributes][NEW_RECORD][sequence]" value="0">
+        <input type="hidden" name="release[tracks_attributes][NEW_RECORD][_destroy]" value="0">
+        <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+      </div>
+    </template>
+
+    <button type="button"
+            class="text-sm text-crusta-400 hover:text-crusta-300"
+            data-action="click->nested-form#add">+ Add Track</button>
+  </div>
+</div>

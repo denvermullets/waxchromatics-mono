@@ -1,0 +1,49 @@
+<div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925"
+     data-controller="nested-form">
+  <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Label</h3>
+
+  <div class="space-y-3">
+    <div data-nested-form-target="container">
+      <% @release.release_labels.each do |rl| %>
+        <%= form.fields_for :release_labels, rl do |lf| %>
+          <div class="flex gap-3 items-end mb-3" data-nested-form-row>
+            <div class="flex-1">
+              <label class="block text-xs text-woodsmoke-400">Label</label>
+              <%= lf.collection_select :label_id, @labels_list, :id, :name, { include_blank: "Select label..." }, class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs text-woodsmoke-400">Catalog #</label>
+              <%= lf.text_field :catalog_number, placeholder: "e.g. ABC-123", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            </div>
+            <%= lf.hidden_field :_destroy %>
+            <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <template data-nested-form-target="template">
+      <div class="flex gap-3 items-end mb-3" data-nested-form-row>
+        <div class="flex-1">
+          <label class="block text-xs text-woodsmoke-400">Label</label>
+          <select name="release[release_labels_attributes][NEW_RECORD][label_id]" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+            <option value="">Select label...</option>
+            <% @labels_list.each do |label| %>
+              <option value="<%= label.id %>"><%= label.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs text-woodsmoke-400">Catalog #</label>
+          <input type="text" name="release[release_labels_attributes][NEW_RECORD][catalog_number]" placeholder="e.g. ABC-123" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+        </div>
+        <input type="hidden" name="release[release_labels_attributes][NEW_RECORD][_destroy]" value="0">
+        <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+      </div>
+    </template>
+
+    <button type="button"
+            class="text-sm text-crusta-400 hover:text-crusta-300"
+            data-action="click->nested-form#add">+ Add Label</button>
+  </div>
+</div>

@@ -1,49 +1,46 @@
-<div class="max-w-2xl">
-  <h1 class="text-3xl font-bold text-woodsmoke-50">Add a Release</h1>
-  <p class="mt-2 text-woodsmoke-300">Create a release manually.</p>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <% if @release.errors.any? %>
+    <div class="mb-5 py-2 px-3 bg-crusta-950 text-crusta-300 font-medium rounded-lg" id="errors">
+      <% @release.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
 
-  <div class="mt-8">
+  <%= form_with model: @release do |form| %>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <%# Left column: cover art, cover URL, notes %>
+      <div class="lg:col-span-1 space-y-4">
+        <%= render "shared/cover_art", size: :xl, vinyl_svg: "vinyl/black.svg" %>
 
-    <% if @release.errors.any? %>
-      <div class="mt-4 py-2 px-3 bg-crusta-950 text-crusta-300 font-medium rounded-lg" id="errors">
-        <% @release.errors.full_messages.each do |message| %>
-          <p><%= message %></p>
-        <% end %>
-      </div>
-    <% end %>
+        <%= form.text_field :cover_art_url, placeholder: "Cover art URL (optional)", class: "block w-full rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
 
-    <%= form_with model: @release, class: "mt-4 space-y-5" do |form| %>
-      <div>
-        <%= form.label :release_group_title, "Release group", class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_field :release_group_title, required: true, autofocus: true, placeholder: "Release group title", value: params.dig(:release, :release_group_title), class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
-      </div>
+        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Notes</h3>
+          <%= form.text_area :notes, rows: 4, placeholder: "Any notes about this release", class: "block w-full rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+        </div>
 
-      <div>
-        <%= form.label :title, class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_field :title, required: true, placeholder: "Album title", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
-      </div>
-
-      <div>
-        <%= form.label :released, class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_field :released, placeholder: "e.g. 2003", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+        <div class="pt-2">
+          <%= form.submit "Create Release", class: "w-full rounded-lg px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold cursor-pointer transition-colors" %>
+        </div>
       </div>
 
-      <div>
-        <%= form.label :country, class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_field :country, placeholder: "e.g. US", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
-      </div>
+      <%# Right column: header + sections %>
+      <div class="lg:col-span-2 space-y-6">
+        <%# Header area: artist, title, release group %>
+        <div class="flex flex-col gap-1">
+          <%= render "releases/form_section_artist", form: form %>
 
-      <div>
-        <%= form.label :notes, class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_area :notes, rows: 3, placeholder: "Any notes about this release", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
-      </div>
+          <%= form.text_field :title, required: true, placeholder: "Release Title", class: "w-full bg-transparent text-3xl font-bold text-woodsmoke-50 placeholder-woodsmoke-700 border-none focus:ring-0 focus:outline-none p-0 mt-1" %>
+        </div>
 
-      <div>
-        <%= form.label :status, class: "block text-sm font-semibold text-woodsmoke-100" %>
-        <%= form.text_field :status, placeholder: "e.g. Accepted", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+        <%= render "releases/form_section_info", form: form %>
+        <%= render "releases/form_section_formats", form: form %>
+        <%= render "releases/form_section_labels", form: form %>
+        <%= render "releases/form_section_identifiers", form: form %>
+        <%= render "releases/form_section_credits", form: form %>
+        <%= render "releases/form_section_tracks", form: form %>
       </div>
-
-      <%= form.submit "Create Release", class: "rounded-lg px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold cursor-pointer transition-colors" %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
