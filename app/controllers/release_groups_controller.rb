@@ -1,4 +1,12 @@
 class ReleaseGroupsController < ApplicationController
+  def search
+    release_groups = ReleaseGroup.where('title ILIKE ?', "%#{params[:q]}%")
+                                 .order(:title).limit(10)
+    render json: release_groups.map { |rg|
+      { id: rg.id, title: rg.title, year: rg.year, cover_art_url: rg.cover_art_url }
+    }
+  end
+
   def show
     @release_group = ReleaseGroup.find(params[:id])
     @releases = @release_group.releases

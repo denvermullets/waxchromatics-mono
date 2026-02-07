@@ -1,0 +1,11 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="mb-6 flex items-center gap-2 text-sm text-woodsmoke-400">
+    <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+    <span>/</span>
+    <%= link_to @artist.name, artist_path(@artist), class: "hover:text-crusta-400 transition-colors" %>
+    <span>/</span>
+    <span class="text-woodsmoke-300">Edit</span>
+  </div>
+
+  <%= render "artists/form" %>
+</div>
