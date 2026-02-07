@@ -1,5 +1,6 @@
 <div data-controller="release-group-search"
-     data-release-group-search-url-value="<%= search_release_groups_path %>">
+     data-release-group-search-url-value="<%= search_release_groups_path %>"
+     data-release-group-search-existing-value="<%= (@existing_release_groups || []).to_json %>">
   <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Discography</h2>
 
   <%# Search input %>

@@ -2,11 +2,32 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["input", "results", "container", "hiddenFields"]
-  static values = { url: String }
+  static values = { url: String, existing: { type: Array, default: [] } }
 
   connect() {
     this.timeout = null
     this.selected = new Map()
+    this.loadExisting()
+  }
+
+  loadExisting() {
+    this.existingValue.forEach((rg) => {
+      const id = String(rg.id)
+      const title = rg.title || ""
+      const year = rg.year ? String(rg.year) : ""
+      const cover = rg.cover_art_url || ""
+
+      this.selected.set(id, { title, year, cover })
+
+      const input = document.createElement("input")
+      input.type = "hidden"
+      input.name = "artist[release_group_ids][]"
+      input.value = id
+      input.dataset.rgId = id
+      this.hiddenFieldsTarget.appendChild(input)
+
+      this.containerTarget.insertAdjacentHTML("beforeend", this.buildCard(id, title, year, cover))
+    })
   }
 
   search() {

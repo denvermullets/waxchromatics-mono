@@ -1,0 +1,41 @@
+<% if @artist.errors.any? %>
+  <div class="mb-5 py-2 px-3 bg-crusta-950 text-crusta-300 font-medium rounded-lg" id="errors">
+    <% @artist.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_with model: @artist do |form| %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <%# Left column: avatar, profile, submit %>
+    <div class="lg:col-span-1 space-y-4">
+      <div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+        <div class="w-full aspect-square rounded-lg bg-woodsmoke-925 flex items-center justify-center overflow-hidden mb-4">
+          <svg class="w-20 h-20 text-woodsmoke-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Profile</h3>
+        <%= form.text_area :profile, rows: 6, placeholder: "Artist biography or profile text", class: "block w-full rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+      </div>
+
+      <div class="pt-2">
+        <%= form.submit @artist.persisted? ? "Update Artist" : "Create Artist", class: "w-full rounded-lg px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold cursor-pointer transition-colors" %>
+      </div>
+    </div>
+
+    <%# Right column: name + sections %>
+    <div class="lg:col-span-2 space-y-6">
+      <div class="flex flex-col gap-1">
+        <%= form.text_field :name, required: true, placeholder: "Artist Name", class: "w-full bg-transparent text-3xl font-bold text-woodsmoke-50 placeholder-woodsmoke-700 border-none focus:ring-0 focus:outline-none p-0" %>
+      </div>
+
+      <%= render "artists/form_section_info", form: form %>
+      <%= render "artists/form_section_discography" %>
+    </div>
+  </div>
+<% end %>
