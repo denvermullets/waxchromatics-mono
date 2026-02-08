@@ -1,34 +1,16 @@
 <div>
   <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Discography</h2>
 
-  <% if @release_groups.any? %>
-    <div class="space-y-3">
-      <% @release_groups.each do |release_group| %>
-        <%= render "artists/release_group_card", release_group: release_group %>
+  <% if @sections.any? %>
+    <div>
+      <% @sections.each do |section| %>
+        <%= render 'artists/discography_section',
+                   artist: @artist,
+                   pagy: section[:pagy],
+                   release_groups: section[:release_groups],
+                   release_type: section[:type] %>
       <% end %>
     </div>
-
-    <% if @total_pages > 1 %>
-      <div class="mt-6 flex items-center justify-between">
-        <% if @page > 1 %>
-          <%= link_to artist_path(@artist, page: @page - 1), class: "px-4 py-2 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
-            &larr; Previous
-          <% end %>
-        <% else %>
-          <span></span>
-        <% end %>
-
-        <span class="text-sm text-woodsmoke-400">Page <%= @page %> of <%= @total_pages %></span>
-
-        <% if @page < @total_pages %>
-          <%= link_to artist_path(@artist, page: @page + 1), class: "px-4 py-2 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
-            Next &rarr;
-          <% end %>
-        <% else %>
-          <span></span>
-        <% end %>
-      </div>
-    <% end %>
   <% else %>
     <div class="p-8 text-center rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
       <p class="text-woodsmoke-400">No discography data available.</p>

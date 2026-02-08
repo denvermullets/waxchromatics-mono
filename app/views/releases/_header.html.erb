@@ -27,7 +27,8 @@
     <% end %>
   <% end %>
 
-  <% country_year = [@release.country, @release.released].compact_blank.join(" · ") %>
+  <% release_year = @release.released&.match(/\d{4}/)&.to_s %>
+  <% country_year = [@release.country, release_year].compact_blank.join(" · ") %>
   <% if country_year.present? %>
     <span class="px-2.5 py-1 text-xs font-medium rounded border border-woodsmoke-700 text-woodsmoke-300"><%= country_year %></span>
   <% end %>

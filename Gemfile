@@ -9,6 +9,7 @@ gem 'httparty'
 gem "image_processing", "~> 1.14.0"
 gem "importmap-rails"
 gem "mission_control-jobs"
+gem "pagy"
 gem "pg", "~> 1.6.3"
 gem "propshaft"
 gem "puma", ">= 7.2.0"
