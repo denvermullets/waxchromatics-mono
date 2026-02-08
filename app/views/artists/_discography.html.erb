@@ -2,7 +2,7 @@
   <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Discography</h2>
 
   <% if @sections.any? %>
-    <div class="space-y-4">
+    <div>
       <% @sections.each do |section| %>
         <%= render 'artists/discography_section',
                    artist: @artist,
