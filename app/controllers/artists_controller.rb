@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class ArtistsController < ApplicationController
   RELEASE_TYPE_ORDER = ['Album', 'EP', 'Single', 'Compilation', 'Unofficial Release'].freeze
   DISCOGRAPHY_PER_PAGE = 25
@@ -19,6 +20,17 @@ class ArtistsController < ApplicationController
     render partial: 'artists/discography_section', locals: {
       artist: @artist, pagy: @pagy, release_groups: @release_groups, release_type: release_type
     }
+  end
+
+  def discography_type
+    @artist = Artist.find(params[:id])
+    @release_type = params[:release_type]
+    return head(:bad_request) unless RELEASE_TYPE_ORDER.include?(@release_type)
+
+    @release_groups = @artist.release_groups.where(release_type: @release_type).order(:year)
+    @local_releases = @artist.releases
+    load_api_sidebar
+    extract_api_details
   end
 
   def new
@@ -119,3 +131,4 @@ class ArtistsController < ApplicationController
     (collection || []).map { |item| item.is_a?(Hash) ? item[key] : item }
   end
 end
+# rubocop:enable Metrics/ClassLength
