@@ -10,7 +10,7 @@
 %>
 <div class="shrink-0 <%= s[:container] %> rounded bg-woodsmoke-925 flex items-center justify-center overflow-hidden">
   <% if thumb.present? %>
-    <%= image_tag thumb, alt: alt, class: "w-full h-full object-cover" %>
+    <%= image_tag thumb, alt: alt, loading: "lazy", decoding: "async", class: "w-full h-full object-cover" %>
   <% elsif vinyl_svg.present? %>
     <%= image_tag vinyl_svg, alt: alt || "Vinyl record", class: "w-full h-full object-cover" %>
   <% else %>
