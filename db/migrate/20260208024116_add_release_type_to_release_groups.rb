@@ -22,15 +22,19 @@ class AddReleaseTypeToReleaseGroups < ActiveRecord::Migration[8.1]
 
   private
 
-  def classify_type(keywords)
-    votes = keywords.map { |kw| keyword_to_type(kw) }.compact
-    return "Album" if votes.empty?
+  TYPE_PRIORITY = ["Unofficial Release", "Compilation", "EP", "Single", "Album"].freeze
 
-    votes.tally.max_by { |_type, count| count }.first
+  def classify_type(keywords)
+    types = keywords.filter_map { |kw| keyword_to_type(kw) }.uniq
+    return "Album" if types.empty?
+
+    TYPE_PRIORITY.find { |t| types.include?(t) } || "Album"
   end
 
   def keyword_to_type(keyword)
     case keyword
+    when "Unofficial Release"
+      "Unofficial Release"
     when "Compilation"
       "Compilation"
     when /\bEP\b/, "Mini-Album"

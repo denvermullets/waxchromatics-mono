@@ -65,6 +65,7 @@ class ReleasesController < ApplicationController
     if rg.new_record?
       rg.year = @release.released.presence
       rg.cover_art_url = @release.cover_art_url.presence
+      rg.release_type = params[:release][:release_group_type].presence || 'Album'
       rg.save!
     end
     @release.release_group = rg

@@ -15,6 +15,8 @@ module Releases
       update_release_group_type
     end
 
+    TYPE_PRIORITY = ['Unofficial Release', 'Compilation', 'EP', 'Single', 'Album'].freeze
+
     private
 
     attr_reader :release, :data
@@ -108,10 +110,10 @@ module Releases
                        .compact
 
       keywords = descriptions.flat_map { |d| d.split('; ') }
-      votes = keywords.filter_map { |kw| classify_keyword(kw) }
-      return if votes.empty?
+      types = keywords.filter_map { |kw| classify_keyword(kw) }.uniq
+      return if types.empty?
 
-      rg.update_column(:release_type, votes.tally.max_by { |_t, c| c }.first)
+      rg.update_column(:release_type, highest_priority_type(types))
     end
 
     def classify_keyword(keyword)
@@ -122,6 +124,10 @@ module Releases
       when 'Single', 'Maxi-Single' then 'Single'
       when 'Album', 'LP' then 'Album'
       end
+    end
+
+    def highest_priority_type(types)
+      TYPE_PRIORITY.find { |t| types.include?(t) } || 'Album'
     end
 
     def find_or_upsert(klass, discogs_id)
