@@ -1,4 +1,5 @@
 module Releases
+  # rubocop:disable Metrics/ClassLength
   class IngestAssociationsService < Service
     def initialize(release:, data:)
       @release = release
@@ -11,6 +12,7 @@ module Releases
       create_release_labels
       create_release_formats
       create_release_identifiers
+      update_release_group_type
     end
 
     private
@@ -96,6 +98,31 @@ module Releases
       end
     end
 
+    def update_release_group_type
+      rg = release.release_group
+      return unless rg
+
+      descriptions = rg.releases
+                       .joins(:release_formats)
+                       .pluck('release_formats.descriptions')
+                       .compact
+
+      keywords = descriptions.flat_map { |d| d.split('; ') }
+      votes = keywords.filter_map { |kw| classify_keyword(kw) }
+      return if votes.empty?
+
+      rg.update_column(:release_type, votes.tally.max_by { |_t, c| c }.first)
+    end
+
+    def classify_keyword(keyword)
+      case keyword
+      when 'Compilation' then 'Compilation'
+      when /\bEP\b/, 'Mini-Album' then 'EP'
+      when 'Single', 'Maxi-Single' then 'Single'
+      when 'Album', 'LP' then 'Album'
+      end
+    end
+
     def find_or_upsert(klass, discogs_id)
       record = klass.find_or_initialize_by(discogs_id: discogs_id)
       yield(record)
@@ -108,4 +135,5 @@ module Releases
       record
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

@@ -1,0 +1,49 @@
+<%= turbo_frame_tag "discography_#{release_type}" do %>
+  <div data-controller="collapsible" class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+    <button type="button"
+            data-action="collapsible#toggle"
+            class="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-woodsmoke-800/50 transition-colors rounded-xl">
+      <h3 class="text-sm font-semibold uppercase tracking-wider text-woodsmoke-300">
+        <%= release_type.pluralize %>
+        <span class="ml-2 text-xs font-normal text-woodsmoke-500">(<%= pagy.count %>)</span>
+      </h3>
+      <svg data-collapsible-target="icon" class="w-4 h-4 text-woodsmoke-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+
+    <div data-collapsible-target="content" class="px-4 pb-4">
+      <div class="space-y-3">
+        <% release_groups.each do |release_group| %>
+          <%= render 'artists/release_group_card', release_group: release_group, artist: artist %>
+        <% end %>
+      </div>
+
+      <% if pagy.last > 1 %>
+        <div class="mt-4 flex items-center justify-between">
+          <% if pagy.previous %>
+            <%= link_to discography_section_artist_path(artist, release_type: release_type, page: pagy.previous),
+                        data: { turbo_frame: "discography_#{release_type}" },
+                        class: "px-4 py-2 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+              &larr; Previous
+            <% end %>
+          <% else %>
+            <span></span>
+          <% end %>
+
+          <span class="text-sm text-woodsmoke-400">Page <%= pagy.page %> of <%= pagy.last %></span>
+
+          <% if pagy.next %>
+            <%= link_to discography_section_artist_path(artist, release_type: release_type, page: pagy.next),
+                        data: { turbo_frame: "discography_#{release_type}" },
+                        class: "px-4 py-2 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+              Next &rarr;
+            <% end %>
+          <% else %>
+            <span></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

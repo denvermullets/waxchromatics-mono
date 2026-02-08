@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'artists/search', to: 'artists#search', as: :search_artists
   get 'release_groups/search', to: 'release_groups#search', as: :search_release_groups
   resources :artists, only: %i[show new create edit update] do
+    get :discography_section, on: :member
     resources :release_groups, only: %i[show], path: 'release-groups' do
       resources :releases, only: %i[show]
     end
