@@ -6,6 +6,7 @@ class IngestReleaseJob < ApplicationJob
     return if data.blank? || data['id'].blank?
 
     release = upsert_release(data)
+    backfill_release_group_year(release)
     FetchReleaseCoverArtJob.perform_later(release.id)
     Releases::IngestAssociationsService.call(release: release, data: data)
   end
@@ -37,6 +38,23 @@ class IngestReleaseJob < ApplicationJob
     yield(record)
     record.save!
     record
+  end
+
+  def backfill_release_group_year(release)
+    rg = release.release_group
+    return unless rg
+    return if rg.year.present? && rg.year.positive?
+
+    year = parse_year(release.released)
+    rg.update_column(:year, year) if year
+  end
+
+  def parse_year(released)
+    match = released&.match(/\d{4}/)
+    return unless match
+
+    value = match.to_s.to_i
+    value.positive? ? value : nil
   end
 
   def find_release_group(master_id)
