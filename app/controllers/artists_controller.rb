@@ -1,5 +1,5 @@
 class ArtistsController < ApplicationController
-  RELEASE_TYPE_ORDER = %w[Album EP Single Compilation].freeze
+  RELEASE_TYPE_ORDER = ['Album', 'EP', 'Single', 'Compilation', 'Unofficial Release'].freeze
   DISCOGRAPHY_PER_PAGE = 25
 
   def show

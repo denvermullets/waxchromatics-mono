@@ -116,6 +116,7 @@ module Releases
 
     def classify_keyword(keyword)
       case keyword
+      when 'Unofficial Release' then 'Unofficial Release'
       when 'Compilation' then 'Compilation'
       when /\bEP\b/, 'Mini-Album' then 'EP'
       when 'Single', 'Maxi-Single' then 'Single'
