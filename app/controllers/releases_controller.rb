@@ -1,6 +1,6 @@
 class ReleasesController < ApplicationController
   def index
-    @releases = Release.includes(:release_group, release_artists: :artist).order(created_at: :desc)
+    @releases = Release.includes(:release_group, :artist).order(created_at: :desc)
   end
 
   def new
@@ -9,7 +9,7 @@ class ReleasesController < ApplicationController
     @release.release_formats.build
     @release.release_labels.build
     @release.release_identifiers.build
-    @release.release_artists.build
+    @release.release_contributors.build
     @labels_list = Label.order(:name)
     @artists_list = Artist.order(:name)
   end
@@ -19,7 +19,7 @@ class ReleasesController < ApplicationController
     assign_release_group
     assign_primary_artist
     if @release.save
-      redirect_to artist_release_group_release_path(@release.artists.first, @release.release_group, @release),
+      redirect_to artist_release_group_release_path(@release.artist, @release.release_group, @release),
                   notice: 'Release created.'
     else
       @labels_list = Label.order(:name)
@@ -30,13 +30,13 @@ class ReleasesController < ApplicationController
 
   def show
     @release = Release.includes(
-      :release_formats, :tracks, :release_identifiers,
+      :release_formats, :tracks, :release_identifiers, :artist,
       release_labels: :label,
-      release_artists: :artist,
+      release_contributors: :artist,
       release_group: :releases
     ).find(params[:id])
     @artist = Artist.find(params[:artist_id])
-    @artists = @release.artists
+    @artists = [@release.artist].compact
     @release_group = @release.release_group
     @tracklist = @release.tracks.order(:sequence)
     @formats = @release.release_formats
@@ -55,12 +55,12 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(
-      :title, :released, :country, :notes, :status, :cover_art_url,
+      :title, :released, :country, :notes, :status, :cover_art_url, :artist_id,
       tracks_attributes: %i[id position title duration sequence _destroy],
       release_formats_attributes: %i[id name quantity descriptions color _destroy],
       release_labels_attributes: %i[id label_id catalog_number _destroy],
       release_identifiers_attributes: %i[id identifier_type value description _destroy],
-      release_artists_attributes: %i[id artist_id role position _destroy]
+      release_contributors_attributes: %i[id artist_id role position _destroy]
     )
   end
 
@@ -82,8 +82,6 @@ class ReleasesController < ApplicationController
     artist_id = params[:release][:primary_artist_id].presence
     return unless artist_id
 
-    @release.release_artists.build(artist_id: artist_id, position: 0) unless @release.release_artists.any? do |ra|
-      ra.artist_id == artist_id.to_i
-    end
+    @release.artist_id = artist_id
   end
 end

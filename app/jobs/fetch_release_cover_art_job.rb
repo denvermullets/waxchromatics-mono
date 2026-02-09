@@ -46,7 +46,7 @@ class FetchReleaseCoverArtJob < ApplicationJob
   end
 
   def resolve_mbid(release)
-    artist_name = release.artists.first&.name
+    artist_name = release.artist&.name
     Rails.logger.info(
       "[FetchReleaseCoverArt] Looking up MBID for \"#{release.title}\" " \
       "by \"#{artist_name}\" (discogs_id=#{release.discogs_id})"

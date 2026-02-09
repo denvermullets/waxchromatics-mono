@@ -49,8 +49,7 @@ class FetchReleaseGroupCoverArtJob < ApplicationJob
 
   def artist_name_for(release_group)
     first_release = release_group.releases.first
-    first_artist = first_release&.artists&.first
-    first_artist&.name
+    first_release&.artist&.name
   end
 
   def resolve_mbid(release_group)

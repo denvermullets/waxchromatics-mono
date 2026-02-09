@@ -10,7 +10,7 @@ class MyCollectionController < ApplicationController
     compute_stats
   end
 
-  EAGER_LOADS = { release: [:release_formats, { release_labels: :label, release_group: :artists }] }.freeze
+  EAGER_LOADS = { release: [:release_formats, :artist, { release_labels: :label, release_group: :artists }] }.freeze
 
   private
 
@@ -28,7 +28,7 @@ class MyCollectionController < ApplicationController
   def sorted_scope(scope)
     case @sort
     when 'artist'
-      scope.joins(release: { release_artists: :artist })
+      scope.joins(release: :artist)
            .order('artists.name ASC, releases.title ASC')
     when 'title'  then scope.joins(:release).order('releases.title ASC')
     when 'year'   then scope.joins(:release).order('releases.released DESC')
@@ -52,9 +52,7 @@ class MyCollectionController < ApplicationController
   def compute_stats
     items = Current.user.default_collection.collection_items
     @total_records = items.count
-    @artist_count = items.joins(release: { release_artists: :artist })
-                         .where(release_artists: { role: [nil, ''] })
-                         .distinct.count('artists.id')
+    @artist_count = items.joins(release: :artist).distinct.count('artists.id')
     load_label_stats(items)
     load_format_stats(items)
   end

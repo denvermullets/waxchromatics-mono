@@ -57,11 +57,11 @@ class DashboardController < ApplicationController
 
     results = Artist
               .where('name ILIKE ?', "%#{normalized_query}%")
-              .left_joins(:release_artists)
+              .left_joins(:releases)
               .group('artists.id')
               .order(
                 Arel.sql(ActiveRecord::Base.sanitize_sql_array([exact_match_sql, normalized_query])),
-                Arel.sql('COUNT(release_artists.id) DESC')
+                Arel.sql('COUNT(releases.id) DESC')
               )
 
     total = Artist.where('name ILIKE ?', "%#{normalized_query}%").count

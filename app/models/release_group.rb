@@ -1,7 +1,6 @@
 class ReleaseGroup < ApplicationRecord
   has_many :releases, dependent: :nullify
-  has_many :release_artists, -> { where(role: [nil, '']) }, through: :releases
-  has_many :artists, -> { distinct }, through: :release_artists
+  has_many :artists, -> { distinct }, through: :releases, source: :artist
 
   validates :title, presence: true
 end

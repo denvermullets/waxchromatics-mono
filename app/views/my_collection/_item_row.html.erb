@@ -1,5 +1,5 @@
 <% release = item.release %>
-<% artist = release.release_artists.min_by { |ra| ra.position || 999 }&.artist %>
+<% artist = release.artist %>
 <% label = release.release_labels.first&.label %>
 <% fmt = release.release_formats.first %>
 <tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900 transition-colors">
