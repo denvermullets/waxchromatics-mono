@@ -4,15 +4,15 @@
     <div class="flex items-center gap-6">
       <h1 class="text-2xl font-bold text-crusta-400 tracking-wide uppercase">Crates</h1>
       <nav class="flex items-center gap-1">
-        <%= link_to my_collection_path(tab: "collection"),
+        <%= link_to crates_path(username: @user.username, tab: "collection"),
                     class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'collection' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
           Collection
         <% end %>
-        <%= link_to my_collection_path(tab: "wantlist"),
+        <%= link_to crates_path(username: @user.username, tab: "wantlist"),
                     class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'wantlist' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
           Wantlist <span class="text-woodsmoke-500"><%= @wantlist_count %></span>
         <% end %>
-        <%= link_to my_collection_path(tab: "trade_list"),
+        <%= link_to crates_path(username: @user.username, tab: "trade_list"),
                     class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'trade_list' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
           Trade List <span class="text-woodsmoke-500"><%= @trade_list_count %></span>
         <% end %>
@@ -20,6 +20,8 @@
     </div>
     <div class="text-sm text-woodsmoke-500">
       <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+      <span class="mx-1">/</span>
+      <%= link_to @user.username, crates_path(username: @user.username), class: "hover:text-crusta-400 transition-colors" %>
       <span class="mx-1">/</span>
       <span class="text-woodsmoke-300"><%= { "collection" => "Collection", "wantlist" => "Wantlist", "trade_list" => "Trade List" }[@tab] %></span>
     </div>
@@ -56,7 +58,7 @@
 
   <%# Search + Sort bar %>
   <div class="flex flex-wrap items-center gap-4 mb-4">
-    <%= form_with url: my_collection_path, method: :get, class: "flex-shrink-0" do |f| %>
+    <%= form_with url: crates_path(username: @user.username), method: :get, class: "flex-shrink-0" do |f| %>
       <%= f.hidden_field :tab, value: @tab %>
       <%= f.hidden_field :sort, value: @sort %>
       <%= f.text_field :q, value: params[:q], placeholder: "Search collection...",
@@ -68,7 +70,7 @@
       <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Sort</span>
       <% %w[artist title year label added].each do |sort_key| %>
         <%= link_to sort_key.upcase,
-                    my_collection_path(tab: @tab, sort: sort_key, label: @label_filter, q: params[:q]),
+                    crates_path(username: @user.username, tab: @tab, sort: sort_key, label: @label_filter, q: params[:q]),
                     class: "px-3 py-1 text-xs font-semibold rounded-md border transition-colors #{@sort == sort_key ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
       <% end %>
     </div>
@@ -79,11 +81,11 @@
     <div class="flex flex-wrap items-center gap-2 mb-4">
       <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Label</span>
       <%= link_to "ALL",
-                  my_collection_path(tab: @tab, sort: @sort, q: params[:q]),
+                  crates_path(username: @user.username, tab: @tab, sort: @sort, q: params[:q]),
                   class: "px-3 py-1 text-xs font-semibold rounded-md border transition-colors #{@label_filter.blank? ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
       <% @labels.each do |label_name| %>
         <%= link_to label_name.upcase,
-                    my_collection_path(tab: @tab, sort: @sort, label: label_name, q: params[:q]),
+                    crates_path(username: @user.username, tab: @tab, sort: @sort, label: label_name, q: params[:q]),
                     class: "px-3 py-1 text-xs font-semibold rounded-md border transition-colors #{@label_filter == label_name ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
       <% end %>
     </div>
@@ -123,13 +125,13 @@
         <span class="text-xs text-woodsmoke-500">Page <%= @pagy.page %> of <%= @pagy.last %></span>
         <div class="flex gap-1">
           <% if @pagy.previous %>
-            <%= link_to my_collection_path(tab: @tab, sort: @sort, label: @label_filter, q: params[:q], page: @pagy.previous),
+            <%= link_to crates_path(username: @user.username, tab: @tab, sort: @sort, label: @label_filter, q: params[:q], page: @pagy.previous),
                         class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
               &larr; Prev
             <% end %>
           <% end %>
           <% if @pagy.next %>
-            <%= link_to my_collection_path(tab: @tab, sort: @sort, label: @label_filter, q: params[:q], page: @pagy.next),
+            <%= link_to crates_path(username: @user.username, tab: @tab, sort: @sort, label: @label_filter, q: params[:q], page: @pagy.next),
                         class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
               Next &rarr;
             <% end %>

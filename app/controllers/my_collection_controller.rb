@@ -1,5 +1,6 @@
 class MyCollectionController < ApplicationController
   def show
+    @user = User.find_by!(username: params[:username])
     @tab = params[:tab].presence || 'collection'
     @sort = params[:sort].presence || 'artist'
     @label_filter = params[:label].presence
@@ -17,11 +18,11 @@ class MyCollectionController < ApplicationController
   def tab_scope
     case @tab
     when 'collection'
-      Current.user.default_collection.collection_items.includes(EAGER_LOADS)
+      @user.default_collection.collection_items.includes(EAGER_LOADS)
     when 'wantlist'
-      Current.user.wantlist_items.includes(EAGER_LOADS)
+      @user.wantlist_items.includes(EAGER_LOADS)
     when 'trade_list'
-      Current.user.trade_list_items.includes(EAGER_LOADS)
+      @user.trade_list_items.includes(EAGER_LOADS)
     end
   end
 
@@ -44,13 +45,13 @@ class MyCollectionController < ApplicationController
   end
 
   def load_counts
-    @collection_count = Current.user.default_collection.collection_items.count
-    @wantlist_count = Current.user.wantlist_items.count
-    @trade_list_count = Current.user.trade_list_items.count
+    @collection_count = @user.default_collection.collection_items.count
+    @wantlist_count = @user.wantlist_items.count
+    @trade_list_count = @user.trade_list_items.count
   end
 
   def compute_stats
-    items = Current.user.default_collection.collection_items
+    items = @user.default_collection.collection_items
     @total_records = items.count
     @artist_count = items.joins(release: :artist).distinct.count('artists.id')
     load_label_stats(items)
