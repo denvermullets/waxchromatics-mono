@@ -1,4 +1,4 @@
-class MyCollectionController < ApplicationController
+class CollectionController < ApplicationController
   def show
     @user = User.find_by!(username: params[:username])
     @tab = params[:tab].presence || 'collection'
@@ -39,9 +39,17 @@ class MyCollectionController < ApplicationController
   end
 
   def filtered_scope(scope)
-    return scope if @label_filter.blank?
+    if @label_filter.present?
+      scope = scope.joins(release: { release_labels: :label }).where(labels: { name: @label_filter })
+    end
 
-    scope.joins(release: { release_labels: :label }).where(labels: { name: @label_filter })
+    if params[:q].present?
+      term = "%#{params[:q]}%"
+      scope = scope.joins(release: :artist)
+                   .where('artists.name ILIKE :q OR releases.title ILIKE :q', q: term)
+    end
+
+    scope
   end
 
   def load_counts
