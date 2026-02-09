@@ -42,9 +42,16 @@ class ReleasesController < ApplicationController
     @formats = @release.release_formats
     @labels = @release.release_labels.includes(:label)
     @identifiers = @release.release_identifiers
+    set_collection_button_states
   end
 
   private
+
+  def set_collection_button_states
+    @in_collection = Current.user.default_collection.collection_items.exists?(release: @release)
+    @in_wantlist = Current.user.wantlist_items.exists?(release: @release)
+    @in_trade_list = Current.user.trade_list_items.exists?(release: @release)
+  end
 
   def release_params
     params.require(:release).permit(

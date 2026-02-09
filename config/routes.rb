@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     end
   end
 
+  post 'collection_items/toggle', to: 'collection_items#toggle'
+  post 'wantlist_items/toggle', to: 'wantlist_items#toggle'
+  post 'trade_list_items/toggle', to: 'trade_list_items#toggle'
+  get 'my-collection', to: 'my_collection#show', as: :my_collection
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check

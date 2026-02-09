@@ -1,0 +1,155 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <%# Header with title, tabs, breadcrumb %>
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-6">
+      <h1 class="text-2xl font-bold text-crusta-400 tracking-wide uppercase">Crates</h1>
+      <nav class="flex items-center gap-1">
+        <%= link_to my_collection_path(tab: "collection"),
+                    class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'collection' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+          Collection
+        <% end %>
+        <%= link_to my_collection_path(tab: "wantlist"),
+                    class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'wantlist' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+          Wantlist <span class="text-woodsmoke-500"><%= @wantlist_count %></span>
+        <% end %>
+        <%= link_to my_collection_path(tab: "trade_list"),
+                    class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'trade_list' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+          Trade List <span class="text-woodsmoke-500"><%= @trade_list_count %></span>
+        <% end %>
+      </nav>
+    </div>
+    <div class="text-sm text-woodsmoke-500">
+      <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+      <span class="mx-1">/</span>
+      <span class="text-woodsmoke-300">Collection</span>
+    </div>
+  </div>
+
+  <%# Stats cards %>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Total Records</p>
+      <p class="text-3xl font-bold text-crusta-400"><%= @total_records %></p>
+      <p class="text-xs text-woodsmoke-500 mt-1"><%= @artist_count %> artists</p>
+    </div>
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Labels</p>
+      <p class="text-3xl font-bold text-crusta-400"><%= @label_count %></p>
+    </div>
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Formats</p>
+      <p class="text-3xl font-bold text-crusta-400">
+        <% entries = @format_summary.to_a %>
+        <% entries.each_with_index do |entry, i| %>
+          <span><%= entry[1] %></span>
+          <span class="text-lg font-semibold text-woodsmoke-300"><%= entry[0] %></span>
+          <% if i < entries.size - 1 %><span class="text-woodsmoke-600 mx-1">/</span><% end %>
+        <% end %>
+      </p>
+    </div>
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Colored Vinyl</p>
+      <p class="text-3xl font-bold text-crusta-400"><%= @colored_vinyl_count %></p>
+      <p class="text-xs text-woodsmoke-500 mt-1">of <%= @total_records %> total</p>
+    </div>
+  </div>
+
+  <%# Search + Sort bar %>
+  <div class="flex flex-wrap items-center gap-4 mb-4">
+    <%= form_with url: my_collection_path, method: :get, class: "flex-shrink-0" do |f| %>
+      <%= f.hidden_field :tab, value: @tab %>
+      <%= f.hidden_field :sort, value: @sort %>
+      <%= f.text_field :q, value: params[:q], placeholder: "Search collection...",
+            autocomplete: "off",
+            class: "rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none w-48" %>
+    <% end %>
+
+    <div class="flex items-center gap-2">
+      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Sort</span>
+      <% %w[artist title year label added].each do |sort_key| %>
+        <%= link_to sort_key.upcase,
+                    my_collection_path(tab: @tab, sort: sort_key, label: @label_filter, q: params[:q]),
+                    class: "px-3 py-1 text-xs font-semibold rounded-md border transition-colors #{@sort == sort_key ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Label filter chips %>
+  <% if @labels.any? %>
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Label</span>
+      <%= link_to "ALL",
+                  my_collection_path(tab: @tab, sort: @sort, q: params[:q]),
+                  class: "px-3 py-1 text-xs font-semibold rounded-md border transition-colors #{@label_filter.blank? ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
+      <% @labels.each do |label_name| %>
+        <%= link_to label_name.upcase,
+                    my_collection_path(tab: @tab, sort: @sort, label: label_name, q: params[:q]),
+                    class: "px-3 py-1 text-xs font-semibold rounded-md border transition-colors #{@label_filter == label_name ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%# Record count %>
+  <p class="text-sm text-woodsmoke-500 mb-4"><%= @pagy.count %> records</p>
+
+  <%# Table %>
+  <% if @items.any? %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-woodsmoke-800">
+            <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
+            <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
+            <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Label</th>
+            <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Year</th>
+            <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Format</th>
+            <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Color</th>
+            <% if @tab == "collection" %>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Condition</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @items.each do |item| %>
+            <%= render "my_collection/item_row", item: item %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%# Pagination %>
+    <% if @pagy.last > 1 %>
+      <div class="mt-6 flex items-center justify-center gap-3">
+        <span class="text-xs text-woodsmoke-500">Page <%= @pagy.page %> of <%= @pagy.last %></span>
+        <div class="flex gap-1">
+          <% if @pagy.previous %>
+            <%= link_to my_collection_path(tab: @tab, sort: @sort, label: @label_filter, q: params[:q], page: @pagy.previous),
+                        class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+              &larr; Prev
+            <% end %>
+          <% end %>
+          <% if @pagy.next %>
+            <%= link_to my_collection_path(tab: @tab, sort: @sort, label: @label_filter, q: params[:q], page: @pagy.next),
+                        class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+              Next &rarr;
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-center py-16">
+      <p class="text-woodsmoke-400 text-lg">
+        <% case @tab %>
+        <% when "collection" %>
+          No releases in your collection yet.
+        <% when "wantlist" %>
+          Your wantlist is empty.
+        <% when "trade_list" %>
+          No releases on your trade list.
+        <% end %>
+      </p>
+      <p class="text-woodsmoke-500 text-sm mt-2">Browse releases and add them from the release page.</p>
+    </div>
+  <% end %>
+</div>

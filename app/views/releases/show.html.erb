@@ -29,14 +29,7 @@
         <%= render "shared/cover_art", size: :xl, vinyl_svg: @formats.first&.vinyl_image_path %>
       <% end %>
 
-      <div class="flex gap-3">
-        <button class="flex-1 px-4 py-2.5 rounded-lg bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer">
-          Add to Wantlist
-        </button>
-        <button class="flex-1 px-4 py-2.5 rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 font-semibold text-sm transition-colors cursor-pointer">
-          Add to Collection
-        </button>
-      </div>
+      <%= render "releases/collection_buttons" %>
 
       <% if @release.notes.present? %>
         <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
