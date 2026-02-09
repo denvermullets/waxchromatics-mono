@@ -1,10 +1,6 @@
 class CollectionController < ApplicationController
   def show
-    @user = User.find_by!(username: params[:username])
-    @tab = params[:tab].presence || 'collection'
-    @sort = params[:sort].presence || 'artist'
-    @label_filter = params[:label].presence
-
+    set_filters
     load_counts
     scope = filtered_scope(sorted_scope(tab_scope))
     @pagy, @items = pagy(scope, items: 50)
@@ -14,6 +10,14 @@ class CollectionController < ApplicationController
   EAGER_LOADS = { release: [:release_formats, :artist, { release_labels: :label, release_group: :artists }] }.freeze
 
   private
+
+  def set_filters
+    @user = User.find_by!(username: params[:username])
+    @tab = params[:tab].presence || 'collection'
+    @sort = params[:sort].presence || 'artist'
+    @view = params[:view].presence || 'grid'
+    @label_filter = params[:label].presence
+  end
 
   def tab_scope
     case @tab
