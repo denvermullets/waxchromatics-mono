@@ -18,8 +18,8 @@
   <%# Edit state %>
   <div class="hidden space-y-3" data-section-toggle-target="edit">
     <div data-nested-form-target="container">
-      <% @release.release_artists.each do |ra| %>
-        <%= form.fields_for :release_artists, ra do |raf| %>
+      <% @release.release_contributors.each do |ra| %>
+        <%= form.fields_for :release_contributors, ra do |raf| %>
           <div class="flex gap-3 items-end mb-3" data-nested-form-row>
             <div class="flex-1">
               <label class="block text-xs text-woodsmoke-400">Artist</label>
@@ -40,7 +40,7 @@
       <div class="flex gap-3 items-end mb-3" data-nested-form-row>
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Artist</label>
-          <select name="release[release_artists_attributes][NEW_RECORD][artist_id]" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+          <select name="release[release_contributors_attributes][NEW_RECORD][artist_id]" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
             <option value="">Select artist...</option>
             <% @artists_list.each do |artist| %>
               <option value="<%= artist.id %>"><%= artist.name %></option>
@@ -49,9 +49,9 @@
         </div>
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Role</label>
-          <input type="text" name="release[release_artists_attributes][NEW_RECORD][role]" placeholder="e.g. Producer" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+          <input type="text" name="release[release_contributors_attributes][NEW_RECORD][role]" placeholder="e.g. Producer" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
         </div>
-        <input type="hidden" name="release[release_artists_attributes][NEW_RECORD][_destroy]" value="0">
+        <input type="hidden" name="release[release_contributors_attributes][NEW_RECORD][_destroy]" value="0">
         <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
       </div>
     </template>

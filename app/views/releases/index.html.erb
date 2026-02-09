@@ -7,7 +7,7 @@
   <% if @releases.any? %>
     <div class="mt-8 space-y-3">
       <% @releases.each do |release| %>
-        <%= link_to artist_release_group_release_path(release.artists.first, release.release_group, release), class: "block p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900 hover:border-woodsmoke-600 transition-colors" do %>
+        <%= link_to artist_release_group_release_path(release.artist, release.release_group, release), class: "block p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-900 hover:border-woodsmoke-600 transition-colors" do %>
           <p class="font-semibold text-woodsmoke-50"><%= release.title %></p>
           <p class="mt-1 text-sm text-woodsmoke-400">
             <%= [release.released, release.country].compact_blank.join(" · ") %>

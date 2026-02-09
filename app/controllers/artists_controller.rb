@@ -80,17 +80,9 @@ class ArtistsController < ApplicationController
 
   def associate_release_groups
     release_group_ids = params[:artist][:release_group_ids]&.reject(&:blank?) || []
-    ReleaseArtist.where(artist: @artist).destroy_all
-    release_group_ids.each { |rg_id| link_release_group(rg_id) }
-  end
-
-  def link_release_group(rg_id)
-    release = ReleaseGroup.find_by(id: rg_id)&.releases&.first
-    return unless release
-
-    ReleaseArtist.find_or_create_by(artist: @artist, release: release) do |ra|
-      ra.position = 0
-    end
+    @artist.releases.update_all(artist_id: nil)
+    releases = Release.where(release_group_id: release_group_ids)
+    releases.update_all(artist_id: @artist.id)
   end
 
   def load_artist

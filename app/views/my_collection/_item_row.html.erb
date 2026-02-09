@@ -1,0 +1,40 @@
+<% release = item.release %>
+<% artist = release.artist %>
+<% label = release.release_labels.first&.label %>
+<% fmt = release.release_formats.first %>
+<tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900 transition-colors">
+  <td class="py-3 px-2">
+    <% if artist %>
+      <%= link_to artist.name, artist_path(artist), class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+    <% end %>
+  </td>
+  <td class="py-3 px-2">
+    <% if artist && release.release_group %>
+      <%= link_to release.title,
+                  artist_release_group_release_path(artist, release.release_group, release),
+                  class: "text-woodsmoke-100 hover:text-woodsmoke-50 font-medium transition-colors" %>
+    <% else %>
+      <span class="text-woodsmoke-100 font-medium"><%= release.title %></span>
+    <% end %>
+  </td>
+  <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= label&.name %></td>
+  <td class="py-3 px-2 text-crusta-400 hidden md:table-cell"><%= release.released %></td>
+  <td class="py-3 px-2 text-woodsmoke-300 hidden lg:table-cell"><%= fmt&.name %><%= " (#{fmt.quantity})" if fmt&.quantity && fmt.quantity > 1 %></td>
+  <td class="py-3 px-2 text-crusta-400 hidden lg:table-cell"><%= fmt&.color %></td>
+  <% if item.respond_to?(:condition) %>
+    <td class="py-3 px-2 hidden lg:table-cell">
+      <% if item.condition.present? %>
+        <% condition_color = case item.condition
+             when "M" then "text-bright-turquoise-400"
+             when "NM" then "text-bright-turquoise-400"
+             when "VG+" then "text-bright-turquoise-400"
+             when "VG" then "text-bright-turquoise-400"
+             when "G+", "G" then "text-crusta-400"
+             when "F", "P" then "text-red-400"
+             else "text-woodsmoke-400"
+           end %>
+        <span class="font-bold <%= condition_color %>"><%= item.condition %></span>
+      <% end %>
+    </td>
+  <% end %>
+</tr>

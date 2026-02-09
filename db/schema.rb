@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,7 +36,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
     t.decimal "sale_price", precision: 10, scale: 2
     t.string "status"
     t.datetime "updated_at", null: false
-    t.index ["collection_id", "release_id"], name: "index_collection_items_on_collection_id_and_release_id"
+    t.index ["collection_id", "release_id"], name: "index_collection_items_on_collection_id_and_release_id", unique: true
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["release_id"], name: "index_collection_items_on_release_id"
   end
@@ -71,16 +71,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
     t.index ["discogs_id", "resource_type"], name: "index_pending_ingests_on_discogs_id_and_resource_type", unique: true
   end
 
-  create_table "release_artists", force: :cascade do |t|
+  create_table "release_contributors", force: :cascade do |t|
     t.bigint "artist_id", null: false
     t.datetime "created_at", null: false
     t.integer "position"
     t.bigint "release_id", null: false
     t.string "role"
     t.datetime "updated_at", null: false
-    t.index ["artist_id"], name: "index_release_artists_on_artist_id"
-    t.index ["release_id", "artist_id"], name: "index_release_artists_on_release_id_and_artist_id"
-    t.index ["release_id"], name: "index_release_artists_on_release_id"
+    t.index ["artist_id"], name: "index_release_contributors_on_artist_id"
+    t.index ["release_id", "artist_id"], name: "index_release_contributors_on_release_id_and_artist_id"
+    t.index ["release_id"], name: "index_release_contributors_on_release_id"
   end
 
   create_table "release_formats", force: :cascade do |t|
@@ -134,6 +134,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
   end
 
   create_table "releases", force: :cascade do |t|
+    t.bigint "artist_id"
     t.string "country"
     t.string "cover_art_url"
     t.datetime "created_at", null: false
@@ -145,6 +146,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
     t.string "status"
     t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.index ["artist_id"], name: "index_releases_on_artist_id"
     t.index ["discogs_id"], name: "index_releases_on_discogs_id", unique: true
     t.index ["musicbrainz_id"], name: "index_releases_on_musicbrainz_id", unique: true
     t.index ["release_group_id"], name: "index_releases_on_release_group_id"
@@ -171,6 +173,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
     t.index ["release_id"], name: "index_tracks_on_release_id"
   end
 
+  create_table "trade_list_items", force: :cascade do |t|
+    t.bigint "collection_item_id", null: false
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.bigint "release_id", null: false
+    t.string "status", default: "available", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["collection_item_id"], name: "index_trade_list_items_on_collection_item_id"
+    t.index ["release_id"], name: "index_trade_list_items_on_release_id"
+    t.index ["user_id", "release_id"], name: "index_trade_list_items_on_user_id_and_release_id", unique: true
+    t.index ["user_id"], name: "index_trade_list_items_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
@@ -181,17 +197,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_024116) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "wantlist_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.bigint "release_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["release_id"], name: "index_wantlist_items_on_release_id"
+    t.index ["user_id", "release_id"], name: "index_wantlist_items_on_user_id_and_release_id", unique: true
+    t.index ["user_id"], name: "index_wantlist_items_on_user_id"
+  end
+
   add_foreign_key "collection_items", "collections"
   add_foreign_key "collection_items", "releases"
   add_foreign_key "collections", "users"
   add_foreign_key "labels", "labels", column: "parent_label_id"
-  add_foreign_key "release_artists", "artists"
-  add_foreign_key "release_artists", "releases"
+  add_foreign_key "release_contributors", "artists"
+  add_foreign_key "release_contributors", "releases"
   add_foreign_key "release_formats", "releases"
   add_foreign_key "release_identifiers", "releases"
   add_foreign_key "release_labels", "labels"
   add_foreign_key "release_labels", "releases"
+  add_foreign_key "releases", "artists"
   add_foreign_key "releases", "release_groups"
   add_foreign_key "sessions", "users"
   add_foreign_key "tracks", "releases"
+  add_foreign_key "trade_list_items", "collection_items"
+  add_foreign_key "trade_list_items", "releases"
+  add_foreign_key "trade_list_items", "users"
+  add_foreign_key "wantlist_items", "releases"
+  add_foreign_key "wantlist_items", "users"
 end

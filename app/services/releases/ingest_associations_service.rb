@@ -8,7 +8,8 @@ module Releases
 
     def call
       create_tracks
-      create_release_artists
+      set_primary_artist
+      create_release_contributors
       create_release_labels
       create_release_formats
       create_release_identifiers
@@ -36,9 +37,26 @@ module Releases
       end
     end
 
-    def create_release_artists
+    def set_primary_artist
+      artists_data = data['release_artists'] || []
+      primary = artists_data.find { |a| a['extra'].to_i.zero? }
+      return unless primary
+
+      artist_discogs_id = primary['artist_id']
+      return if artist_discogs_id.blank?
+
+      artist = find_or_upsert(Artist, artist_discogs_id) do |a|
+        a.name = primary['artist_name'] || a.name || 'Unknown'
+      end
+
+      release.update!(artist: artist)
+    end
+
+    def create_release_contributors
       artists_data = data['release_artists'] || []
       artists_data.each do |artist_data|
+        next if artist_data['extra'].to_i.zero?
+
         artist_discogs_id = artist_data['artist_id']
         next if artist_discogs_id.blank?
 
@@ -46,8 +64,8 @@ module Releases
           a.name = artist_data['artist_name'] || a.name || 'Unknown'
         end
 
-        ra = release.release_artists.find_or_initialize_by(artist: artist)
-        ra.update!(
+        rc = release.release_contributors.find_or_initialize_by(artist: artist)
+        rc.update!(
           position: artist_data['position'],
           role: artist_data['role'].presence
         )

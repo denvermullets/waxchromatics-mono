@@ -21,7 +21,7 @@
          data-artist-search-target="results"></div>
   </div>
 
-  <% if @release.errors[:release_artists].any? || (@release.artists.empty? && @release.errors.any?) %>
+  <% if @release.errors[:artist].any? || (@release.artist.blank? && @release.errors.any?) %>
     <p class="mt-1 text-xs text-crusta-400">An artist is required.</p>
   <% end %>
 </div>

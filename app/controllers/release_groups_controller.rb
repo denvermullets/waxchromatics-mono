@@ -10,7 +10,8 @@ class ReleaseGroupsController < ApplicationController
   def show
     @release_group = ReleaseGroup.find(params[:id])
     @releases = @release_group.releases
-                              .includes(:release_formats, :tracks, release_labels: :label, release_artists: :artist)
+                              .includes(:release_formats, :tracks, :artist,
+                                        release_labels: :label, release_contributors: :artist)
                               .order(:released)
     @artist = Artist.find(params[:artist_id])
     @artists = [@artist]
