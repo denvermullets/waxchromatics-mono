@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_113931) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,7 +26,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
 
   create_table "collection_items", force: :cascade do |t|
     t.bigint "collection_id", null: false
-    t.string "condition"
+    t.string "condition", default: "NM", null: false
     t.datetime "created_at", null: false
     t.text "notes"
     t.date "purchase_date"
@@ -36,7 +36,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
     t.decimal "sale_price", precision: 10, scale: 2
     t.string "status"
     t.datetime "updated_at", null: false
-    t.index ["collection_id", "release_id"], name: "index_collection_items_on_collection_id_and_release_id", unique: true
+    t.index ["collection_id", "release_id"], name: "index_collection_items_on_collection_id_and_release_id"
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["release_id"], name: "index_collection_items_on_release_id"
   end
@@ -175,6 +175,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
 
   create_table "trade_list_items", force: :cascade do |t|
     t.bigint "collection_item_id", null: false
+    t.string "condition", default: "NM", null: false
     t.datetime "created_at", null: false
     t.text "notes"
     t.bigint "release_id", null: false
@@ -183,7 +184,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
     t.bigint "user_id", null: false
     t.index ["collection_item_id"], name: "index_trade_list_items_on_collection_item_id"
     t.index ["release_id"], name: "index_trade_list_items_on_release_id"
-    t.index ["user_id", "release_id"], name: "index_trade_list_items_on_user_id_and_release_id", unique: true
+    t.index ["user_id", "release_id"], name: "index_trade_list_items_on_user_id_and_release_id"
     t.index ["user_id"], name: "index_trade_list_items_on_user_id"
   end
 
@@ -198,13 +199,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_012954) do
   end
 
   create_table "wantlist_items", force: :cascade do |t|
+    t.string "condition", default: "NM", null: false
     t.datetime "created_at", null: false
     t.text "notes"
     t.bigint "release_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["release_id"], name: "index_wantlist_items_on_release_id"
-    t.index ["user_id", "release_id"], name: "index_wantlist_items_on_user_id_and_release_id", unique: true
+    t.index ["user_id", "release_id"], name: "index_wantlist_items_on_user_id_and_release_id"
     t.index ["user_id"], name: "index_wantlist_items_on_user_id"
   end
 

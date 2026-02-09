@@ -21,7 +21,7 @@
     <div class="text-sm text-woodsmoke-500">
       <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
       <span class="mx-1">/</span>
-      <span class="text-woodsmoke-300">Collection</span>
+      <span class="text-woodsmoke-300"><%= { "collection" => "Collection", "wantlist" => "Wantlist", "trade_list" => "Trade List" }[@tab] %></span>
     </div>
   </div>
 

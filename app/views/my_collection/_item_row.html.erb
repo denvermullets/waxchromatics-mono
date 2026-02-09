@@ -12,15 +12,15 @@
     <% if artist && release.release_group %>
       <%= link_to release.title,
                   artist_release_group_release_path(artist, release.release_group, release),
-                  class: "text-woodsmoke-100 hover:text-woodsmoke-50 font-medium transition-colors" %>
+                  class: "text-crusta-400 hover:text-crusta-300 font-medium transition-colors" %>
     <% else %>
       <span class="text-woodsmoke-100 font-medium"><%= release.title %></span>
     <% end %>
   </td>
   <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= label&.name %></td>
-  <td class="py-3 px-2 text-crusta-400 hidden md:table-cell"><%= release.released %></td>
+  <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= release.released %></td>
   <td class="py-3 px-2 text-woodsmoke-300 hidden lg:table-cell"><%= fmt&.name %><%= " (#{fmt.quantity})" if fmt&.quantity && fmt.quantity > 1 %></td>
-  <td class="py-3 px-2 text-crusta-400 hidden lg:table-cell"><%= fmt&.color %></td>
+  <td class="py-3 px-2 text-woodsmoke-300 hidden lg:table-cell"><%= fmt&.color %></td>
   <% if item.respond_to?(:condition) %>
     <td class="py-3 px-2 hidden lg:table-cell">
       <% if item.condition.present? %>

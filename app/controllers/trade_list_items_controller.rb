@@ -9,13 +9,7 @@ class TradeListItemsController < ApplicationController
       return
     end
 
-    item = Current.user.trade_list_items.find_by(release: @release)
-
-    if item
-      item.destroy!
-    else
-      Current.user.trade_list_items.create!(release: @release, collection_item: collection_item)
-    end
+    Current.user.trade_list_items.create!(release: @release, collection_item: collection_item)
 
     set_button_states
     respond_to(&:turbo_stream)
@@ -24,8 +18,8 @@ class TradeListItemsController < ApplicationController
   private
 
   def set_button_states
-    @in_collection = Current.user.default_collection.collection_items.exists?(release: @release)
-    @in_wantlist = Current.user.wantlist_items.exists?(release: @release)
-    @in_trade_list = Current.user.trade_list_items.exists?(release: @release)
+    @collection_count = Current.user.default_collection.collection_items.where(release: @release).count
+    @wantlist_count = Current.user.wantlist_items.where(release: @release).count
+    @trade_list_count = Current.user.trade_list_items.where(release: @release).count
   end
 end
