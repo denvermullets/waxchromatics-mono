@@ -15,7 +15,7 @@ class CollectionController < ApplicationController
     @user = User.find_by!(username: params[:username])
     @tab = params[:tab].presence || 'collection'
     @sort = params[:sort].presence || 'artist'
-    @view = params[:view].presence || 'grid'
+    @view = params[:view].presence || @user.default_collection_view
     @label_filter = params[:label].presence
   end
 

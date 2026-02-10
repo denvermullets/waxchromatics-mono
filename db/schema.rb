@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_09_113931) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_125058) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -94,6 +94,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_113931) do
     t.index ["release_id"], name: "index_release_formats_on_release_id"
   end
 
+  create_table "release_genres", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "genre", null: false
+    t.bigint "release_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["release_id", "genre"], name: "index_release_genres_on_release_id_and_genre", unique: true
+    t.index ["release_id"], name: "index_release_genres_on_release_id"
+  end
+
   create_table "release_groups", force: :cascade do |t|
     t.string "cover_art_url"
     t.datetime "created_at", null: false
@@ -131,6 +140,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_113931) do
     t.index ["label_id"], name: "index_release_labels_on_label_id"
     t.index ["release_id", "label_id"], name: "index_release_labels_on_release_id_and_label_id"
     t.index ["release_id"], name: "index_release_labels_on_release_id"
+  end
+
+  create_table "release_styles", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "release_id", null: false
+    t.string "style", null: false
+    t.datetime "updated_at", null: false
+    t.index ["release_id", "style"], name: "index_release_styles_on_release_id_and_style", unique: true
+    t.index ["release_id"], name: "index_release_styles_on_release_id"
   end
 
   create_table "releases", force: :cascade do |t|
@@ -189,8 +207,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_113931) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "avatar_url"
+    t.text "bio"
     t.datetime "created_at", null: false
+    t.string "default_collection_view", default: "grid", null: false
     t.string "email_address", null: false
+    t.string "location"
     t.string "password_digest", null: false
     t.datetime "updated_at", null: false
     t.string "username", null: false
@@ -217,9 +239,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_113931) do
   add_foreign_key "release_contributors", "artists"
   add_foreign_key "release_contributors", "releases"
   add_foreign_key "release_formats", "releases"
+  add_foreign_key "release_genres", "releases"
   add_foreign_key "release_identifiers", "releases"
   add_foreign_key "release_labels", "labels"
   add_foreign_key "release_labels", "releases"
+  add_foreign_key "release_styles", "releases"
   add_foreign_key "releases", "artists"
   add_foreign_key "releases", "release_groups"
   add_foreign_key "sessions", "users"
