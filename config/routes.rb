@@ -18,8 +18,6 @@ Rails.application.routes.draw do
   post 'collection_items/toggle', to: 'collection_items#toggle'
   post 'wantlist_items/toggle', to: 'wantlist_items#toggle'
   post 'trade_list_items/toggle', to: 'trade_list_items#toggle'
-  get ':username/crates', to: 'collection#show', as: :crates
-
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check
@@ -30,4 +28,12 @@ Rails.application.routes.draw do
 
   # Authenticated users land here; unauthenticated go to login
   root 'dashboard#show'
+
+  # Username-scoped routes — must be last to avoid conflicts
+  constraints(username: /[a-zA-Z0-9_-]+/) do
+    get ':username', to: 'profiles#show', as: :profile
+    get ':username/settings', to: 'settings#show', as: :user_settings
+    patch ':username/settings', to: 'settings#update'
+    get ':username/crates', to: 'collection#show', as: :crates
+  end
 end

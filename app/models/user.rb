@@ -7,7 +7,15 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  validates :username, presence: true, uniqueness: true
+  RESERVED_USERNAMES = %w[session registration passwords releases artists search up jobs admin settings].freeze
+
+  validates :username, presence: true, uniqueness: true,
+                       format: {
+                         with: /\A[a-zA-Z0-9_-]+\z/,
+                         message: 'only allows letters, numbers, underscores, and hyphens'
+                       },
+                       exclusion: { in: RESERVED_USERNAMES, message: 'is reserved' }
+  validates :default_collection_view, inclusion: { in: %w[grid list] }
 
   def default_collection
     collections.first_or_create!(name: 'My Collection')

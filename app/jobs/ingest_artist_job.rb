@@ -34,11 +34,13 @@ class IngestArtistJob < ApplicationJob
   end
 
   def artist_attributes(artist_data, artist)
-    {
-      name: artist_data['name'] || artist.name || 'Unknown',
-      real_name: artist_data['realname'] || artist_data['real_name'],
-      profile: artist_data['profile']
-    }
+    attrs = { name: artist_data['name'] || artist.name || 'Unknown' }
+    if artist_data.key?('realname') || artist_data.key?('real_name')
+      attrs[:real_name] =
+        artist_data['realname'] || artist_data['real_name']
+    end
+    attrs[:profile] = artist_data['profile'] if artist_data.key?('profile')
+    attrs
   end
 
   def broadcast_completion(discogs_id, artist)

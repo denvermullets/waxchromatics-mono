@@ -13,6 +13,8 @@ module Releases
       create_release_labels
       create_release_formats
       create_release_identifiers
+      create_release_genres
+      create_release_styles
       update_release_group_type
     end
 
@@ -115,6 +117,32 @@ module Releases
           value: identifier_data['value'],
           description: identifier_data['description']
         )
+      rescue ActiveRecord::RecordNotUnique
+        retry
+      end
+    end
+
+    def create_release_genres
+      genres_data = data['release_genres'] || []
+      genres_data.each do |g|
+        genre = g['genre']
+        next if genre.blank?
+
+        release.release_genres.find_or_create_by!(genre: genre)
+      rescue ActiveRecord::RecordNotUnique
+        next
+      end
+    end
+
+    def create_release_styles
+      styles_data = data['release_styles'] || []
+      styles_data.each do |s|
+        style = s['style']
+        next if style.blank?
+
+        release.release_styles.find_or_create_by!(style: style)
+      rescue ActiveRecord::RecordNotUnique
+        next
       end
     end
 

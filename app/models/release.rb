@@ -8,6 +8,8 @@ class Release < ApplicationRecord
   has_many :labels, through: :release_labels
   has_many :release_formats, dependent: :destroy
   has_many :release_identifiers, dependent: :destroy
+  has_many :release_genres, dependent: :destroy
+  has_many :release_styles, dependent: :destroy
   has_many :collection_items, dependent: :destroy
   has_many :wantlist_items, dependent: :destroy
   has_many :trade_list_items, dependent: :destroy

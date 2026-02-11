@@ -52,7 +52,7 @@
       </div>
     </div>
   <% else %>
-    <%= button_to ingest_artist_path, params: { artist: { id: discogs_id, name: artist_name, thumb: artist_thumb } }, class: "group block w-full text-left p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors cursor-pointer" do %>
+    <%= button_to ingest_artist_path, params: { artist: { id: discogs_id, name: artist_name, thumb: artist_thumb, profile: artist_data['profile'], real_name: artist_data['real_name'] } }, class: "group block w-full text-left p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors cursor-pointer" do %>
       <div class="flex items-start gap-4">
         <%= render "shared/cover_art", thumb: artist_thumb, alt: artist_name, size: :md %>
 

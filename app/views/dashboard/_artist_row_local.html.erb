@@ -12,7 +12,7 @@
           <p class="text-sm text-woodsmoke-400"><%= artist.real_name %></p>
         <% end %>
         <% if artist.profile.present? %>
-          <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist.profile, length: 80) %></p>
+          <p class="mt-1 text-sm text-woodsmoke-300 line-clamp-2"><%= truncate(artist.profile, length: 200) %></p>
         <% end %>
       </div>
     </div>

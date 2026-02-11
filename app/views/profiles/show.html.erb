@@ -1,0 +1,274 @@
+<div class="flex flex-col lg:flex-row gap-6">
+  <%# ===== LEFT SIDEBAR ===== %>
+  <aside class="lg:w-72 shrink-0 space-y-5">
+
+    <%# Profile Card %>
+    <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+      <div class="flex flex-col items-center text-center">
+        <% if @user.avatar_url.present? %>
+          <%= image_tag @user.avatar_url, alt: @user.username, class: "w-24 h-24 rounded-full object-cover border-2 border-woodsmoke-700" %>
+        <% else %>
+          <div class="w-24 h-24 rounded-full bg-woodsmoke-800 border-2 border-woodsmoke-700 flex items-center justify-center">
+            <span class="text-3xl font-bold text-crusta-400"><%= @user.username[0].upcase %></span>
+          </div>
+        <% end %>
+
+        <h1 class="mt-4 text-lg font-bold text-woodsmoke-50"><%= @user.username %></h1>
+        <p class="text-sm text-crusta-400">@<%= @user.username %></p>
+
+        <div class="flex flex-wrap justify-center gap-2 mt-3">
+          <% if @user.location.present? %>
+            <span class="px-2.5 py-0.5 text-xs text-woodsmoke-300 border border-woodsmoke-700 rounded"><%= @user.location %></span>
+          <% end %>
+          <span class="px-2.5 py-0.5 text-xs text-woodsmoke-300 border border-woodsmoke-700 rounded">Since <%= @user.created_at.strftime('%B %Y') %></span>
+        </div>
+      </div>
+
+      <% if @user.bio.present? %>
+        <p class="mt-5 text-sm text-woodsmoke-300 leading-relaxed"><%= @user.bio %></p>
+      <% end %>
+
+      <%# Links %>
+      <div class="mt-5 space-y-2">
+        <%= link_to "View Crates", crates_path(username: @user.username),
+            class: "block w-full text-center rounded-lg px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
+        <% if @own_profile %>
+          <%= link_to "Settings", user_settings_path(username: @user.username),
+              class: "block w-full text-center rounded-lg px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Profile Stats Card %>
+    <% if @total_records.to_i > 0 %>
+      <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+        <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Profile Stats</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="text-center">
+            <p class="text-2xl font-bold text-crusta-400"><%= @total_records %></p>
+            <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider mt-0.5">Collection</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl font-bold text-crusta-400"><%= @wantlist_count %></p>
+            <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider mt-0.5">Wantlist</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl font-bold text-crusta-400"><%= @artist_count %></p>
+            <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider mt-0.5">Artists</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl font-bold text-crusta-400"><%= @trade_list_count %></p>
+            <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider mt-0.5">For Trade</p>
+          </div>
+          <div class="text-center col-span-2">
+            <p class="text-2xl font-bold text-crusta-400"><%= @label_count %></p>
+            <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider mt-0.5">Labels</p>
+          </div>
+        </div>
+      </div>
+
+      <%# Condition Grades Card %>
+      <% if @condition_chart_data.present? %>
+        <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+          <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Condition Grades</h2>
+          <% condition_total = @condition_chart_data.values.sum.to_f %>
+          <% condition_colors = { 'M' => 'bg-bright-turquoise-300', 'NM' => 'bg-crusta-400', 'VG+' => 'bg-woodsmoke-400', 'VG' => 'bg-prelude-400', 'G+' => 'bg-azalea-400', 'G' => 'bg-azalea-600', 'F' => 'bg-azalea-800', 'P' => 'bg-woodsmoke-600' } %>
+
+          <%# Stacked horizontal bar %>
+          <div class="flex h-6 rounded overflow-hidden">
+            <% @condition_chart_data.each do |grade, count| %>
+              <div class="<%= condition_colors[grade] || 'bg-woodsmoke-500' %>" style="width: <%= (count / condition_total * 100).round(1) %>%"></div>
+            <% end %>
+          </div>
+
+          <%# Legend %>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 mt-3">
+            <% @condition_chart_data.each do |grade, count| %>
+              <span class="flex items-center gap-1 text-[10px] text-woodsmoke-300">
+                <span class="inline-block w-2.5 h-2.5 rounded-sm <%= condition_colors[grade] || 'bg-woodsmoke-500' %>"></span>
+                <%= grade %> <%= count %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </aside>
+
+  <%# ===== RIGHT CONTENT ===== %>
+  <section class="flex-1 min-w-0">
+    <% if @total_records.to_i > 0 %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <%# By Genre %>
+        <% if @genre_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Genre</h3>
+            <% genre_max = @genre_chart_data.values.max.to_f %>
+            <% genre_total = @genre_chart_data.values.sum.to_f %>
+            <div class="space-y-2.5">
+              <% @genre_chart_data.each do |name, count| %>
+                <div class="flex items-center gap-3">
+                  <span class="w-28 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
+                  <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
+                    <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / genre_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="w-12 shrink-0 text-xs text-woodsmoke-400 text-right"><%= (count / genre_total * 100).round(1) %>%</span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# By Decade %>
+        <% if @decade_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Decade</h3>
+            <% decade_max = @decade_chart_data.values.max.to_f %>
+            <div class="flex items-end justify-around gap-3">
+              <% @decade_chart_data.each do |label, count| %>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <span class="text-xs font-semibold text-crusta-400"><%= count %></span>
+                  <div class="w-full h-40 flex items-end">
+                    <div class="w-full bg-crusta-400 rounded-t" style="height: <%= (count / decade_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="text-[10px] text-woodsmoke-400 uppercase"><%= label %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# By Format %>
+        <% if @format_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Format</h3>
+            <% sorted_formats = @format_chart_data.sort_by { |_, c| -c } %>
+            <% format_total = @format_chart_data.values.sum.to_f %>
+            <% format_colors = %w[bg-crusta-400 bg-blue-ribbon-500 bg-prelude-400 bg-bright-turquoise-400 bg-azalea-400 bg-crusta-300 bg-woodsmoke-400] %>
+
+            <%# Stacked bar %>
+            <div class="flex h-5 rounded overflow-hidden mb-4">
+              <% sorted_formats.each_with_index do |(name, count), i| %>
+                <div class="<%= format_colors[i % format_colors.size] %>" style="width: <%= (count / format_total * 100).round(1) %>%"></div>
+              <% end %>
+            </div>
+
+            <%# List %>
+            <div class="space-y-2">
+              <% sorted_formats.each_with_index do |(name, count), i| %>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="inline-block w-2.5 h-2.5 rounded-sm shrink-0 <%= format_colors[i % format_colors.size] %>"></span>
+                  <span class="text-woodsmoke-300 flex-1"><%= name %></span>
+                  <span class="font-semibold text-crusta-400"><%= count %></span>
+                  <span class="text-woodsmoke-500 w-12 text-right"><%= (count / format_total * 100).round(1) %>%</span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Top Labels %>
+        <% if @top_labels.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Top Labels</h3>
+            <% label_max = @top_labels.values.max.to_f %>
+            <div class="space-y-2.5">
+              <% @top_labels.each do |name, count| %>
+                <div class="flex items-center gap-3">
+                  <span class="w-32 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
+                  <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
+                    <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / label_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right"><%= count %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Top Artists %>
+        <% if @top_artists.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Top Artists</h3>
+            <% artist_max = @top_artists.values.max.to_f %>
+            <div class="space-y-2.5">
+              <% @top_artists.each do |name, count| %>
+                <div class="flex items-center gap-3">
+                  <span class="w-32 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
+                  <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
+                    <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / artist_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right"><%= count %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Record Size %>
+        <% if @size_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Record Size</h3>
+            <% size_max = @size_chart_data.values.max.to_f %>
+            <div class="flex items-end justify-around gap-3">
+              <% @size_chart_data.each do |label, count| %>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <span class="text-xs font-semibold text-crusta-400"><%= count %></span>
+                  <div class="w-full h-40 flex items-end">
+                    <div class="w-full bg-crusta-400 rounded-t" style="height: <%= (count / size_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="text-[10px] text-woodsmoke-400 uppercase"><%= label %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Colored Vinyl %>
+        <% if @color_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Colored Vinyl</h3>
+            <% color_max = @color_chart_data.values.max.to_f %>
+            <div class="space-y-2.5">
+              <% @color_chart_data.each do |name, count| %>
+                <div class="flex items-center gap-3">
+                  <span class="w-28 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
+                  <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
+                    <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / color_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right"><%= count %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Styles %>
+        <% if @style_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Style</h3>
+            <% style_max = @style_chart_data.values.max.to_f %>
+            <% style_total = @style_chart_data.values.sum.to_f %>
+            <div class="space-y-2.5">
+              <% @style_chart_data.each do |name, count| %>
+                <div class="flex items-center gap-3">
+                  <span class="w-28 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
+                  <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
+                    <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / style_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="w-12 shrink-0 text-xs text-woodsmoke-400 text-right"><%= (count / style_total * 100).round(1) %>%</span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-16">
+        <p class="text-woodsmoke-400 text-lg">No collection data yet.</p>
+        <p class="text-woodsmoke-500 text-sm mt-2">Start adding records to see analytics here.</p>
+      </div>
+    <% end %>
+  </section>
+</div>
