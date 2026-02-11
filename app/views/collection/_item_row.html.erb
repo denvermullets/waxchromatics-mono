@@ -18,7 +18,7 @@
     <% end %>
   </td>
   <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= label&.name %></td>
-  <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= release.released %></td>
+  <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= release.released.to_s[0, 4] %></td>
   <td class="py-3 px-2 text-woodsmoke-300 hidden lg:table-cell"><%= fmt&.name %><%= " (#{fmt.quantity})" if fmt&.quantity && fmt.quantity > 1 %></td>
   <td class="py-3 px-2 text-woodsmoke-300 hidden lg:table-cell"><%= fmt&.color %></td>
   <% if item.respond_to?(:condition) %>

@@ -120,23 +120,43 @@
           </div>
         <% end %>
 
+        <%# By Decade %>
+        <% if @decade_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Decade</h3>
+            <% decade_max = @decade_chart_data.values.max.to_f %>
+            <div class="flex items-end justify-around gap-3">
+              <% @decade_chart_data.each do |label, count| %>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <span class="text-xs font-semibold text-crusta-400"><%= count %></span>
+                  <div class="w-full h-40 flex items-end">
+                    <div class="w-full bg-crusta-400 rounded-t" style="height: <%= (count / decade_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="text-[10px] text-woodsmoke-400 uppercase"><%= label %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
         <%# By Format %>
         <% if @format_chart_data.present? %>
           <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Format</h3>
+            <% sorted_formats = @format_chart_data.sort_by { |_, c| -c } %>
             <% format_total = @format_chart_data.values.sum.to_f %>
             <% format_colors = %w[bg-crusta-400 bg-blue-ribbon-500 bg-prelude-400 bg-bright-turquoise-400 bg-azalea-400 bg-crusta-300 bg-woodsmoke-400] %>
 
             <%# Stacked bar %>
             <div class="flex h-5 rounded overflow-hidden mb-4">
-              <% @format_chart_data.each_with_index do |(name, count), i| %>
+              <% sorted_formats.each_with_index do |(name, count), i| %>
                 <div class="<%= format_colors[i % format_colors.size] %>" style="width: <%= (count / format_total * 100).round(1) %>%"></div>
               <% end %>
             </div>
 
             <%# List %>
             <div class="space-y-2">
-              <% @format_chart_data.sort_by { |_, c| -c }.each_with_index do |(name, count), i| %>
+              <% sorted_formats.each_with_index do |(name, count), i| %>
                 <div class="flex items-center gap-2 text-xs">
                   <span class="inline-block w-2.5 h-2.5 rounded-sm shrink-0 <%= format_colors[i % format_colors.size] %>"></span>
                   <span class="text-woodsmoke-300 flex-1"><%= name %></span>
@@ -178,6 +198,44 @@
                   <span class="w-32 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
                   <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
                     <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / artist_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right"><%= count %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Record Size %>
+        <% if @size_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Record Size</h3>
+            <% size_max = @size_chart_data.values.max.to_f %>
+            <div class="flex items-end justify-around gap-3">
+              <% @size_chart_data.each do |label, count| %>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <span class="text-xs font-semibold text-crusta-400"><%= count %></span>
+                  <div class="w-full h-40 flex items-end">
+                    <div class="w-full bg-crusta-400 rounded-t" style="height: <%= (count / size_max * 100).round(1) %>%"></div>
+                  </div>
+                  <span class="text-[10px] text-woodsmoke-400 uppercase"><%= label %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Colored Vinyl %>
+        <% if @color_chart_data.present? %>
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Colored Vinyl</h3>
+            <% color_max = @color_chart_data.values.max.to_f %>
+            <div class="space-y-2.5">
+              <% @color_chart_data.each do |name, count| %>
+                <div class="flex items-center gap-3">
+                  <span class="w-28 shrink-0 text-xs text-woodsmoke-300 text-right truncate"><%= name %></span>
+                  <div class="flex-1 h-4 bg-woodsmoke-800 rounded overflow-hidden">
+                    <div class="h-full bg-crusta-400 rounded" style="width: <%= (count / color_max * 100).round(1) %>%"></div>
                   </div>
                   <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right"><%= count %></span>
                 </div>

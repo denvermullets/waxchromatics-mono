@@ -117,6 +117,8 @@ module Releases
           value: identifier_data['value'],
           description: identifier_data['description']
         )
+      rescue ActiveRecord::RecordNotUnique
+        retry
       end
     end
 

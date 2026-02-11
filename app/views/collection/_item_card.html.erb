@@ -45,7 +45,7 @@
         <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= fmt.name %></span>
       <% end %>
       <% if release.released.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= release.released %></span>
+        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= release.released.to_s[0, 4] %></span>
       <% end %>
       <% if fmt&.color.present? %>
         <span class="px-1.5 py-0.5 text-xs rounded border border-crusta-400 text-crusta-400"><%= fmt.color %></span>

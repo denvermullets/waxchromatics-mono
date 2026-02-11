@@ -27,6 +27,9 @@ class ProfilesController < ApplicationController
     load_condition_chart(items)
     load_top_labels(items)
     load_top_artists(items)
+    load_decade_chart(items)
+    load_size_chart(items)
+    load_color_chart(items)
     load_genre_chart(items)
     load_style_chart(items)
   end
@@ -55,6 +58,38 @@ class ProfilesController < ApplicationController
                         .order('count_all DESC')
                         .limit(10)
                         .count
+  end
+
+  def load_decade_chart(items)
+    raw = items.joins(release: :release_group)
+               .where.not(release_groups: { year: nil })
+               .group(Arel.sql('(release_groups.year / 10) * 10'))
+               .order(Arel.sql('(release_groups.year / 10) * 10'))
+               .count
+    @decade_chart_data = raw.transform_keys { |d| "#{d}s" }
+  end
+
+  def load_size_chart(items)
+    vinyl = items.joins(release: :release_formats)
+                 .where(release_formats: { name: 'Vinyl' })
+    seven = vinyl.where("release_formats.descriptions ILIKE '%7\"%'").count
+    ten = vinyl.where("release_formats.descriptions ILIKE '%10\"%'").count
+    twelve = vinyl.count - seven - ten
+
+    @size_chart_data = {}
+    @size_chart_data['12"'] = twelve if twelve.positive?
+    @size_chart_data['7"'] = seven if seven.positive?
+    @size_chart_data['10"'] = ten if ten.positive?
+  end
+
+  def load_color_chart(items)
+    raw = items.joins(release: :release_formats)
+               .where(release_formats: { name: 'Vinyl' })
+               .group(Arel.sql("COALESCE(NULLIF(release_formats.color, ''), 'Black')"))
+               .order('count_all DESC')
+               .limit(10)
+               .count
+    @color_chart_data = raw
   end
 
   def load_genre_chart(items)
