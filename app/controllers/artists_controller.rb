@@ -1,11 +1,9 @@
-# rubocop:disable Metrics/ClassLength
 class ArtistsController < ApplicationController
   RELEASE_TYPE_ORDER = ['Album', 'EP', 'Single', 'Compilation', 'Unofficial Release'].freeze
   DISCOGRAPHY_PER_PAGE = 25
 
   def show
     load_artist
-    extract_api_details
   end
 
   def discography_section
@@ -29,8 +27,6 @@ class ArtistsController < ApplicationController
 
     @release_groups = @artist.release_groups.where(release_type: @release_type).order(:year)
     @local_releases = @artist.releases
-    load_api_sidebar
-    extract_api_details
   end
 
   def new
@@ -89,7 +85,6 @@ class ArtistsController < ApplicationController
     @artist = Artist.find_by(id: params[:id]) || Artist.find_by(discogs_id: params[:id])
     @local_releases = @artist&.releases || Release.none
     load_discography
-    load_api_sidebar
   end
 
   def load_discography
@@ -102,25 +97,4 @@ class ArtistsController < ApplicationController
       { type: type, pagy: pagy_obj, release_groups: records }
     end
   end
-
-  def load_api_sidebar
-    discogs_id = @artist&.discogs_id
-    return unless discogs_id
-
-    result = WaxApiClient::ArtistDiscography.call(id: discogs_id, page: 1)
-    @api_artist = result[:artist]
-  rescue StandardError
-    @api_artist = nil
-  end
-
-  def extract_api_details
-    @members = @api_artist&.dig('members') || []
-    @urls = extract_nested(@api_artist&.dig('artist_urls'), 'url')
-    @name_variations = extract_nested(@api_artist&.dig('artist_namevariations'), 'name')
-  end
-
-  def extract_nested(collection, key)
-    (collection || []).map { |item| item.is_a?(Hash) ? item[key] : item }
-  end
 end
-# rubocop:enable Metrics/ClassLength

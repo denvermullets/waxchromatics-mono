@@ -6,21 +6,19 @@
   </div>
 
   <h1 class="text-2xl font-bold text-woodsmoke-50">
-    <%= @artist&.name || @api_artist&.dig("name") || "Unknown Artist" %>
+    <%= @artist&.name || "Unknown Artist" %>
   </h1>
 
   <% if @artist&.persisted? %>
     <%= link_to "Edit", edit_artist_path(@artist), class: "inline-block mt-1 text-xs text-crusta-400 hover:text-crusta-300 transition-colors" %>
   <% end %>
 
-  <% real_name = @artist&.real_name || @api_artist&.dig("realname") %>
-  <% if real_name.present? %>
-    <p class="text-sm text-woodsmoke-400 mt-1"><%= real_name %></p>
+  <% if @artist&.real_name.present? %>
+    <p class="text-sm text-woodsmoke-400 mt-1"><%= @artist.real_name %></p>
   <% end %>
 
-  <% profile = @artist&.profile || @api_artist&.dig("profile") %>
-  <% if profile.present? %>
-    <p class="mt-3 text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line"><%= profile %></p>
+  <% if @artist&.profile.present? %>
+    <p class="mt-3 text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line"><%= @artist.profile %></p>
   <% end %>
 
   <% if @local_releases.any? %>

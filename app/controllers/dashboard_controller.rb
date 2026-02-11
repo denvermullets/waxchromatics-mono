@@ -30,7 +30,7 @@ class DashboardController < ApplicationController
   end
 
   def ingest_artist
-    artist_data = params.expect(artist: %i[id name thumb]).to_h
+    artist_data = params.require(:artist).permit(:id, :name, :thumb, :profile, :real_name).to_h
     discogs_id = artist_data['id'].to_i
     enqueue_artist_ingest(artist_data.merge('id' => discogs_id))
 

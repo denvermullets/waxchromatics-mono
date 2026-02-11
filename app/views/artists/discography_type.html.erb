@@ -11,31 +11,6 @@
     <%# Left column: Artist info %>
     <div class="lg:col-span-1 space-y-6">
       <%= render "artists/artist_header" %>
-      <%= render "artists/members" %>
-
-      <% if @name_variations.any? %>
-        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Name Variations</h3>
-          <div class="flex flex-wrap gap-2">
-            <% @name_variations.each do |variation| %>
-              <span class="px-2 py-1 text-xs rounded bg-woodsmoke-800 text-woodsmoke-300"><%= variation %></span>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-
-      <% if @urls.any? %>
-        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Links</h3>
-          <ul class="space-y-1">
-            <% @urls.each do |url| %>
-              <li>
-                <%= link_to url, url, target: "_blank", rel: "noopener noreferrer", class: "text-sm text-crusta-400 hover:text-crusta-300 transition-colors truncate block" %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
     </div>
 
     <%# Right column: Release groups %>

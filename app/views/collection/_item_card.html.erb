@@ -6,7 +6,7 @@
 
 <div class="rounded-lg border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden">
   <%# Cover art with vinyl peeking out %>
-  <div class="relative w-full aspect-square bg-woodsmoke-900 flex items-center justify-center">
+  <div class="relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center justify-center">
     <% if cover_thumb.present? && vinyl_svg.present? %>
       <div class="absolute top-1/2 -translate-y-1/2 right-[5%] w-[60%] aspect-square">
         <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
@@ -28,19 +28,19 @@
   </div>
 
   <%# Info %>
-  <div class="p-3">
+  <div class="px-2 py-1.5">
     <% if artist %>
       <%= link_to artist.name, artist_path(artist), class: "text-xs text-crusta-400 hover:text-crusta-300 transition-colors block truncate" %>
     <% end %>
     <% if artist && release.release_group %>
       <%= link_to release.title,
                   artist_release_group_release_path(artist, release.release_group, release),
-                  class: "text-sm font-medium text-woodsmoke-100 hover:text-woodsmoke-50 transition-colors block truncate mt-0.5" %>
+                  class: "text-sm font-medium text-woodsmoke-100 hover:text-woodsmoke-50 transition-colors block truncate" %>
     <% else %>
-      <p class="text-sm font-medium text-woodsmoke-100 truncate mt-0.5"><%= release.title %></p>
+      <p class="text-sm font-medium text-woodsmoke-100 truncate"><%= release.title %></p>
     <% end %>
 
-    <div class="flex flex-wrap gap-1 mt-2">
+    <div class="flex flex-wrap gap-1 mt-1">
       <% if fmt&.name.present? %>
         <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= fmt.name %></span>
       <% end %>
