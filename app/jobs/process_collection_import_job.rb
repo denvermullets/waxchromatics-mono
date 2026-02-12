@@ -30,7 +30,17 @@ class ProcessCollectionImportJob < ApplicationJob
       ImportCollectionRowJob.perform_later(row.id, 0)
     end
 
-    FileUtils.rm_f(import.file_path)
+    cleanup_file(import.file_path)
+  end
+
+  def cleanup_file(path)
+    return if path.blank?
+
+    imports_dir = Rails.root.join('tmp', 'imports').to_s
+    resolved = File.expand_path(path)
+    return unless resolved.start_with?(imports_dir)
+
+    FileUtils.rm_f(resolved)
   end
 
   private
