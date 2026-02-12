@@ -50,5 +50,7 @@ class IngestArtistJob < ApplicationJob
       partial: 'dashboard/artist_row_local',
       locals: { artist: artist }
     )
+  rescue ActionView::Template::Error => e
+    Rails.logger.warn("[IngestArtistJob] Broadcast failed for artist #{discogs_id}: #{e.message}")
   end
 end

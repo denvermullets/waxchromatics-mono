@@ -129,7 +129,7 @@ module Releases
         next if genre.blank?
 
         release.release_genres.find_or_create_by!(genre: genre)
-      rescue ActiveRecord::RecordNotUnique
+      rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
         next
       end
     end
@@ -141,7 +141,7 @@ module Releases
         next if style.blank?
 
         release.release_styles.find_or_create_by!(style: style)
-      rescue ActiveRecord::RecordNotUnique
+      rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
         next
       end
     end
