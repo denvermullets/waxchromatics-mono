@@ -20,7 +20,7 @@
     </div>
     <div class="flex items-center gap-4">
       <% if Current.user == @user %>
-        <%= link_to new_collection_import_path,
+        <%= link_to new_collection_import_path(username: @user.username),
                     class: "px-4 py-1.5 text-sm font-semibold rounded-lg border border-crusta-500/40 text-crusta-400 hover:bg-crusta-500/10 transition-colors" do %>
           Import CSV
         <% end %>

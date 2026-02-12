@@ -22,8 +22,6 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  resources :collection_imports, only: %i[new create show]
-
   get 'search', to: 'dashboard#search'
   get 'search/external', to: 'dashboard#external_search', as: :external_search
   post 'search/ingest', to: 'dashboard#ingest_artist', as: :ingest_artist
@@ -37,5 +35,8 @@ Rails.application.routes.draw do
     get ':username/settings', to: 'settings#show', as: :user_settings
     patch ':username/settings', to: 'settings#update'
     get ':username/crates', to: 'collection#show', as: :crates
+    scope ':username/collections' do
+      resources :imports, only: %i[new create show], controller: 'collection_imports', as: :collection_imports
+    end
   end
 end

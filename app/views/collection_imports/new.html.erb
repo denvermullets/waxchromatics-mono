@@ -13,7 +13,7 @@
     </div>
   <% end %>
 
-  <%= form_with url: collection_imports_path, method: :post, multipart: true, class: "space-y-6" do |f| %>
+  <%= form_with url: collection_imports_path(username: Current.user.username), method: :post, multipart: true, class: "space-y-6" do |f| %>
     <div>
       <label class="block text-sm font-medium text-woodsmoke-300 mb-2">CSV File</label>
       <input type="file" name="file" accept=".csv,text/csv"

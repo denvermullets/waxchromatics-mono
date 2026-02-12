@@ -7,7 +7,7 @@ class CollectionImportsController < ApplicationController
     file = params[:file]
 
     unless file.present? && file.content_type == 'text/csv'
-      redirect_to new_collection_import_path, alert: 'Please upload a valid CSV file.'
+      redirect_to new_collection_import_path(username: Current.user.username), alert: 'Please upload a valid CSV file.'
       return
     end
 
@@ -19,7 +19,15 @@ class CollectionImportsController < ApplicationController
     )
 
     ProcessCollectionImportJob.perform_later(import.id)
-    redirect_to collection_import_path(import), notice: 'Import started! Processing your CSV in the background.'
+    redirect_to collection_import_path(username: Current.user.username, id: import),
+                notice: 'Import started! Processing your CSV in the background.'
+  end
+
+  def show
+    @import = Current.user.collection_imports.find(params[:id])
+    @completed_rows = @import.collection_import_rows.where(status: 'completed').order(:id)
+    @in_progress_rows = @import.collection_import_rows.where(status: %w[pending ingesting]).order(:id)
+    @failed_rows = @import.collection_import_rows.where(status: 'failed').order(:id)
   end
 
   private
@@ -30,12 +38,5 @@ class CollectionImportsController < ApplicationController
     dest = dir.join("#{SecureRandom.uuid}.csv")
     File.binwrite(dest, file.read)
     dest
-  end
-
-  def show
-    @import = Current.user.collection_imports.find(params[:id])
-    @completed_rows = @import.collection_import_rows.where(status: 'completed').order(:id)
-    @in_progress_rows = @import.collection_import_rows.where(status: %w[pending ingesting]).order(:id)
-    @failed_rows = @import.collection_import_rows.where(status: 'failed').order(:id)
   end
 end
