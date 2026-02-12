@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_10_125058) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_12_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,38 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_125058) do
     t.string "real_name"
     t.datetime "updated_at", null: false
     t.index ["discogs_id"], name: "index_artists_on_discogs_id", unique: true
+  end
+
+  create_table "collection_import_rows", force: :cascade do |t|
+    t.string "artist_name"
+    t.string "catalog_number"
+    t.bigint "collection_import_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "discogs_release_id"
+    t.text "error_message"
+    t.string "label_name"
+    t.string "media_condition"
+    t.jsonb "raw_data"
+    t.bigint "release_id"
+    t.string "status", default: "pending", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["collection_import_id"], name: "index_collection_import_rows_on_collection_import_id"
+    t.index ["release_id"], name: "index_collection_import_rows_on_release_id"
+    t.index ["status"], name: "index_collection_import_rows_on_status"
+  end
+
+  create_table "collection_imports", force: :cascade do |t|
+    t.integer "completed_rows", default: 0
+    t.datetime "created_at", null: false
+    t.integer "failed_rows", default: 0
+    t.string "file_path"
+    t.string "filename"
+    t.string "status", default: "pending", null: false
+    t.integer "total_rows", default: 0
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_collection_imports_on_user_id"
   end
 
   create_table "collection_items", force: :cascade do |t|
@@ -232,6 +264,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_125058) do
     t.index ["user_id"], name: "index_wantlist_items_on_user_id"
   end
 
+  add_foreign_key "collection_import_rows", "collection_imports"
+  add_foreign_key "collection_import_rows", "releases"
+  add_foreign_key "collection_imports", "users"
   add_foreign_key "collection_items", "collections"
   add_foreign_key "collection_items", "releases"
   add_foreign_key "collections", "users"

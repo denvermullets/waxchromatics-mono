@@ -1,0 +1,184 @@
+<% still_processing = %w[pending processing].include?(@import.status) %>
+
+<div class="max-w-7xl mx-auto px-4 py-8"
+     data-controller="poll"
+     data-poll-interval-value="5000"
+     data-poll-active-value="<%= still_processing %>">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-crusta-400 tracking-wide uppercase">Import Progress</h1>
+      <p class="text-woodsmoke-400 text-sm mt-1"><%= @import.filename %></p>
+    </div>
+    <div class="text-sm text-woodsmoke-500">
+      <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+      <span class="mx-1">/</span>
+      <%= link_to "Crates", crates_path(username: Current.user.username), class: "hover:text-crusta-400 transition-colors" %>
+      <span class="mx-1">/</span>
+      <span class="text-woodsmoke-300">Import</span>
+    </div>
+  </div>
+
+  <%# Status badge %>
+  <div class="mb-6">
+    <% badge_classes = case @import.status
+       when "completed" then "border-green-500/30 bg-green-500/10 text-green-400"
+       when "processing" then "border-crusta-500/30 bg-crusta-500/10 text-crusta-400"
+       when "failed" then "border-red-500/30 bg-red-500/10 text-red-400"
+       else "border-woodsmoke-700 bg-woodsmoke-800 text-woodsmoke-400"
+       end %>
+    <span class="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full border <%= badge_classes %>">
+      <%= @import.status %>
+    </span>
+  </div>
+
+  <%# Stats cards %>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Total Rows</p>
+      <p class="text-3xl font-bold text-crusta-400"><%= @import.total_rows %></p>
+    </div>
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Completed</p>
+      <p class="text-3xl font-bold text-green-400"><%= @import.completed_rows %></p>
+    </div>
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">In Progress</p>
+      <p class="text-3xl font-bold text-crusta-400"><%= @in_progress_rows.size %></p>
+    </div>
+    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Failed</p>
+      <p class="text-3xl font-bold text-red-400"><%= @import.failed_rows %></p>
+    </div>
+  </div>
+
+  <%# Completed rows %>
+  <% if @completed_rows.any? %>
+    <details class="mb-8 group">
+      <summary class="flex items-center gap-2 cursor-pointer list-none">
+        <svg class="w-4 h-4 text-woodsmoke-400 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <h2 class="text-lg font-semibold text-woodsmoke-200">Completed (<%= @completed_rows.size %>)</h2>
+      </summary>
+      <div class="overflow-x-auto mt-4">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-woodsmoke-800">
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Label</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Catalog#</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @completed_rows.each do |row| %>
+              <tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900/50">
+                <td class="py-2.5 px-2 text-woodsmoke-200"><%= row.artist_name %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-200"><%= row.title %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden md:table-cell"><%= row.label_name %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden md:table-cell"><%= row.catalog_number %></td>
+                <td class="py-2.5 px-2">
+                  <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full border border-green-500/30 bg-green-500/10 text-green-400">completed</span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  <% end %>
+
+  <%# In Progress rows %>
+  <% if @in_progress_rows.any? %>
+    <div class="mb-8">
+      <h2 class="text-lg font-semibold text-woodsmoke-200 mb-4">In Progress (<%= @in_progress_rows.size %>)</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-woodsmoke-800">
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Label</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Catalog#</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @in_progress_rows.each do |row| %>
+              <tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900/50">
+                <td class="py-2.5 px-2 text-woodsmoke-200"><%= row.artist_name %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-200"><%= row.title %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden md:table-cell"><%= row.label_name %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden md:table-cell"><%= row.catalog_number %></td>
+                <td class="py-2.5 px-2">
+                  <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full border border-crusta-500/30 bg-crusta-500/10 text-crusta-400"><%= row.status %></span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <%# Failed rows %>
+  <% if @failed_rows.any? %>
+    <details class="mb-8 group" open>
+      <summary class="flex items-center justify-between cursor-pointer list-none">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-woodsmoke-400 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          <h2 class="text-lg font-semibold text-woodsmoke-200">Failed (<%= @failed_rows.size %>)</h2>
+        </div>
+        <%= button_to "Retry Failed Rows",
+              retry_failed_collection_import_path(username: Current.user.username, id: @import),
+              method: :post,
+              class: "px-4 py-1.5 text-sm font-semibold rounded-lg border border-crusta-500/40 text-crusta-400 hover:bg-crusta-500/10 transition-colors cursor-pointer" %>
+      </summary>
+      <div class="overflow-x-auto mt-4">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-woodsmoke-800">
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Label</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Catalog#</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Discogs ID</th>
+              <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Error</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @failed_rows.each do |row| %>
+              <% raw = begin; row.raw_data.is_a?(String) ? JSON.parse(row.raw_data) : (row.raw_data || {}); rescue; {}; end %>
+              <tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900/50">
+                <td class="py-2.5 px-2 text-woodsmoke-200"><%= row.artist_name %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-200"><%= row.title %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden md:table-cell"><%= row.label_name %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden md:table-cell"><%= row.catalog_number %></td>
+                <td class="py-2.5 px-2 text-woodsmoke-400 hidden lg:table-cell"><%= row.discogs_release_id %></td>
+                <td class="py-2.5 px-2">
+                  <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full border border-red-500/30 bg-red-500/10 text-red-400">failed</span>
+                  <p class="text-xs text-red-400/70 mt-1"><%= row.error_message %></p>
+                  <% if raw.any? %>
+                    <details class="mt-1">
+                      <summary class="text-xs text-woodsmoke-500 cursor-pointer hover:text-woodsmoke-400">CSV data</summary>
+                      <div class="mt-1 text-xs text-woodsmoke-500 font-mono bg-woodsmoke-900 p-2 rounded">
+                        <% raw.each do |key, value| %>
+                          <div><span class="text-woodsmoke-400"><%= key %>:</span> <%= value %></div>
+                        <% end %>
+                      </div>
+                    </details>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  <% end %>
+
+  <% if still_processing %>
+    <div class="text-center py-4">
+      <p class="text-woodsmoke-500 text-sm">Auto-refreshing every 5 seconds...</p>
+    </div>
+  <% end %>
+</div>

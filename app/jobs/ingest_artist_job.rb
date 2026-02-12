@@ -5,6 +5,7 @@ class IngestArtistJob < ApplicationJob
     discogs_id = artist_data['id']
     return if discogs_id.blank?
 
+    artist_data = enrich_artist_data(artist_data, discogs_id)
     artist = upsert_artist(artist_data, discogs_id)
 
     # Mark as ingested on external API
@@ -21,6 +22,13 @@ class IngestArtistJob < ApplicationJob
   end
 
   private
+
+  def enrich_artist_data(artist_data, discogs_id)
+    return artist_data if artist_data.key?('profile')
+
+    full_data = WaxApiClient::ArtistDetails.call(id: discogs_id)
+    full_data.present? ? full_data.merge('id' => discogs_id) : artist_data
+  end
 
   def upsert_artist(artist_data, discogs_id)
     artist = Artist.find_or_initialize_by(discogs_id: discogs_id)
@@ -50,5 +58,7 @@ class IngestArtistJob < ApplicationJob
       partial: 'dashboard/artist_row_local',
       locals: { artist: artist }
     )
+  rescue ActionView::Template::Error => e
+    Rails.logger.warn("[IngestArtistJob] Broadcast failed for artist #{discogs_id}: #{e.message}")
   end
 end

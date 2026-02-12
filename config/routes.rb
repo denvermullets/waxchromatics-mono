@@ -35,5 +35,10 @@ Rails.application.routes.draw do
     get ':username/settings', to: 'settings#show', as: :user_settings
     patch ':username/settings', to: 'settings#update'
     get ':username/crates', to: 'collection#show', as: :crates
+    scope ':username/collections' do
+      resources :imports, only: %i[new create show], controller: 'collection_imports', as: :collection_imports do
+        post :retry_failed, on: :member
+      end
+    end
   end
 end

@@ -1,11 +1,22 @@
 class IngestReleaseJob < ApplicationJob
   queue_as :default
 
-  def perform(release_discogs_id)
+  MAX_ATTEMPTS = 5
+  RETRY_DELAYS = [30, 60, 120, 240, 240].freeze
+
+  def perform(release_discogs_id, attempt: 0)
     data = WaxApiClient::ReleaseDetails.call(id: release_discogs_id)
     return if data.blank? || data['id'].blank?
 
-    release = upsert_release(data)
+    release_group = find_release_group(data['master_id'])
+
+    if release_group.nil? && attempt < MAX_ATTEMPTS
+      delay = RETRY_DELAYS[attempt]
+      self.class.set(wait: delay.seconds).perform_later(release_discogs_id, attempt: attempt + 1)
+      return
+    end
+
+    release = upsert_release(data, release_group)
     backfill_release_group_year(release)
     FetchReleaseCoverArtJob.perform_later(release.id)
     Releases::IngestAssociationsService.call(release: release, data: data)
@@ -13,9 +24,7 @@ class IngestReleaseJob < ApplicationJob
 
   private
 
-  def upsert_release(data)
-    release_group = find_release_group(data['master_id'])
-
+  def upsert_release(data, release_group)
     find_or_upsert(Release, data['id']) do |r|
       r.assign_attributes(
         title: data['title'] || r.title || 'Unknown',
@@ -58,7 +67,8 @@ class IngestReleaseJob < ApplicationJob
   end
 
   def find_release_group(master_id)
-    return nil if master_id.blank?
+    master_id = master_id.to_i
+    return nil unless master_id.positive?
 
     ReleaseGroup.find_by(discogs_id: master_id)
   end

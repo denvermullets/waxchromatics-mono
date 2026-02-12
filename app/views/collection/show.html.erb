@@ -18,12 +18,20 @@
         <% end %>
       </nav>
     </div>
-    <div class="text-sm text-woodsmoke-500">
-      <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
-      <span class="mx-1">/</span>
-      <%= link_to @user.username, crates_path(username: @user.username), class: "hover:text-crusta-400 transition-colors" %>
-      <span class="mx-1">/</span>
-      <span class="text-woodsmoke-300"><%= { "collection" => "Collection", "wantlist" => "Wantlist", "trade_list" => "Trade List" }[@tab] %></span>
+    <div class="flex items-center gap-4">
+      <% if Current.user == @user %>
+        <%= link_to new_collection_import_path(username: @user.username),
+                    class: "px-4 py-1.5 text-sm font-semibold rounded-lg border border-crusta-500/40 text-crusta-400 hover:bg-crusta-500/10 transition-colors" do %>
+          Import CSV
+        <% end %>
+      <% end %>
+      <div class="text-sm text-woodsmoke-500">
+        <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+        <span class="mx-1">/</span>
+        <%= link_to @user.username, crates_path(username: @user.username), class: "hover:text-crusta-400 transition-colors" %>
+        <span class="mx-1">/</span>
+        <span class="text-woodsmoke-300"><%= { "collection" => "Collection", "wantlist" => "Wantlist", "trade_list" => "Trade List" }[@tab] %></span>
+      </div>
     </div>
   </div>
 
