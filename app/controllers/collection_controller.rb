@@ -71,7 +71,11 @@ class CollectionController < ApplicationController
   end
 
   def load_label_stats(items)
-    @labels = items.joins(release: { release_labels: :label }).distinct.pluck('labels.name').sort
+    label_counts = items.joins(release: { release_labels: :label })
+                        .group('labels.name')
+                        .order(Arel.sql('COUNT(*) DESC'))
+                        .count
+    @labels = label_counts.keys
     @label_count = @labels.size
   end
 

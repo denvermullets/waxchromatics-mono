@@ -5,27 +5,17 @@
 <% cover_thumb = release.cover_art_url || release.release_group&.cover_art_url %>
 
 <div class="rounded-lg border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden">
-  <%# Cover art with vinyl peeking out %>
-  <div class="relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center justify-center">
-    <% if cover_thumb.present? && vinyl_svg.present? %>
-      <div class="absolute top-1/2 -translate-y-1/2 right-[5%] w-[60%] aspect-square">
-        <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
-      </div>
-      <div class="relative w-[65%] aspect-square rounded overflow-hidden" style="margin-right: auto; margin-left: 8%;">
-        <%= image_tag cover_thumb, alt: release.title, loading: "lazy", decoding: "async", class: "w-full h-full object-cover" %>
-      </div>
-    <% elsif cover_thumb.present? %>
-      <%= image_tag cover_thumb, alt: release.title, loading: "lazy", decoding: "async", class: "w-full h-full object-cover" %>
-    <% elsif vinyl_svg.present? %>
-      <div class="w-[50%] aspect-square">
-        <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
-      </div>
-    <% else %>
-      <svg class="w-16 h-16 text-woodsmoke-600" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
-      </svg>
+  <%# Cover art with vinyl peeking out — links to release page if available %>
+  <% release_url = artist && release.release_group ? artist_release_group_release_path(artist, release.release_group, release) : nil %>
+  <% if release_url %>
+    <%= link_to release_url, class: "block relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center justify-center" do %>
+      <%= render "collection/item_cover", cover_thumb: cover_thumb, vinyl_svg: vinyl_svg, release: release %>
     <% end %>
-  </div>
+  <% else %>
+    <div class="relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center justify-center">
+      <%= render "collection/item_cover", cover_thumb: cover_thumb, vinyl_svg: vinyl_svg, release: release %>
+    </div>
+  <% end %>
 
   <%# Info %>
   <div class="px-2 py-1.5">
