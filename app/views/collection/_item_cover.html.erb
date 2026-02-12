@@ -1,0 +1,18 @@
+<% if cover_thumb.present? && vinyl_svg.present? %>
+  <div class="absolute top-1/2 -translate-y-1/2 right-[5%] w-[60%] aspect-square">
+    <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
+  </div>
+  <div class="relative w-[65%] aspect-square rounded overflow-hidden" style="margin-right: auto; margin-left: 8%;">
+    <%= image_tag cover_thumb, alt: release.title, loading: "lazy", decoding: "async", class: "w-full h-full object-cover" %>
+  </div>
+<% elsif cover_thumb.present? %>
+  <%= image_tag cover_thumb, alt: release.title, loading: "lazy", decoding: "async", class: "w-full h-full object-cover" %>
+<% elsif vinyl_svg.present? %>
+  <div class="w-[75%] aspect-square">
+    <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
+  </div>
+<% else %>
+  <svg class="w-16 h-16 text-woodsmoke-600" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
+  </svg>
+<% end %>
