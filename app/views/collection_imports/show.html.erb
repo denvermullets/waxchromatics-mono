@@ -1,4 +1,9 @@
-<div class="max-w-7xl mx-auto px-4 py-8">
+<% still_processing = %w[pending processing].include?(@import.status) %>
+
+<div class="max-w-7xl mx-auto px-4 py-8"
+     data-controller="poll"
+     data-poll-interval-value="5000"
+     data-poll-active-value="<%= still_processing %>">
   <div class="flex items-center justify-between mb-8">
     <div>
       <h1 class="text-2xl font-bold text-crusta-400 tracking-wide uppercase">Import Progress</h1>
@@ -48,9 +53,12 @@
 
   <%# Completed rows %>
   <% if @completed_rows.any? %>
-    <div class="mb-8">
-      <h2 class="text-lg font-semibold text-woodsmoke-200 mb-4">Completed (<%= @completed_rows.size %>)</h2>
-      <div class="overflow-x-auto">
+    <details class="mb-8 group">
+      <summary class="flex items-center gap-2 cursor-pointer list-none">
+        <svg class="w-4 h-4 text-woodsmoke-400 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <h2 class="text-lg font-semibold text-woodsmoke-200">Completed (<%= @completed_rows.size %>)</h2>
+      </summary>
+      <div class="overflow-x-auto mt-4">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-woodsmoke-800">
@@ -76,7 +84,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
   <% end %>
 
   <%# In Progress rows %>
@@ -114,9 +122,18 @@
 
   <%# Failed rows %>
   <% if @failed_rows.any? %>
-    <div class="mb-8">
-      <h2 class="text-lg font-semibold text-woodsmoke-200 mb-4">Failed (<%= @failed_rows.size %>)</h2>
-      <div class="overflow-x-auto">
+    <details class="mb-8 group" open>
+      <summary class="flex items-center justify-between cursor-pointer list-none">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-woodsmoke-400 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          <h2 class="text-lg font-semibold text-woodsmoke-200">Failed (<%= @failed_rows.size %>)</h2>
+        </div>
+        <%= button_to "Retry Failed Rows",
+              retry_failed_collection_import_path(username: Current.user.username, id: @import),
+              method: :post,
+              class: "px-4 py-1.5 text-sm font-semibold rounded-lg border border-crusta-500/40 text-crusta-400 hover:bg-crusta-500/10 transition-colors cursor-pointer" %>
+      </summary>
+      <div class="overflow-x-auto mt-4">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-woodsmoke-800">
@@ -156,13 +173,12 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
   <% end %>
 
-  <%# Refresh hint when still processing %>
-  <% if @import.status == "processing" %>
+  <% if still_processing %>
     <div class="text-center py-4">
-      <p class="text-woodsmoke-500 text-sm">Import is still processing. Refresh this page to see updated progress.</p>
+      <p class="text-woodsmoke-500 text-sm">Auto-refreshing every 5 seconds...</p>
     </div>
   <% end %>
 </div>

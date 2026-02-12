@@ -103,7 +103,7 @@ class ImportCollectionRowJob < ApplicationJob
         { 'id' => primary_artist['artist_id'], 'name' => primary_artist['artist_name'] }
       )
     else
-      mark_failed(row, row.collection_import, "No artist data in API response for release #{row.discogs_release_id}")
+      mark_failed(row, row.collection_import, "No artist data for release #{row.discogs_release_id}")
     end
   end
 

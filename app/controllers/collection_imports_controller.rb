@@ -30,6 +30,23 @@ class CollectionImportsController < ApplicationController
     @failed_rows = @import.collection_import_rows.where(status: 'failed').order(:id)
   end
 
+  def retry_failed
+    import = Current.user.collection_imports.find(params[:id])
+    row_ids = import.collection_import_rows.where(status: 'failed').pluck(:id)
+    count = row_ids.size
+
+    CollectionImportRow.where(id: row_ids).update_all(status: 'pending', error_message: nil)
+    import.update!(status: 'processing')
+    import.decrement!(:failed_rows, count)
+
+    row_ids.each do |row_id|
+      ImportCollectionRowJob.perform_later(row_id, 0)
+    end
+
+    redirect_to collection_import_path(username: Current.user.username, id: import),
+                notice: "Retrying #{count} failed rows."
+  end
+
   private
 
   def save_csv(file)
