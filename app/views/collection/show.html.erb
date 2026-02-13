@@ -16,6 +16,10 @@
                     class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'trade_list' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
           Trade List <span class="text-woodsmoke-500"><%= @trade_list_count %></span>
         <% end %>
+        <%= link_to crates_path(username: @user.username, tab: "history"),
+                    class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@tab == 'history' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+          History
+        <% end %>
       </nav>
     </div>
     <div class="flex items-center gap-4">
@@ -30,10 +34,14 @@
         <span class="mx-1">/</span>
         <%= link_to @user.username, crates_path(username: @user.username), class: "hover:text-crusta-400 transition-colors" %>
         <span class="mx-1">/</span>
-        <span class="text-woodsmoke-300"><%= { "collection" => "Collection", "wantlist" => "Wantlist", "trade_list" => "Trade List" }[@tab] %></span>
+        <span class="text-woodsmoke-300"><%= { "collection" => "Collection", "wantlist" => "Wantlist", "trade_list" => "Trade List", "history" => "History" }[@tab] %></span>
       </div>
     </div>
   </div>
+
+  <% if @tab == "history" %>
+    <%= render "collection/history" %>
+  <% else %>
 
   <%# Stats cards %>
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -197,5 +205,7 @@
       </p>
       <p class="text-woodsmoke-500 text-sm mt-2">Browse releases and add them from the release page.</p>
     </div>
+  <% end %>
+
   <% end %>
 </div>

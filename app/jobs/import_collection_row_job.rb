@@ -79,7 +79,7 @@ class ImportCollectionRowJob < ApplicationJob
     collection = user.default_collection
     condition = map_condition(row.media_condition)
 
-    unless collection.collection_items.exists?(release: release)
+    PaperTrail.request(whodunnit: user.id.to_s, controller_info: { collection_import_id: import.id }) do
       collection.collection_items.create!(release: release, condition: condition)
     end
 

@@ -1,0 +1,138 @@
+<% if @versions.any? %>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-woodsmoke-800">
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Event</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Label</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Year</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 ">List</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Source</th>
+          <th class="text-right py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @versions.each do |version| %>
+          <% release = @releases_by_id[version.release_id] %>
+          <% artist = release&.artist %>
+          <% label = release&.release_labels&.first&.label %>
+          <% fmt = release&.release_formats&.first %>
+          <% import = @imports_by_id[version.collection_import_id] if version.collection_import_id %>
+          <% tab_label = { "CollectionItem" => "Collection", "WantlistItem" => "Wantlist", "TradeListItem" => "Trade List" }[version.item_type] %>
+
+          <tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900 transition-colors">
+            <%# Event %>
+            <td class="py-3 px-2">
+              <% if version.event == "create" %>
+                <span class="inline-flex items-center gap-1.5 text-green-400 font-semibold text-xs">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+                  Added
+                </span>
+              <% elsif version.event == "update" %>
+                <span class="inline-flex items-center gap-1.5 text-amber-400 font-semibold text-xs">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.1 2.1 0 1 1 2.97 2.97L7.5 18.79l-4 1 1-4L16.862 3.487z"/></svg>
+                  Updated
+                </span>
+              <% elsif version.event == "destroy" %>
+                <span class="inline-flex items-center gap-1.5 text-red-400 font-semibold text-xs">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  Removed
+                </span>
+              <% end %>
+            </td>
+
+            <%# Artist %>
+            <td class="py-3 px-2">
+              <% if artist %>
+                <%= link_to artist.name, artist_path(artist), class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+              <% end %>
+            </td>
+
+            <%# Title %>
+            <td class="py-3 px-2">
+              <% if release %>
+                <% if artist && release.release_group %>
+                  <%= link_to release.title, artist_release_group_release_path(artist, release.release_group, release),
+                              class: "text-crusta-400 hover:text-crusta-300 font-medium transition-colors" %>
+                <% else %>
+                  <span class="text-woodsmoke-100 font-medium"><%= release.title %></span>
+                <% end %>
+              <% end %>
+            </td>
+
+            <%# Label %>
+            <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= label&.name %></td>
+
+            <%# Year %>
+            <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= release&.released.to_s[0, 4] %></td>
+
+            <%# List %>
+            <td class="py-3 px-2 text-woodsmoke-300"><%= tab_label %></td>
+
+            <%# Source %>
+            <td class="py-3 px-2 hidden lg:table-cell text-xs">
+              <% if import %>
+                <span class="text-woodsmoke-400">CSV:</span>
+                <%= link_to import.filename, collection_import_path(username: @user.username, id: import.id),
+                            class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+              <% else %>
+                <span class="text-woodsmoke-400">Release page</span>
+              <% end %>
+            </td>
+
+            <%# Date %>
+            <td class="py-3 px-2 text-right text-woodsmoke-500 text-xs whitespace-nowrap">
+              <%= time_ago_in_words(version.created_at) %> ago
+            </td>
+          </tr>
+
+          <% if version.event == "update" && version.object_changes.present? %>
+            <% changes = version.object_changes.except("updated_at") %>
+            <% if changes.any? %>
+              <tr class="border-b border-woodsmoke-800/50">
+                <td></td>
+                <td colspan="7" class="py-2 px-2 text-xs text-woodsmoke-500">
+                  <% changes.each do |field, values| %>
+                    <span class="text-woodsmoke-400"><%= field.humanize %></span>:
+                    <span class="text-red-400 line-through"><%= values[0].presence || "blank" %></span>
+                    &rarr;
+                    <span class="text-green-400"><%= values[1].presence || "blank" %></span>
+                    <% unless field == changes.keys.last %>&nbsp;&middot;&nbsp;<% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination %>
+  <% if @pagy.last > 1 %>
+    <div class="mt-6 flex items-center justify-center gap-3">
+      <span class="text-xs text-woodsmoke-500">Page <%= @pagy.page %> of <%= @pagy.last %></span>
+      <div class="flex gap-1">
+        <% if @pagy.previous %>
+          <%= link_to crates_path(username: @user.username, tab: "history", page: @pagy.previous),
+                      class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+            &larr; Prev
+          <% end %>
+        <% end %>
+        <% if @pagy.next %>
+          <%= link_to crates_path(username: @user.username, tab: "history", page: @pagy.next),
+                      class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+            Next &rarr;
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="text-center py-16">
+    <p class="text-woodsmoke-400 text-lg">No history yet.</p>
+    <p class="text-woodsmoke-500 text-sm mt-2">Changes to your collection, wantlist, and trade list will appear here.</p>
+  </div>
+<% end %>
