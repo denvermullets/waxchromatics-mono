@@ -8,7 +8,7 @@
           <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
           <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Label</th>
           <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Year</th>
-          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">List</th>
+          <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 ">List</th>
           <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Source</th>
           <th class="text-right py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Date</th>
         </tr>
@@ -69,13 +69,16 @@
             <td class="py-3 px-2 text-woodsmoke-300 hidden md:table-cell"><%= release&.released.to_s[0, 4] %></td>
 
             <%# List %>
-            <td class="py-3 px-2 text-woodsmoke-300 hidden lg:table-cell"><%= tab_label %></td>
+            <td class="py-3 px-2 text-woodsmoke-300"><%= tab_label %></td>
 
             <%# Source %>
-            <td class="py-3 px-2 hidden lg:table-cell">
+            <td class="py-3 px-2 hidden lg:table-cell text-xs">
               <% if import %>
+                <span class="text-woodsmoke-400">CSV:</span>
                 <%= link_to import.filename, collection_import_path(username: @user.username, id: import.id),
-                            class: "text-crusta-400 hover:text-crusta-300 text-xs transition-colors" %>
+                            class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+              <% else %>
+                <span class="text-woodsmoke-400">Release page</span>
               <% end %>
             </td>
 
