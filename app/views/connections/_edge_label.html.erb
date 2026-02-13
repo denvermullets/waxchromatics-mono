@@ -1,0 +1,39 @@
+<div class="relative flex flex-col items-center mx-1 flex-shrink-0" data-controller="collapsible">
+  <%# Connecting line + pill %>
+  <div class="flex items-center gap-0">
+    <div class="w-6 h-px bg-woodsmoke-600"></div>
+    <button
+      type="button"
+      data-action="click->collapsible#toggle"
+      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-woodsmoke-800 border border-woodsmoke-700 hover:border-crusta-400 text-xs text-woodsmoke-300 hover:text-crusta-400 transition-colors cursor-pointer whitespace-nowrap"
+    >
+      <span><%= edge[:role].presence || "credit" %></span>
+      <svg data-collapsible-target="icon" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+    <div class="w-6 h-px bg-woodsmoke-600"></div>
+  </div>
+
+  <%# Expandable details panel — positioned absolutely so it doesn't shift the graph %>
+  <div data-collapsible-target="content" class="hidden absolute top-full mt-2 left-1/2 -translate-x-1/2 z-10 bg-woodsmoke-900 border border-woodsmoke-700 rounded-lg p-3 text-xs min-w-[220px] shadow-lg">
+    <% if edge[:release] %>
+      <div class="flex gap-3">
+        <% art_url = edge[:release_group]&.cover_art_url || edge[:release].cover_art_url %>
+        <% if art_url.present? %>
+          <img src="<%= art_url %>" alt="" class="w-12 h-12 rounded object-cover flex-shrink-0">
+        <% end %>
+        <div class="min-w-0">
+          <p class="font-medium text-woodsmoke-100 leading-tight"><%= edge[:release].title %></p>
+          <% if edge[:release_group] %>
+            <p class="text-woodsmoke-400 mt-0.5">
+              <%= edge[:release_group].release_type %><%= edge[:year] ? " · #{edge[:year]}" : "" %>
+            </p>
+            <%= link_to "View release", artist_release_group_path(edge[:from_artist], edge[:release_group]),
+                  class: "text-crusta-400 hover:text-crusta-300 mt-1 inline-block" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

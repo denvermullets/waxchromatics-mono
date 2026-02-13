@@ -1,0 +1,16 @@
+<div id="connection-results">
+  <div class="text-center py-12">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-woodsmoke-800 border border-woodsmoke-700 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-woodsmoke-500" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+      </svg>
+    </div>
+    <h3 class="text-lg font-semibold text-woodsmoke-200 mb-1">No connection found</h3>
+    <p class="text-sm text-woodsmoke-400 max-w-md mx-auto">
+      We couldn't find a path between
+      <span class="text-woodsmoke-200"><%= artist_a.name %></span> and
+      <span class="text-woodsmoke-200"><%= artist_b.name %></span>
+      within 4 degrees of separation.
+    </p>
+  </div>
+</div>
