@@ -1,4 +1,4 @@
-<div id="connection-results">
+<div id="connection-results" data-controller="edge-detail">
   <%# Degrees badge %>
   <div class="text-center mb-6">
     <div class="inline-flex items-center gap-2 bg-woodsmoke-900 border border-crusta-500/30 rounded-full px-4 py-2">
@@ -9,6 +9,11 @@
 
   <%# Connection graph %>
   <%= render "connections/graph", path: path %>
+
+  <%# Connection detail panels (one per edge, hidden by default) %>
+  <% path.each_with_index do |edge, index| %>
+    <%= render "connections/connection_detail", edge: edge, index: index %>
+  <% end %>
 
   <%# Alternate paths %>
   <% if alternate_paths.any? %>

@@ -22,7 +22,7 @@ module Connections
 
     def load_releases
       ids = @path.filter_map { |e| e[:release_id] }.uniq
-      Release.includes(:release_group).where(id: ids).index_by(&:id)
+      Release.includes(:release_group, :labels, :release_formats).where(id: ids).index_by(&:id)
     end
 
     def enrich_edge(edge, artists, releases)
