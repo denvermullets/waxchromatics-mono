@@ -1,0 +1,22 @@
+<div id="connection-results" data-controller="edge-detail">
+  <%# Degrees badge %>
+  <div class="text-center mb-6">
+    <div class="inline-flex items-center gap-2 bg-woodsmoke-900 border border-crusta-500/30 rounded-full px-4 py-2">
+      <span class="text-2xl font-bold text-crusta-400"><%= degrees %></span>
+      <span class="text-sm text-woodsmoke-300">degree<%= degrees == 1 ? "" : "s" %> of separation</span>
+    </div>
+  </div>
+
+  <%# Connection graph %>
+  <%= render "connections/graph", path: path %>
+
+  <%# Connection detail panels (one per edge, hidden by default) %>
+  <% path.each_with_index do |edge, index| %>
+    <%= render "connections/connection_detail", edge: edge, index: index %>
+  <% end %>
+
+  <%# Alternate paths %>
+  <% if alternate_paths.any? %>
+    <%= render "connections/alternate_paths", alternate_paths: alternate_paths, artist_a: artist_a, artist_b: artist_b %>
+  <% end %>
+</div>

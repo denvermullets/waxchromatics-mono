@@ -1,0 +1,21 @@
+<%
+  border_class = case position
+                 when :start then "border-crusta-500 bg-crusta-500/10"
+                 when :end   then "border-crusta-500 bg-crusta-500/10"
+                 else             "border-woodsmoke-600 bg-woodsmoke-800"
+                 end
+%>
+<div class="flex flex-col items-center gap-1.5 flex-shrink-0">
+  <% if artist %>
+    <%= link_to artist_path(artist), class: "block" do %>
+      <div class="w-12 h-12 rounded-full border-2 <%= border_class %> flex items-center justify-center hover:border-crusta-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-woodsmoke-300" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+    <% end %>
+    <span class="text-xs text-woodsmoke-300 text-center whitespace-nowrap">
+      <%= artist.name %>
+    </span>
+  <% end %>
+</div>

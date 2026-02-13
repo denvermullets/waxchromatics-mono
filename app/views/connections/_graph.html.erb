@@ -1,0 +1,16 @@
+<div class="overflow-x-auto pb-4">
+  <div class="flex items-center justify-center gap-0 min-w-max px-4 py-6">
+    <% path.each_with_index do |edge, index| %>
+      <%# From node (only on first edge) %>
+      <% if index == 0 %>
+        <%= render "connections/node", artist: edge[:from_artist], position: :start %>
+      <% end %>
+
+      <%# Edge label %>
+      <%= render "connections/edge_label", edge: edge, index: index %>
+
+      <%# To node %>
+      <%= render "connections/node", artist: edge[:to_artist], position: (index == path.length - 1 ? :end : :middle) %>
+    <% end %>
+  </div>
+</div>

@@ -8,6 +8,7 @@
       <%= link_to "Profile", profile_path(username: Current.user.username), class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
       <%= link_to "Crates", crates_path(username: Current.user.username), class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
       <%= link_to "Artists", artists_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
+      <%= link_to "Connections", connections_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
       <%= link_to "Add Release", new_release_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
       <%= link_to "Add Artist", new_artist_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
     </div>
