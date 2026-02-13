@@ -4,6 +4,8 @@ class IngestArtistDiscographyJob < ApplicationJob
   PER_PAGE = 100
 
   def perform(artist_discogs_id, page: 1)
+    Artist.where(discogs_id: artist_discogs_id).update_all(discography_ingested: true) if page == 1
+
     result = WaxApiClient::ArtistDiscography.call(id: artist_discogs_id, page: page, limit: PER_PAGE)
     masters = result[:masters]
 

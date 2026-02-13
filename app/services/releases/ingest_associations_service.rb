@@ -52,6 +52,7 @@ module Releases
       end
 
       release.update!(artist: artist)
+      enqueue_artist_discography(artist)
     end
 
     def create_release_contributors
@@ -59,19 +60,25 @@ module Releases
       artists_data.each do |artist_data|
         next if artist_data['extra'].to_i.zero?
 
-        artist_discogs_id = artist_data['artist_id']
-        next if artist_discogs_id.blank?
-
-        artist = find_or_upsert(Artist, artist_discogs_id) do |a|
-          a.name = artist_data['artist_name'] || a.name || 'Unknown'
-        end
-
-        rc = release.release_contributors.find_or_initialize_by(artist: artist)
-        rc.update!(
-          position: artist_data['position'],
-          role: artist_data['role'].presence
-        )
+        upsert_contributor(artist_data)
       end
+    end
+
+    def upsert_contributor(artist_data)
+      artist_discogs_id = artist_data['artist_id']
+      return if artist_discogs_id.blank?
+
+      artist = find_or_upsert(Artist, artist_discogs_id) do |a|
+        a.name = artist_data['artist_name'] || a.name || 'Unknown'
+      end
+
+      rc = release.release_contributors.find_or_initialize_by(artist: artist)
+      rc.update!(
+        position: artist_data['position'],
+        role: artist_data['role'].presence
+      )
+
+      enqueue_artist_discography(artist)
     end
 
     def create_release_labels
@@ -174,6 +181,12 @@ module Releases
 
     def highest_priority_type(types)
       TYPE_PRIORITY.find { |t| types.include?(t) } || 'Album'
+    end
+
+    def enqueue_artist_discography(artist)
+      return if artist.discography_ingested?
+
+      IngestCreditedArtistDiscographyJob.perform_later(artist.discogs_id)
     end
 
     def find_or_upsert(klass, discogs_id)
