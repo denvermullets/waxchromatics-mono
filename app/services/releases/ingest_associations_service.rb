@@ -115,7 +115,7 @@ module Releases
       identifiers_data = data['release_identifiers'] || []
       identifiers_data.each do |identifier_data|
         discogs_id = identifier_data['id']
-        next if discogs_id.blank?
+        next if discogs_id.blank? || identifier_data['value'].blank?
 
         identifier = ReleaseIdentifier.find_or_initialize_by(discogs_id: discogs_id)
         identifier.update!(
