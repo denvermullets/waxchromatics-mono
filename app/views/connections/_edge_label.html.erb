@@ -21,7 +21,7 @@
       <div class="flex gap-3">
         <% art_url = edge[:release_group]&.cover_art_url || edge[:release].cover_art_url %>
         <% if art_url.present? %>
-          <img src="<%= art_url %>" alt="" class="w-12 h-12 rounded object-cover flex-shrink-0">
+          <%= image_tag art_url, alt: "", class: "w-12 h-12 rounded object-cover flex-shrink-0" %>
         <% end %>
         <div class="min-w-0">
           <p class="font-medium text-woodsmoke-100 leading-tight"><%= edge[:release].title %></p>
