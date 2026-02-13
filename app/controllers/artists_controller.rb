@@ -2,6 +2,8 @@ class ArtistsController < ApplicationController
   RELEASE_TYPE_ORDER = ['Album', 'EP', 'Single', 'Compilation', 'Unofficial Release'].freeze
   DISCOGRAPHY_PER_PAGE = 25
   ARTISTS_PER_PAGE = 50
+  FIRST_ALPHA_SQL = "UPPER(SUBSTRING(name FROM '[A-Za-z]'))".freeze
+  ALPHA_ORDER_SQL = "#{FIRST_ALPHA_SQL}, name".freeze
 
   def index
     @filter = params[:filter].presence || 'primary'
@@ -90,10 +92,10 @@ class ArtistsController < ApplicationController
 
   def load_artist_browse
     base_scope = artist_browse_scope
-    @available_letters = base_scope.pluck(Arel.sql(first_alpha_sql)).compact.uniq.sort
+    @available_letters = base_scope.pluck(Arel.sql(FIRST_ALPHA_SQL)).compact.uniq.sort
 
-    scope = base_scope.order(Arel.sql("#{first_alpha_sql}, name"))
-    scope = scope.where("#{first_alpha_sql} = ?", @letter) if @letter.present?
+    scope = base_scope.order(Arel.sql(ALPHA_ORDER_SQL))
+    scope = scope.where("#{FIRST_ALPHA_SQL} = ?", @letter) if @letter.present?
 
     @pagy, @artists = pagy(scope, limit: ARTISTS_PER_PAGE)
     @grouped_artists = @artists.group_by { |a| a.name[/[A-Za-z]/]&.upcase || '#' }
@@ -104,10 +106,6 @@ class ArtistsController < ApplicationController
     artist_ids = @artists.map(&:id)
     @release_counts = release_group_counts_for(artist_ids)
     @variant_counts = Release.where(artist_id: artist_ids).group(:artist_id).count
-  end
-
-  def first_alpha_sql
-    "UPPER(SUBSTRING(name FROM '[A-Za-z]'))"
   end
 
   def artist_browse_scope
