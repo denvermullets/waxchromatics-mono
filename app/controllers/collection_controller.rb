@@ -2,9 +2,14 @@ class CollectionController < ApplicationController
   def show
     set_filters
     load_counts
-    scope = filtered_scope(sorted_scope(tab_scope))
-    @pagy, @items = pagy(scope, items: 50)
-    compute_stats
+
+    if @tab == 'history'
+      load_history
+    else
+      scope = filtered_scope(sorted_scope(tab_scope))
+      @pagy, @items = pagy(scope, items: 50)
+      compute_stats
+    end
   end
 
   EAGER_LOADS = { release: [:release_formats, :artist, { release_labels: :label, release_group: :artists }] }.freeze
@@ -85,5 +90,22 @@ class CollectionController < ApplicationController
     @colored_vinyl_count = items.joins(release: :release_formats)
                                 .where.not(release_formats: { color: [nil, ''] })
                                 .distinct.count
+  end
+
+  def load_history
+    versions = PaperTrail::Version
+               .where(item_type: %w[CollectionItem WantlistItem TradeListItem], whodunnit: @user.id.to_s)
+               .order(created_at: :desc)
+
+    @pagy, @versions = pagy(versions, items: 30)
+
+    release_ids = @versions.filter_map(&:release_id).uniq
+    @releases_by_id = Release.where(id: release_ids)
+                             .includes(:artist, :release_formats, :release_group, release_labels: :label)
+                             .index_by(&:id)
+
+    import_ids = @versions.filter_map(&:collection_import_id).uniq
+    @imports_by_id = CollectionImport.where(id: import_ids).index_by(&:id) if import_ids.any?
+    @load_history ||= {}
   end
 end
