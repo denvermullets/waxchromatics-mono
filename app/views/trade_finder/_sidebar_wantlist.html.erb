@@ -1,0 +1,19 @@
+<% if @my_want_items.any? %>
+  <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+    <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">
+      Your Wantlist
+      <span class="ml-1 text-crusta-400"><%= @seeking_count %></span>
+    </h2>
+    <div class="space-y-2 max-h-60 overflow-y-auto">
+      <% @my_want_items.each do |item| %>
+        <div class="flex items-center gap-2">
+          <%= render "shared/cover_art", thumb: item.release.release_group&.cover_art_url, alt: item.release.title, size: :sm %>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs text-woodsmoke-200 truncate"><%= item.release.title %></p>
+            <p class="text-[10px] text-woodsmoke-400 truncate"><%= item.release.artist&.name %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

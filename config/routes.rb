@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   get 'connections', to: 'connections#show', as: :connections
   get 'connections/search', to: 'connections#search', as: :search_connections
+  get 'trade-finder', to: 'trade_finder#show', as: :trade_finder
 
   post 'collection_items/toggle', to: 'collection_items#toggle'
   post 'wantlist_items/toggle', to: 'wantlist_items#toggle'

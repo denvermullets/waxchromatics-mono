@@ -1,0 +1,25 @@
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-4">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <%# Filter tabs %>
+    <div class="flex gap-1">
+      <% [
+        ["all", "All (#{@matches_count})"],
+        ["mutual", "Mutual (#{@mutual_count})"],
+        ["they_have", "They Have (#{@they_have_count})"],
+        ["they_want", "They Want (#{@they_want_count})"]
+      ].each do |value, label| %>
+        <%= link_to label, trade_finder_path(filter: value, sort: @sort),
+            class: "px-3 py-1.5 text-xs rounded-lg transition-colors #{@filter == value ? 'bg-woodsmoke-800 text-woodsmoke-50 font-medium' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" %>
+      <% end %>
+    </div>
+
+    <%# Sort pills %>
+    <div class="flex items-center gap-2">
+      <span class="text-[10px] text-woodsmoke-500 uppercase tracking-wider">Sort</span>
+      <% %w[score rating trades].each do |sort_option| %>
+        <%= link_to sort_option.capitalize, trade_finder_path(filter: @filter, sort: sort_option),
+            class: "px-2.5 py-1 text-xs border rounded-full transition-colors #{@sort == sort_option ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:text-woodsmoke-200'}" %>
+      <% end %>
+    </div>
+  </div>
+</div>
