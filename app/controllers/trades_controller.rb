@@ -1,4 +1,6 @@
 class TradesController < ApplicationController
+  include TradeSearch
+
   TRADES_PER_PAGE = 20
 
   before_action :set_trade, only: %i[show destroy propose accept decline cancel]
@@ -29,9 +31,8 @@ class TradesController < ApplicationController
     @recipient = User.find(params[:recipient_id]) if params[:recipient_id].present?
     @trade = Trade.new(recipient: @recipient)
 
-    # Both sides pass collection_item_ids directly
-    @pre_send_items = params[:send_ci_ids].present? ? collection_items_by_ids(Array(params[:send_ci_ids])) : []
-    @pre_receive_items = params[:receive_ci_ids].present? ? collection_items_by_ids(Array(params[:receive_ci_ids])) : []
+    @pre_send_items = load_collection_items(params[:send_ci_ids])
+    @pre_receive_items = load_collection_items(params[:receive_ci_ids])
   end
 
   def create
@@ -81,24 +82,48 @@ class TradesController < ApplicationController
     transition('cancel')
   end
 
-  # JSON search endpoints for the trade form
+  # --- Turbo Frame search endpoints ---
+
   def search_users
-    users = User.where.not(id: Current.user.id)
-                .where('username ILIKE ?', "%#{params[:q]}%")
-                .limit(10)
-                .select(:id, :username, :avatar_url)
-    render json: users
+    @users = if params[:q].present? && params[:q].length >= 2
+               User.where.not(id: Current.user.id)
+                   .where('username ILIKE ?', "%#{params[:q]}%")
+                   .limit(10)
+             else
+               User.none
+             end
+
+    render layout: false
   end
 
   def search_collection
-    items = collection_items_for(Current.user, params[:q])
-    render json: items
+    @items = search_collection_items(Current.user, params[:q])
+    @side = 'send'
+
+    render 'trades/search_collection_results', layout: false
   end
 
   def search_recipient_collection
+    return head(:bad_request) unless params[:recipient_id].present?
+
     recipient = User.find(params[:recipient_id])
-    items = collection_items_for(recipient, params[:q])
-    render json: items
+    @items = search_collection_items(recipient, params[:q])
+    @side = 'receive'
+
+    render 'trades/search_collection_results', layout: false
+  end
+
+  # --- Turbo Stream actions ---
+
+  def select_recipient
+    @recipient = User.find(params[:recipient_id])
+    respond_to(&:turbo_stream)
+  end
+
+  def add_item
+    @collection_item = CollectionItem.joins(release: %i[artist release_group]).find(params[:collection_item_id])
+    @side = params[:side]
+    respond_to(&:turbo_stream)
   end
 
   private
@@ -125,13 +150,13 @@ class TradesController < ApplicationController
 
   def build_trade_items
     (params[:send_items] || []).each do |ci_id|
-      ci = CollectionItem.find(ci_id)
-      @trade.trade_items.build(user: Current.user, release: ci.release, collection_item: ci)
+      col_item = CollectionItem.find(ci_id)
+      @trade.trade_items.build(user: Current.user, release: col_item.release, collection_item: col_item)
     end
 
     (params[:receive_items] || []).each do |ci_id|
-      ci = CollectionItem.find(ci_id)
-      @trade.trade_items.build(user: @trade.recipient, release: ci.release, collection_item: ci)
+      col_item = CollectionItem.find(ci_id)
+      @trade.trade_items.build(user: @trade.recipient, release: col_item.release, collection_item: col_item)
     end
   end
 
@@ -156,36 +181,5 @@ class TradesController < ApplicationController
       h[s] = base.with_status(s).count
     end
     @status_counts['all'] = base.count
-  end
-
-  def collection_items_for(user, query)
-    scope = CollectionItem.joins(:collection, release: %i[artist release_group])
-                          .where(collections: { user_id: user.id })
-
-    if query.present?
-      scope = scope.where(
-        'releases.title ILIKE :q OR artists.name ILIKE :q',
-        q: "%#{query}%"
-      )
-    end
-
-    scope.limit(20).map { |ci| serialize_collection_item(ci) }
-  end
-
-  def collection_items_by_ids(ci_ids)
-    CollectionItem.joins(release: %i[artist release_group])
-                  .where(id: ci_ids)
-                  .map { |ci| serialize_collection_item(ci) }
-  end
-
-  def serialize_collection_item(col_item)
-    {
-      id: col_item.id,
-      release_id: col_item.release_id,
-      title: col_item.release.title,
-      artist: col_item.release.artist&.name,
-      cover_art_url: col_item.release.release_group&.cover_art_url,
-      condition: col_item.condition
-    }
   end
 end

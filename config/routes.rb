@@ -17,11 +17,13 @@ Rails.application.routes.draw do
 
   get 'connections', to: 'connections#show', as: :connections
   get 'connections/search', to: 'connections#search', as: :search_connections
-  # Trade JSON search endpoints (used by Stimulus, not user-facing)
+  # Trade form Turbo endpoints (HTML responses, not JSON)
   get 'trades/search_users', to: 'trades#search_users', as: :search_users_trades
   get 'trades/search_collection', to: 'trades#search_collection', as: :search_collection_trades
   get 'trades/search_recipient_collection', to: 'trades#search_recipient_collection',
                                             as: :search_recipient_collection_trades
+  post 'trades/select_recipient', to: 'trades#select_recipient', as: :select_recipient_trades
+  post 'trades/add_item', to: 'trades#add_item', as: :add_item_trades
 
   post 'collection_items/toggle', to: 'collection_items#toggle'
   post 'wantlist_items/toggle', to: 'wantlist_items#toggle'

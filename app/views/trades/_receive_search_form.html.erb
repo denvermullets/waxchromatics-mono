@@ -1,0 +1,15 @@
+<%# locals: (recipient_id: nil) %>
+<div id="receive_search_form" class="relative mb-3" data-controller="debounce-submit">
+  <% if recipient_id.present? %>
+    <%= form_with url: search_recipient_collection_trades_path, method: :get, data: { turbo_frame: "receive_results" } do |f| %>
+      <%= f.hidden_field :recipient_id, value: recipient_id %>
+      <%= f.text_field :q, placeholder: "Search their collection...", autocomplete: "off",
+          data: { action: "input->debounce-submit#submit" },
+          class: "w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none" %>
+    <% end %>
+  <% else %>
+    <input type="text" placeholder="Select a trade partner first..." disabled autocomplete="off"
+           class="w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-500 cursor-not-allowed">
+  <% end %>
+  <turbo-frame id="receive_results" class="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
+</div>
