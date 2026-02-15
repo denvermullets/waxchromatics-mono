@@ -1,7 +1,7 @@
 <% filtered_identifiers = @identifiers.reject { |i| i.description == "CD" } %>
 <% grouped_identifiers = filtered_identifiers.group_by(&:identifier_type) %>
 
-<div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+<div class="p-5 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
   <div class="flex items-baseline justify-between mb-4">
     <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Identifiers</h3>
   </div>
@@ -19,7 +19,7 @@
                 <% if identifier.description.present? %>
                   <span class="text-xs text-woodsmoke-500 block mb-1"><%= identifier.description %></span>
                 <% end %>
-                <div class="px-4 py-3 rounded-lg border border-woodsmoke-700 bg-woodsmoke-950">
+                <div class="px-4 py-3 rounded-sm border border-woodsmoke-700 bg-woodsmoke-950">
                   <span class="text-sm text-woodsmoke-300 font-mono break-all"><%= identifier.value %></span>
                 </div>
               </div>

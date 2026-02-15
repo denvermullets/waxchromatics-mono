@@ -1,4 +1,4 @@
-<li class="relative rounded-lg border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-800 cursor-pointer">
+<li class="relative rounded-sm border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-800 cursor-pointer">
   <% artist_link = artist.is_a?(Artist) ? artist_path(artist) : artist_path(artist["id"]) %>
   <%= link_to artist_link, data: { turbo_frame: "_top" }, class: "p-3 flex items-center gap-3 no-underline" do %>
     <div class="shrink-0 w-20 h-20 rounded bg-woodsmoke-700 flex items-center justify-center overflow-hidden">

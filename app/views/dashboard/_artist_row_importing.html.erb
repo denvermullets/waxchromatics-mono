@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "external-artist-#{discogs_id}" do %>
-  <div class="block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 opacity-60 transition-colors">
+  <div class="block p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 opacity-60 transition-colors">
     <div class="flex items-start gap-4">
       <%= render "shared/cover_art", thumb: artist_data['thumb'], alt: artist_data['name'], size: :md %>
 

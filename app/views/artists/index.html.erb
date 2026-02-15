@@ -11,16 +11,16 @@
         <%= f.hidden_field :filter, value: @filter %>
         <%= f.text_field :q, value: params[:q], placeholder: "Search artists...",
               autocomplete: "off",
-              class: "rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none w-48" %>
+              class: "rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none w-48" %>
       <% end %>
 
-      <div class="flex gap-1 bg-woodsmoke-950 rounded-lg p-1">
+      <div class="flex gap-1 bg-woodsmoke-950 rounded-sm p-1">
         <%= link_to artists_path(filter: "primary", letter: @letter),
-                    class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@filter == 'primary' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+                    class: "px-4 py-1.5 text-sm font-medium rounded-sm transition-colors #{@filter == 'primary' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
           Primary Artists
         <% end %>
         <%= link_to artists_path(filter: "all", letter: @letter),
-                    class: "px-4 py-1.5 text-sm font-medium rounded-md transition-colors #{@filter == 'all' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+                    class: "px-4 py-1.5 text-sm font-medium rounded-sm transition-colors #{@filter == 'all' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
           All Artists
         <% end %>
       </div>
@@ -63,7 +63,7 @@
 
           <div class="space-y-1">
             <% artists.each do |artist| %>
-              <div class="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-woodsmoke-800/50 transition-colors">
+              <div class="flex items-center justify-between py-2 px-3 rounded-sm hover:bg-woodsmoke-800/50 transition-colors">
                 <%= link_to artist.name, artist_path(artist),
                             class: "font-medium text-woodsmoke-100 hover:text-crusta-400 transition-colors" %>
                 <div class="flex items-center gap-2">
@@ -93,13 +93,13 @@
           <div class="flex gap-1">
             <% if @pagy.previous %>
               <%= link_to artists_path(filter: @filter, letter: @letter, page: @pagy.previous),
-                          class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+                          class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
                 &larr; Prev
               <% end %>
             <% end %>
             <% if @pagy.next %>
               <%= link_to artists_path(filter: @filter, letter: @letter, page: @pagy.next),
-                          class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+                          class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
                 Next &rarr;
               <% end %>
             <% end %>

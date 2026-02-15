@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "external-results", src: external_search_path(query: @query, page: @page), loading: :lazy, class: "flex flex-col gap-3" do %>
   <%# Skeleton loader shown while external results load %>
   <% 3.times do %>
-    <div class="p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925">
+    <div class="p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925">
       <div class="flex items-start gap-4">
         <div class="shrink-0 w-20 h-20 rounded bg-woodsmoke-700 animate-pulse"></div>
         <div class="flex-1 min-w-0 space-y-2">

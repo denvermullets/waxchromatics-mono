@@ -5,7 +5,7 @@
 <% packaging = descriptions.find { |d| d.match?(/gatefold|sleeve|jacket|box/i) } %>
 <% barcode = @identifiers.find { |i| i.identifier_type == "Barcode" } %>
 
-<div class="rounded-xl border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden text-sm">
+<div class="rounded-sm border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden text-sm">
   <%# Row 1: Label / Catalog # %>
   <div class="grid grid-cols-2 divide-x divide-woodsmoke-800">
     <div class="flex items-baseline justify-between gap-2 px-5 py-3">

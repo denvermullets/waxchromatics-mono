@@ -1,4 +1,4 @@
-<div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-xl p-4">
+<div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm p-4">
   <label class="block text-xs font-semibold tracking-widest text-woodsmoke-400 uppercase mb-2">
     Artist <%= side.upcase %>
   </label>
@@ -10,19 +10,19 @@
       data-degrees-target="input<%= side.upcase %>"
       data-action="input->degrees#search<%= side.upcase %>"
       placeholder="Search for an artist..."
-      class="w-full bg-woodsmoke-950 border border-woodsmoke-700 rounded-lg px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:outline-none focus:border-crusta-400 transition-colors"
+      class="w-full bg-woodsmoke-950 border border-woodsmoke-700 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:outline-none focus:border-crusta-400 transition-colors"
       autocomplete="off"
 >
     <%# Dropdown results %>
     <div
       data-degrees-target="results<%= side.upcase %>"
-      class="hidden mt-1 bg-woodsmoke-950 border border-woodsmoke-700 rounded-lg max-h-48 overflow-y-auto"
+      class="hidden mt-1 bg-woodsmoke-950 border border-woodsmoke-700 rounded-sm max-h-48 overflow-y-auto"
     ></div>
   </div>
 
   <%# Selected state %>
   <div data-degrees-target="selectedDisplay<%= side.upcase %>" class="hidden items-center gap-2">
-    <div class="flex-1 flex items-center gap-2 bg-woodsmoke-950 rounded-lg px-3 py-2">
+    <div class="flex-1 flex items-center gap-2 bg-woodsmoke-950 rounded-sm px-3 py-2">
       <div class="w-7 h-7 rounded-full bg-woodsmoke-700 flex items-center justify-center flex-shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-woodsmoke-400" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
@@ -33,7 +33,7 @@
     <button
       type="button"
       data-action="click->degrees#clear<%= side.upcase %>"
-      class="p-1.5 rounded-lg text-woodsmoke-400 hover:text-red-400 hover:bg-woodsmoke-800 transition-colors cursor-pointer"
+      class="p-1.5 rounded-sm text-woodsmoke-400 hover:text-red-400 hover:bg-woodsmoke-800 transition-colors cursor-pointer"
       title="Clear selection"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">

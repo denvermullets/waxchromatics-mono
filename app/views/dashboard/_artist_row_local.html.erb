@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "external-artist-#{artist.discogs_id}" do %>
-  <%= link_to artist_path(artist), data: { turbo_frame: "_top" }, class: "block p-4 rounded-lg border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors no-underline" do %>
+  <%= link_to artist_path(artist), data: { turbo_frame: "_top" }, class: "block p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-crusta-400 hover:border-l-2 transition-colors no-underline" do %>
     <div class="flex items-start gap-4">
       <%= render "shared/cover_art", thumb: nil, alt: artist.name, size: :md %>
 

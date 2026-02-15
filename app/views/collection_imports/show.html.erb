@@ -33,19 +33,19 @@
 
   <%# Stats cards %>
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+    <div class="p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
       <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Total Rows</p>
       <p class="text-3xl font-bold text-crusta-400"><%= @import.total_rows %></p>
     </div>
-    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+    <div class="p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
       <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Completed</p>
       <p class="text-3xl font-bold text-green-400"><%= @import.completed_rows %></p>
     </div>
-    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+    <div class="p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
       <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">In Progress</p>
       <p class="text-3xl font-bold text-crusta-400"><%= @in_progress_rows.size %></p>
     </div>
-    <div class="p-4 rounded-lg border border-woodsmoke-800 bg-woodsmoke-925">
+    <div class="p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
       <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-1">Failed</p>
       <p class="text-3xl font-bold text-red-400"><%= @import.failed_rows %></p>
     </div>
@@ -131,7 +131,7 @@
         <%= button_to "Retry Failed Rows",
               retry_failed_collection_import_path(username: Current.user.username, id: @import),
               method: :post,
-              class: "px-4 py-1.5 text-sm font-semibold rounded-lg border border-crusta-500/40 text-crusta-400 hover:bg-crusta-500/10 transition-colors cursor-pointer" %>
+              class: "px-4 py-1.5 text-sm font-semibold rounded-sm border border-crusta-500/40 text-crusta-400 hover:bg-crusta-500/10 transition-colors cursor-pointer" %>
       </summary>
       <div class="overflow-x-auto mt-4">
         <table class="w-full text-sm">

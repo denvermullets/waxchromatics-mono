@@ -4,7 +4,7 @@
 <% vinyl_svg = fmt&.vinyl_image_path %>
 <% cover_thumb = release.cover_art_url || release.release_group&.cover_art_url %>
 
-<div class="rounded-lg border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden">
+<div class="rounded-sm border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden">
   <%# Cover art with vinyl peeking out — links to release page if available %>
   <% release_url = artist && release.release_group ? artist_release_group_release_path(artist, release.release_group, release) : nil %>
   <% if release_url %>

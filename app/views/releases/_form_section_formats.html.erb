@@ -1,4 +1,4 @@
-<div class="p-5 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925"
+<div class="p-5 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925"
      data-controller="section-toggle nested-form"
      data-section-toggle-empty-text-value="No formats added yet."
      data-section-toggle-format-value="formats">
@@ -23,19 +23,19 @@
           <div class="flex gap-3 items-end mb-3" data-nested-form-row>
             <div class="flex-1">
               <label class="block text-xs text-woodsmoke-400">Name</label>
-              <%= ff.text_field :name, placeholder: "e.g. Vinyl", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              <%= ff.text_field :name, placeholder: "e.g. Vinyl", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
             <div class="w-20">
               <label class="block text-xs text-woodsmoke-400">Qty</label>
-              <%= ff.number_field :quantity, placeholder: "1", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              <%= ff.number_field :quantity, placeholder: "1", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
             <div class="flex-1">
               <label class="block text-xs text-woodsmoke-400">Descriptions</label>
-              <%= ff.text_field :descriptions, placeholder: "LP, Album", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              <%= ff.text_field :descriptions, placeholder: "LP, Album", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
             <div class="flex-1">
               <label class="block text-xs text-woodsmoke-400">Color</label>
-              <%= ff.text_field :color, placeholder: "e.g. black", class: "block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              <%= ff.text_field :color, placeholder: "e.g. black", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
             <%= ff.hidden_field :_destroy %>
             <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
@@ -48,19 +48,19 @@
       <div class="flex gap-3 items-end mb-3" data-nested-form-row>
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Name</label>
-          <input type="text" name="release[release_formats_attributes][NEW_RECORD][name]" placeholder="e.g. Vinyl" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+          <input type="text" name="release[release_formats_attributes][NEW_RECORD][name]" placeholder="e.g. Vinyl" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
         </div>
         <div class="w-20">
           <label class="block text-xs text-woodsmoke-400">Qty</label>
-          <input type="number" name="release[release_formats_attributes][NEW_RECORD][quantity]" placeholder="1" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+          <input type="number" name="release[release_formats_attributes][NEW_RECORD][quantity]" placeholder="1" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
         </div>
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Descriptions</label>
-          <input type="text" name="release[release_formats_attributes][NEW_RECORD][descriptions]" placeholder="LP, Album" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+          <input type="text" name="release[release_formats_attributes][NEW_RECORD][descriptions]" placeholder="LP, Album" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
         </div>
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Color</label>
-          <input type="text" name="release[release_formats_attributes][NEW_RECORD][color]" placeholder="e.g. black" autocomplete="off" class="block w-full mt-1 rounded-lg border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+          <input type="text" name="release[release_formats_attributes][NEW_RECORD][color]" placeholder="e.g. black" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
         </div>
         <input type="hidden" name="release[release_formats_attributes][NEW_RECORD][_destroy]" value="0">
         <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>

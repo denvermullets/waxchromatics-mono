@@ -1,0 +1,52 @@
+<nav class="flex items-center gap-2 text-sm text-woodsmoke-400 mb-6">
+  <%= link_to "Home", root_path, class: "hover:text-woodsmoke-200 transition-colors" %>
+  <span>/</span>
+  <span class="text-woodsmoke-50">Trade Finder</span>
+</nav>
+
+<div class="flex flex-col lg:flex-row gap-6" data-controller="trade-finder">
+  <%# ===== LEFT SIDEBAR ===== %>
+  <aside class="lg:w-72 shrink-0 space-y-5">
+    <%= render "trade_finder/sidebar_summary" %>
+    <%= render "trade_finder/sidebar_match_types_bar" %>
+    <%= render "trade_finder/legend" %>
+    <%= render "trade_finder/sidebar_trade_list" %>
+    <%= render "trade_finder/sidebar_wantlist" %>
+  </aside>
+
+  <%# ===== RIGHT CONTENT ===== %>
+  <section class="flex-1 min-w-0">
+    <%= render "trade_finder/filters" %>
+
+    <% if @paginated_matches.any? %>
+      <div class="space-y-3 mt-4">
+        <% @paginated_matches.each_with_index do |match, index| %>
+          <%= render "trade_finder/match_card", match: match, index: index %>
+        <% end %>
+      </div>
+
+      <%# Pagination %>
+      <% if @total_pages > 1 %>
+        <div class="flex justify-center gap-2 mt-6">
+          <% (1..@total_pages).each do |p| %>
+            <%= link_to p, trade_finder_path(page: p, filter: @filter, sort: @sort),
+                class: "px-3 py-1.5 text-sm rounded #{p == @page ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-16 mt-4">
+        <svg class="w-16 h-16 text-woodsmoke-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <% if @offering_count == 0 && @seeking_count == 0 %>
+          <p class="text-woodsmoke-400 text-lg">No trade list or wantlist items yet.</p>
+          <p class="text-woodsmoke-500 text-sm mt-2">Add items to your trade list and wantlist to find potential trading partners.</p>
+        <% else %>
+          <p class="text-woodsmoke-400 text-lg">No matches found.</p>
+          <p class="text-woodsmoke-500 text-sm mt-2">Try adding more items to your trade list or wantlist.</p>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>
