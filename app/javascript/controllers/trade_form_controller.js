@@ -23,14 +23,13 @@ export default class extends Controller {
     if (area) {
       area.innerHTML = `
         <input type="hidden" name="trade[recipient_id]" value="">
-        <div data-controller="debounce-submit">
-          <form action="${this.searchUsersUrl}" method="get" data-turbo-frame="recipient_results">
-            <input type="text" name="q" placeholder="Search users..." autocomplete="off"
-                   data-action="input->debounce-submit#submit"
-                   class="w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
-          </form>
-          <turbo-frame id="recipient_results" class="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
-        </div>
+        <input type="text" placeholder="Search users..." autocomplete="off"
+               data-controller="debounce-submit"
+               data-debounce-submit-url-value="${this.searchUsersUrl}"
+               data-debounce-submit-frame-value="recipient_results"
+               data-action="input->debounce-submit#search"
+               class="w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+        <turbo-frame id="recipient_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
       `;
     }
 
@@ -45,7 +44,7 @@ export default class extends Controller {
       receiveForm.innerHTML = `
         <input type="text" placeholder="Select a trade partner first..." disabled autocomplete="off"
                class="w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-500 cursor-not-allowed">
-        <turbo-frame id="receive_results" class="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
+        <turbo-frame id="receive_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
       `;
     }
   }

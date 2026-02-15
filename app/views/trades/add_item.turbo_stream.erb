@@ -6,3 +6,5 @@
   <input type="hidden" name="<%= @side %>_items[]" value="<%= @collection_item.id %>"
          id="<%= @side %>_hidden_<%= @collection_item.id %>">
 <% end %>
+
+<%= turbo_stream.update "#{@side}_results", "" %>

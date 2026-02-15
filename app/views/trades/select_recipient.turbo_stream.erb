@@ -1,7 +1,7 @@
 <%= turbo_stream.replace "recipient_area" do %>
   <div id="recipient_area">
     <input type="hidden" name="trade[recipient_id]" value="<%= @recipient.id %>">
-    <div class="flex items-center gap-2 bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2">
+    <div class="flex items-center gap-2 bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2">
       <span class="text-sm text-woodsmoke-100"><%= @recipient.username %></span>
       <button type="button"
               data-action="click->trade-form#clearRecipient"

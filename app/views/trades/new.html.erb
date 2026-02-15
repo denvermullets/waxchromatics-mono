@@ -21,7 +21,7 @@
       <div id="recipient_area">
         <% if @recipient %>
           <input type="hidden" name="trade[recipient_id]" value="<%= @recipient.id %>">
-          <div class="flex items-center gap-2 bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2">
+          <div class="flex items-center gap-2 bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2">
             <span class="text-sm text-woodsmoke-100"><%= @recipient.username %></span>
             <button type="button"
                     data-action="click->trade-form#clearRecipient"
@@ -33,15 +33,13 @@
           </div>
         <% else %>
           <input type="hidden" name="trade[recipient_id]" value="">
-          <div data-controller="debounce-submit">
-            <%= form_with url: search_users_trades_path, method: :get,
-                data: { turbo_frame: "recipient_results" } do |sf| %>
-              <%= sf.text_field :q, placeholder: "Search users...", autocomplete: "off",
-                  data: { action: "input->debounce-submit#submit" },
-                  class: "w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none" %>
-            <% end %>
-            <turbo-frame id="recipient_results" class="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
-          </div>
+          <input type="text" placeholder="Search users..." autocomplete="off"
+                 data-controller="debounce-submit"
+                 data-debounce-submit-url-value="<%= search_users_trades_path %>"
+                 data-debounce-submit-frame-value="recipient_results"
+                 data-action="input->debounce-submit#search"
+                 class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+          <turbo-frame id="recipient_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
         <% end %>
       </div>
     </div>
@@ -52,14 +50,14 @@
     <%# You Send %>
     <div>
       <label class="block text-xs font-semibold text-crusta-400 uppercase tracking-wider mb-2">You Send</label>
-      <div class="relative mb-3" data-controller="debounce-submit">
-        <%= form_with url: search_collection_trades_path, method: :get,
-            data: { turbo_frame: "send_results" } do |sf| %>
-          <%= sf.text_field :q, placeholder: "Search your collection...", autocomplete: "off",
-              data: { action: "input->debounce-submit#submit" },
-              class: "w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none" %>
-        <% end %>
-        <turbo-frame id="send_results" class="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
+      <div class="relative mb-3">
+        <input type="text" placeholder="Search your collection..." autocomplete="off"
+               data-controller="debounce-submit"
+               data-debounce-submit-url-value="<%= search_collection_trades_path %>"
+               data-debounce-submit-frame-value="send_results"
+               data-action="input->debounce-submit#search"
+               class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+        <turbo-frame id="send_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
       </div>
       <div id="send_items" class="space-y-2">
         <% @pre_send_items.each do |col_item| %>
@@ -96,7 +94,7 @@
   <div class="mb-6">
     <label class="block text-sm font-medium text-woodsmoke-200 mb-2">Notes (optional)</label>
     <%= f.text_area :notes, rows: 3, placeholder: "Add a message to your trade partner...",
-        class: "w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none resize-none" %>
+        class: "w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none resize-none" %>
   </div>
 
   <%# Submit buttons %>
