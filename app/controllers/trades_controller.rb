@@ -25,6 +25,7 @@ class TradesController < ApplicationController
                         .includes(release: %i[artist release_group], collection_item: {})
     @receive_items = @trade.items_for(Current.user)
                            .includes(release: %i[artist release_group], collection_item: {})
+    @activity = Trades::ActivityLog.new(trade: @trade).entries
   end
 
   def new

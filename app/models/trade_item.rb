@@ -1,4 +1,6 @@
 class TradeItem < ApplicationRecord
+  has_paper_trail
+
   belongs_to :trade
   belongs_to :user
   belongs_to :release

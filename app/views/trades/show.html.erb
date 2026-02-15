@@ -88,13 +88,5 @@
   </div>
 <% end %>
 
-<%# Timestamps %>
-<div class="text-xs text-woodsmoke-500 space-y-1">
-  <p>Created: <%= @trade.created_at.strftime("%b %d, %Y at %I:%M %p") %></p>
-  <% if @trade.proposed_at %>
-    <p>Proposed: <%= @trade.proposed_at.strftime("%b %d, %Y at %I:%M %p") %></p>
-  <% end %>
-  <% if @trade.responded_at %>
-    <p>Responded: <%= @trade.responded_at.strftime("%b %d, %Y at %I:%M %p") %></p>
-  <% end %>
-</div>
+<%# Activity Log %>
+<%= render "trades/activity_log", activity: @activity %>

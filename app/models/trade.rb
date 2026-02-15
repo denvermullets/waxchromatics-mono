@@ -1,4 +1,6 @@
 class Trade < ApplicationRecord
+  has_paper_trail
+
   STATUSES = %w[draft proposed accepted declined cancelled].freeze
 
   belongs_to :initiator, class_name: 'User'
