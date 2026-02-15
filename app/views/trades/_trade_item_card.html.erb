@@ -1,0 +1,16 @@
+<%# locals: (item:) %>
+<div class="flex items-center gap-2 bg-woodsmoke-900 rounded-sm p-2">
+  <%= render "shared/cover_art",
+             thumb: item.release.release_group&.cover_art_url,
+             alt: item.release.title,
+             size: :sm %>
+  <div class="min-w-0 flex-1">
+    <p class="text-xs text-woodsmoke-200 truncate"><%= item.release.title %></p>
+    <p class="text-[10px] text-woodsmoke-400 truncate"><%= item.release.artist&.name %></p>
+  </div>
+  <% if item.collection_item&.condition.present? %>
+    <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-800 text-woodsmoke-300 rounded">
+      <%= item.collection_item.condition %>
+    </span>
+  <% end %>
+</div>

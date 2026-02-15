@@ -5,10 +5,12 @@ class User < ApplicationRecord
   has_many :wantlist_items, dependent: :destroy
   has_many :trade_list_items, dependent: :destroy
   has_many :collection_imports, dependent: :destroy
+  has_many :initiated_trades, class_name: 'Trade', foreign_key: :initiator_id, dependent: :destroy
+  has_many :received_trades, class_name: 'Trade', foreign_key: :recipient_id, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  RESERVED_USERNAMES = %w[session registration passwords releases artists search up jobs admin settings].freeze
+  RESERVED_USERNAMES = %w[session registration passwords releases artists search up jobs admin settings trades].freeze
 
   validates :username, presence: true, uniqueness: true,
                        format: {

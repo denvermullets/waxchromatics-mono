@@ -1,0 +1,38 @@
+class Trade < ApplicationRecord
+  STATUSES = %w[draft proposed accepted declined cancelled].freeze
+
+  belongs_to :initiator, class_name: 'User'
+  belongs_to :recipient, class_name: 'User'
+  has_many :trade_items, dependent: :destroy
+
+  validates :status, inclusion: { in: STATUSES }
+  validate :participants_must_differ
+
+  scope :involving, ->(user) { where(initiator: user).or(where(recipient: user)) }
+  scope :with_status, ->(status) { where(status: status) }
+  scope :active, -> { where(status: %w[draft proposed]) }
+
+  STATUSES.each { |s| define_method(:"#{s}?") { status == s } }
+
+  def participant?(user)
+    initiator_id == user.id || recipient_id == user.id
+  end
+
+  def partner_for(user)
+    initiator_id == user.id ? recipient : initiator
+  end
+
+  def items_from(user)
+    trade_items.where(user: user)
+  end
+
+  def items_for(user)
+    trade_items.where.not(user: user)
+  end
+
+  private
+
+  def participants_must_differ
+    errors.add(:recipient, "can't be the same as the initiator") if initiator_id == recipient_id
+  end
+end

@@ -19,6 +19,20 @@ Rails.application.routes.draw do
   get 'connections/search', to: 'connections#search', as: :search_connections
   get 'trade-finder', to: 'trade_finder#show', as: :trade_finder
 
+  resources :trades, only: %i[index show new create destroy] do
+    member do
+      patch :propose
+      patch :accept
+      patch :decline
+      patch :cancel
+    end
+    collection do
+      get :search_users
+      get :search_collection
+      get :search_recipient_collection
+    end
+  end
+
   post 'collection_items/toggle', to: 'collection_items#toggle'
   post 'wantlist_items/toggle', to: 'wantlist_items#toggle'
   post 'trade_list_items/toggle', to: 'trade_list_items#toggle'
