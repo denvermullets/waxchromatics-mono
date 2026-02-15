@@ -29,7 +29,7 @@
       <% if @total_pages > 1 %>
         <div class="flex justify-center gap-2 mt-6">
           <% (1..@total_pages).each do |p| %>
-            <%= link_to p, trade_finder_path(page: p, filter: @filter, sort: @sort),
+            <%= link_to p, trade_finder_path(username: params[:username], page: p, filter: @filter, sort: @sort),
                 class: "px-3 py-1.5 text-sm rounded #{p == @page ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" %>
           <% end %>
         </div>

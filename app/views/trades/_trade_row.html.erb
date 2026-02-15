@@ -3,7 +3,7 @@
 <% send_count = trade.items_from(Current.user).size %>
 <% receive_count = trade.items_for(Current.user).size %>
 
-<%= link_to trade_path(trade), class: "block bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm p-4 hover:border-woodsmoke-700 transition-colors" do %>
+<%= link_to trade_path(username: params[:username], id: trade), class: "block bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm p-4 hover:border-woodsmoke-700 transition-colors" do %>
   <div class="flex items-center gap-4">
     <%# Avatar %>
     <div class="shrink-0 w-10 h-10 rounded-full bg-woodsmoke-800 flex items-center justify-center overflow-hidden">

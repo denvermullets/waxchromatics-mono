@@ -6,7 +6,7 @@
 
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-bold text-woodsmoke-50">Trades</h1>
-  <%= link_to new_trade_path, class: "px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors" do %>
+  <%= link_to new_trade_path(username: params[:username]), class: "px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors" do %>
     + New Trade
   <% end %>
 </div>
@@ -26,13 +26,13 @@
       <span class="text-xs text-woodsmoke-500">Page <%= @pagy.page %> of <%= @pagy.last %></span>
       <div class="flex gap-2">
         <% if @pagy.previous %>
-          <%= link_to trades_path(status: @status_filter, page: @pagy.previous),
+          <%= link_to trades_path(username: params[:username], status: @status_filter, page: @pagy.previous),
               class: "px-3 py-1.5 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors" do %>
             &larr; Prev
           <% end %>
         <% end %>
         <% if @pagy.next %>
-          <%= link_to trades_path(status: @status_filter, page: @pagy.next),
+          <%= link_to trades_path(username: params[:username], status: @status_filter, page: @pagy.next),
               class: "px-3 py-1.5 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors" do %>
             Next &rarr;
           <% end %>

@@ -17,21 +17,11 @@ Rails.application.routes.draw do
 
   get 'connections', to: 'connections#show', as: :connections
   get 'connections/search', to: 'connections#search', as: :search_connections
-  get 'trade-finder', to: 'trade_finder#show', as: :trade_finder
-
-  resources :trades, only: %i[index show new create destroy] do
-    member do
-      patch :propose
-      patch :accept
-      patch :decline
-      patch :cancel
-    end
-    collection do
-      get :search_users
-      get :search_collection
-      get :search_recipient_collection
-    end
-  end
+  # Trade JSON search endpoints (used by Stimulus, not user-facing)
+  get 'trades/search_users', to: 'trades#search_users', as: :search_users_trades
+  get 'trades/search_collection', to: 'trades#search_collection', as: :search_collection_trades
+  get 'trades/search_recipient_collection', to: 'trades#search_recipient_collection',
+                                            as: :search_recipient_collection_trades
 
   post 'collection_items/toggle', to: 'collection_items#toggle'
   post 'wantlist_items/toggle', to: 'wantlist_items#toggle'
@@ -53,8 +43,19 @@ Rails.application.routes.draw do
     get ':username/settings', to: 'settings#show', as: :user_settings
     patch ':username/settings', to: 'settings#update'
     get ':username/crates', to: 'collection#show', as: :crates
-    scope ':username/collections' do
-      resources :imports, only: %i[new create show], controller: 'collection_imports', as: :collection_imports do
+    get ':username/trade-finder', to: 'trade_finder#show', as: :trade_finder
+    scope ':username' do
+      resources :trades, only: %i[index show new create destroy] do
+        member do
+          patch :propose
+          patch :accept
+          patch :decline
+          patch :cancel
+        end
+      end
+      resources :imports, only: %i[new create show], controller: 'collection_imports',
+                          path: 'collections/imports',
+                          as: :collection_imports do
         post :retry_failed, on: :member
       end
     end

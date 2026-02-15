@@ -67,6 +67,7 @@
       %>
       <%= link_to "Propose Trade",
           new_trade_path(
+            username: Current.user.username,
             recipient_id: user.id,
             send_ci_ids: send_ci_ids,
             receive_ci_ids: receive_ci_ids

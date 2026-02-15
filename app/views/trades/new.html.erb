@@ -1,14 +1,14 @@
 <nav class="flex items-center gap-2 text-sm text-woodsmoke-400 mb-6">
   <%= link_to "Home", root_path, class: "hover:text-woodsmoke-200 transition-colors" %>
   <span>/</span>
-  <%= link_to "Trades", trades_path, class: "hover:text-woodsmoke-200 transition-colors" %>
+  <%= link_to "Trades", trades_path(username: params[:username]), class: "hover:text-woodsmoke-200 transition-colors" %>
   <span>/</span>
   <span class="text-woodsmoke-50">New Trade</span>
 </nav>
 
 <h1 class="text-2xl font-bold text-woodsmoke-50 mb-6">New Trade</h1>
 
-<%= form_with model: @trade, url: trades_path,
+<%= form_with model: @trade, url: trades_path(username: params[:username]),
     data: {
       controller: "trade-form",
       trade_form_search_users_url_value: search_users_trades_path,

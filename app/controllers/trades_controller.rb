@@ -45,7 +45,8 @@ class TradesController < ApplicationController
     end
 
     if @trade.save
-      redirect_to @trade, notice: @trade.proposed? ? 'Trade proposed!' : 'Trade draft saved.'
+      redirect_to trade_path(username: Current.user.username, id: @trade),
+                  notice: @trade.proposed? ? 'Trade proposed!' : 'Trade draft saved.'
     else
       @recipient = @trade.recipient
       @pre_send_items = []
@@ -56,12 +57,12 @@ class TradesController < ApplicationController
 
   def destroy
     unless @trade.status == 'draft'
-      redirect_to @trade, alert: 'Only draft trades can be deleted.'
+      redirect_to trade_path(username: params[:username], id: @trade), alert: 'Only draft trades can be deleted.'
       return
     end
 
     @trade.destroy
-    redirect_to trades_path, notice: 'Trade deleted.'
+    redirect_to trades_path(username: params[:username]), notice: 'Trade deleted.'
   end
 
   def propose
@@ -107,11 +108,15 @@ class TradesController < ApplicationController
   end
 
   def require_participant
-    redirect_to trades_path, alert: 'Not authorized.' unless @trade.participant?(Current.user)
+    return if @trade.participant?(Current.user)
+
+    redirect_to trades_path(username: params[:username]), alert: 'Not authorized.'
   end
 
   def require_initiator
-    redirect_to trades_path, alert: 'Not authorized.' unless @trade.initiator_id == Current.user.id
+    return if @trade.initiator_id == Current.user.id
+
+    redirect_to trades_path(username: params[:username]), alert: 'Not authorized.'
   end
 
   def trade_params
@@ -132,10 +137,11 @@ class TradesController < ApplicationController
 
   def transition(action)
     machine = Trades::StatusMachine.new(trade: @trade, user: Current.user, action: action)
+    trade_url = trade_path(username: params[:username], id: @trade)
     if machine.call
-      redirect_to @trade, notice: "Trade #{@trade.status}."
+      redirect_to trade_url, notice: "Trade #{@trade.status}."
     else
-      redirect_to @trade, alert: machine.error
+      redirect_to trade_url, alert: machine.error
     end
   end
 

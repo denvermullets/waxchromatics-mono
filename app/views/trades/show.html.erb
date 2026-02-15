@@ -1,7 +1,7 @@
 <nav class="flex items-center gap-2 text-sm text-woodsmoke-400 mb-6">
   <%= link_to "Home", root_path, class: "hover:text-woodsmoke-200 transition-colors" %>
   <span>/</span>
-  <%= link_to "Trades", trades_path, class: "hover:text-woodsmoke-200 transition-colors" %>
+  <%= link_to "Trades", trades_path(username: params[:username]), class: "hover:text-woodsmoke-200 transition-colors" %>
   <span>/</span>
   <span class="text-woodsmoke-50">Trade #<%= @trade.id %></span>
 </nav>
