@@ -1,0 +1,38 @@
+<%# locals: (activity:) %>
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4">
+  <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-wider mb-4">History</h3>
+
+  <% if activity.empty? %>
+    <p class="text-xs text-woodsmoke-500">No activity yet.</p>
+  <% else %>
+    <div class="relative">
+      <div class="absolute left-[7px] top-2 bottom-2 w-px bg-woodsmoke-800"></div>
+
+      <div class="space-y-4">
+        <% activity.each do |entry| %>
+          <div class="flex items-start gap-3 relative">
+            <div class="shrink-0 w-[15px] h-[15px] mt-0.5 rounded-full border-2 border-woodsmoke-700 bg-woodsmoke-925 z-10"></div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm text-woodsmoke-200">
+                <% if entry[:user] %>
+                  <span class="font-medium text-woodsmoke-100"><%= entry[:user].username %></span>
+                <% else %>
+                  <span class="font-medium text-woodsmoke-400">System</span>
+                <% end %>
+                <span class="text-woodsmoke-400"><%= entry[:description] %></span>
+                <% if entry[:badge] == :offer %>
+                  <span class="inline-block ml-1 px-1.5 py-0.5 text-[10px] font-medium rounded bg-crusta-500/15 text-crusta-400">offer</span>
+                <% elsif entry[:badge] == :request %>
+                  <span class="inline-block ml-1 px-1.5 py-0.5 text-[10px] font-medium rounded bg-blue-ribbon-500/15 text-blue-ribbon-400">request</span>
+                <% end %>
+              </p>
+              <p class="text-[10px] text-woodsmoke-500 mt-0.5">
+                <%= entry[:version].created_at.strftime("%b %d, %Y at %I:%M %p") %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

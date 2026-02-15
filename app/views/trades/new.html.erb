@@ -1,0 +1,107 @@
+<nav class="flex items-center gap-2 text-sm text-woodsmoke-400 mb-6">
+  <%= link_to "Home", root_path, class: "hover:text-woodsmoke-200 transition-colors" %>
+  <span>/</span>
+  <%= link_to "Trades", trades_path(username: params[:username]), class: "hover:text-woodsmoke-200 transition-colors" %>
+  <span>/</span>
+  <span class="text-woodsmoke-50">New Trade</span>
+</nav>
+
+<h1 class="text-2xl font-bold text-woodsmoke-50 mb-6">New Trade</h1>
+
+<%= form_with model: @trade, url: trades_path(username: params[:username]),
+    data: {
+      controller: "trade-form",
+      trade_form_search_users_url_value: search_users_trades_path
+    } do |f| %>
+
+  <%# Recipient selection %>
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-woodsmoke-200 mb-2">Trade Partner</label>
+    <div class="relative">
+      <div id="recipient_area">
+        <% if @recipient %>
+          <input type="hidden" name="trade[recipient_id]" value="<%= @recipient.id %>">
+          <div class="flex items-center gap-2 bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2">
+            <span class="text-sm text-woodsmoke-100"><%= @recipient.username %></span>
+            <button type="button"
+                    data-action="click->trade-form#clearRecipient"
+                    class="ml-auto text-woodsmoke-500 hover:text-crusta-400 transition-colors cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        <% else %>
+          <input type="hidden" name="trade[recipient_id]" value="">
+          <input type="text" placeholder="Search users..." autocomplete="off"
+                 data-controller="debounce-submit"
+                 data-debounce-submit-url-value="<%= search_users_trades_path %>"
+                 data-debounce-submit-frame-value="recipient_results"
+                 data-action="input->debounce-submit#search"
+                 class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+          <turbo-frame id="recipient_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%# Two column layout for items %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <%# You Send %>
+    <div>
+      <label class="block text-xs font-semibold text-crusta-400 uppercase tracking-wider mb-2">You Send</label>
+      <div class="relative mb-3">
+        <input type="text" placeholder="Search your collection..." autocomplete="off"
+               data-controller="debounce-submit"
+               data-debounce-submit-url-value="<%= search_collection_trades_path %>"
+               data-debounce-submit-frame-value="send_results"
+               data-action="input->debounce-submit#search"
+               class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+        <turbo-frame id="send_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
+      </div>
+      <div id="send_items" class="space-y-2">
+        <% @pre_send_items.each do |col_item| %>
+          <%= render "trades/selected_item", collection_item: col_item, side: "send" %>
+        <% end %>
+      </div>
+      <div id="send_hidden_fields">
+        <% @pre_send_items.each do |col_item| %>
+          <input type="hidden" name="send_items[]" value="<%= col_item.id %>"
+                 id="send_hidden_<%= col_item.id %>">
+        <% end %>
+      </div>
+    </div>
+
+    <%# You Receive %>
+    <div>
+      <label class="block text-xs font-semibold text-blue-ribbon-400 uppercase tracking-wider mb-2">You Receive</label>
+      <%= render "trades/receive_search_form", recipient_id: @recipient&.id %>
+      <div id="receive_items" class="space-y-2">
+        <% @pre_receive_items.each do |col_item| %>
+          <%= render "trades/selected_item", collection_item: col_item, side: "receive" %>
+        <% end %>
+      </div>
+      <div id="receive_hidden_fields">
+        <% @pre_receive_items.each do |col_item| %>
+          <input type="hidden" name="receive_items[]" value="<%= col_item.id %>"
+                 id="receive_hidden_<%= col_item.id %>">
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%# Notes %>
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-woodsmoke-200 mb-2">Notes (optional)</label>
+    <%= f.text_area :notes, rows: 3, placeholder: "Add a message to your trade partner...",
+        class: "w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none resize-none" %>
+  </div>
+
+  <%# Submit buttons %>
+  <div class="flex items-center gap-3">
+    <%= f.submit "Save as Draft", name: "commit", value: "draft",
+        class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>
+    <%= f.submit "Propose Trade", name: "commit", value: "propose",
+        class: "px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors cursor-pointer" %>
+  </div>
+<% end %>

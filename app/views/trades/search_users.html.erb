@@ -1,0 +1,18 @@
+<turbo-frame id="recipient_results">
+<% if @users.any? || params[:q].present? %>
+<div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm">
+  <% @users.each do |user| %>
+    <%= button_to select_recipient_trades_path,
+        method: :post,
+        params: { recipient_id: user.id },
+        data: { turbo_stream: true },
+        class: "block w-full text-left px-3 py-2 text-woodsmoke-100 hover:bg-woodsmoke-800 text-sm cursor-pointer" do %>
+      <%= user.username %>
+    <% end %>
+  <% end %>
+  <% if @users.empty? %>
+    <div class="px-3 py-2 text-woodsmoke-400 text-sm">No users found</div>
+  <% end %>
+</div>
+<% end %>
+</turbo-frame>

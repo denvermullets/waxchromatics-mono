@@ -1,0 +1,25 @@
+<%# locals: (collection_item:, side:) %>
+<div id="<%= side %>_item_<%= collection_item.id %>" class="flex items-center gap-2 bg-woodsmoke-925 rounded-sm p-2">
+  <%= render "shared/cover_art",
+             thumb: collection_item.release.release_group&.cover_art_url,
+             alt: collection_item.release.title,
+             size: :sm %>
+  <div class="min-w-0 flex-1">
+    <p class="text-xs text-woodsmoke-200 truncate"><%= collection_item.release.title %></p>
+    <p class="text-[10px] text-woodsmoke-400 truncate"><%= collection_item.release.artist&.name %></p>
+  </div>
+  <% if collection_item.condition.present? %>
+    <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-800 text-woodsmoke-300 rounded">
+      <%= collection_item.condition %>
+    </span>
+  <% end %>
+  <button type="button"
+          data-action="click->trade-form#removeItem"
+          data-item-id="<%= collection_item.id %>"
+          data-side="<%= side %>"
+          class="shrink-0 text-woodsmoke-500 hover:text-crusta-400 transition-colors cursor-pointer">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+</div>

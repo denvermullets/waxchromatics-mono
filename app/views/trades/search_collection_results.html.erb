@@ -1,0 +1,24 @@
+<turbo-frame id="<%= @side %>_results">
+<% if @items.any? || params[:q].present? %>
+<div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm">
+  <% @items.each do |col_item| %>
+    <%= button_to add_item_trades_path,
+        method: :post,
+        params: { collection_item_id: col_item.id, side: @side },
+        data: { turbo_stream: true },
+        class: "block w-full text-left px-3 py-2 text-woodsmoke-100 hover:bg-woodsmoke-800 text-sm cursor-pointer" do %>
+      <span><%= col_item.release.title %></span>
+      <% if col_item.release.artist&.name.present? %>
+        <span class="text-woodsmoke-500 ml-2">- <%= col_item.release.artist.name %></span>
+      <% end %>
+      <% if col_item.condition.present? %>
+        <span class="text-woodsmoke-500 ml-2">(<%= col_item.condition %>)</span>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% if @items.empty? %>
+    <div class="px-3 py-2 text-woodsmoke-400 text-sm">No items found</div>
+  <% end %>
+</div>
+<% end %>
+</turbo-frame>

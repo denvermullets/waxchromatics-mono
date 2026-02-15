@@ -1,0 +1,16 @@
+<%# locals: (recipient_id: nil) %>
+<div id="receive_search_form" class="relative mb-3">
+  <% if recipient_id.present? %>
+    <input type="text" placeholder="Search their collection..." autocomplete="off"
+           data-controller="debounce-submit"
+           data-debounce-submit-url-value="<%= search_recipient_collection_trades_path %>"
+           data-debounce-submit-frame-value="receive_results"
+           data-debounce-submit-extra-params-value='{"recipient_id":"<%= recipient_id %>"}'
+           data-action="input->debounce-submit#search"
+           class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+  <% else %>
+    <input type="text" placeholder="Select a trade partner first..." disabled autocomplete="off"
+           class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-500 cursor-not-allowed">
+  <% end %>
+  <turbo-frame id="receive_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
+</div>

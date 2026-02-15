@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_13_114817) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_15_025739) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -224,6 +224,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_13_114817) do
     t.index ["release_id"], name: "index_tracks_on_release_id"
   end
 
+  create_table "trade_items", force: :cascade do |t|
+    t.bigint "collection_item_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "release_id", null: false
+    t.bigint "trade_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["collection_item_id"], name: "index_trade_items_on_collection_item_id"
+    t.index ["release_id"], name: "index_trade_items_on_release_id"
+    t.index ["trade_id", "collection_item_id"], name: "index_trade_items_on_trade_id_and_collection_item_id", unique: true
+    t.index ["trade_id"], name: "index_trade_items_on_trade_id"
+    t.index ["user_id"], name: "index_trade_items_on_user_id"
+  end
+
   create_table "trade_list_items", force: :cascade do |t|
     t.bigint "collection_item_id", null: false
     t.string "condition", default: "NM", null: false
@@ -237,6 +251,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_13_114817) do
     t.index ["release_id"], name: "index_trade_list_items_on_release_id"
     t.index ["user_id", "release_id"], name: "index_trade_list_items_on_user_id_and_release_id"
     t.index ["user_id"], name: "index_trade_list_items_on_user_id"
+  end
+
+  create_table "trades", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "initiator_id", null: false
+    t.text "notes"
+    t.datetime "proposed_at"
+    t.bigint "recipient_id", null: false
+    t.datetime "responded_at"
+    t.string "status", default: "draft", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiator_id", "status"], name: "index_trades_on_initiator_id_and_status"
+    t.index ["initiator_id"], name: "index_trades_on_initiator_id"
+    t.index ["recipient_id", "status"], name: "index_trades_on_recipient_id_and_status"
+    t.index ["recipient_id"], name: "index_trades_on_recipient_id"
+    t.index ["status"], name: "index_trades_on_status"
   end
 
   create_table "users", force: :cascade do |t|
@@ -300,9 +330,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_13_114817) do
   add_foreign_key "releases", "release_groups"
   add_foreign_key "sessions", "users"
   add_foreign_key "tracks", "releases"
+  add_foreign_key "trade_items", "collection_items"
+  add_foreign_key "trade_items", "releases"
+  add_foreign_key "trade_items", "trades"
+  add_foreign_key "trade_items", "users"
   add_foreign_key "trade_list_items", "collection_items"
   add_foreign_key "trade_list_items", "releases"
   add_foreign_key "trade_list_items", "users"
+  add_foreign_key "trades", "users", column: "initiator_id"
+  add_foreign_key "trades", "users", column: "recipient_id"
   add_foreign_key "wantlist_items", "releases"
   add_foreign_key "wantlist_items", "users"
 end

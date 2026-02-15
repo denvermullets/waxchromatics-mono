@@ -55,10 +55,24 @@
     <div class="flex items-center gap-2">
       <%= link_to "View Profile", profile_path(username: user.username),
           class: "px-3 py-1.5 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-200 hover:bg-woodsmoke-700 transition-colors" %>
-      <button type="button" disabled
-          class="px-3 py-1.5 text-xs rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium opacity-50 cursor-not-allowed">
-        Propose Trade
-      </button>
+      <%
+        # "They want" items are WantlistItems — look up MY TradeListItems for those releases
+        my_trade_items_by_release = Current.user.trade_list_items
+          .where(status: "available", release_id: match[:they_want_items].map(&:release_id))
+          .index_by(&:release_id)
+        send_ci_ids = match[:they_want_items].filter_map { |i| my_trade_items_by_release[i.release_id]&.collection_item_id }
+
+        # "They have" items are TradeListItems — they already carry collection_item_id
+        receive_ci_ids = match[:they_have_items].filter_map(&:collection_item_id)
+      %>
+      <%= link_to "Propose Trade",
+          new_trade_path(
+            username: Current.user.username,
+            recipient_id: user.id,
+            send_ci_ids: send_ci_ids,
+            receive_ci_ids: receive_ci_ids
+          ),
+          class: "px-3 py-1.5 text-xs rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors" %>
     </div>
   </div>
 </div>

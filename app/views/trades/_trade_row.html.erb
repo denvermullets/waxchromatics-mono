@@ -1,0 +1,36 @@
+<%# locals: (trade:) %>
+<% partner = trade.partner_for(Current.user) %>
+<% send_count = trade.items_from(Current.user).size %>
+<% receive_count = trade.items_for(Current.user).size %>
+
+<%= link_to trade_path(username: params[:username], id: trade), class: "block bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 hover:border-woodsmoke-700 transition-colors" do %>
+  <div class="flex items-center gap-4">
+    <%# Avatar %>
+    <div class="shrink-0 w-10 h-10 rounded-full bg-woodsmoke-800 flex items-center justify-center overflow-hidden">
+      <% if partner.avatar_url.present? %>
+        <%= image_tag partner.avatar_url, alt: partner.username, class: "w-full h-full object-cover" %>
+      <% else %>
+        <span class="text-sm font-semibold text-woodsmoke-400"><%= partner.username[0].upcase %></span>
+      <% end %>
+    </div>
+
+    <%# Details %>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-medium text-woodsmoke-100 truncate"><%= partner.username %></span>
+        <%= render "trades/status_badge", status: trade.status %>
+        <% if trade.initiator_id == Current.user.id %>
+          <span class="text-[10px] text-woodsmoke-500">you initiated</span>
+        <% end %>
+      </div>
+      <p class="text-xs text-woodsmoke-400 mt-0.5">
+        Sending <%= send_count %> &middot; Receiving <%= receive_count %>
+      </p>
+    </div>
+
+    <%# Date %>
+    <span class="shrink-0 text-xs text-woodsmoke-500">
+      <%= time_ago_in_words(trade.updated_at) %> ago
+    </span>
+  </div>
+<% end %>
