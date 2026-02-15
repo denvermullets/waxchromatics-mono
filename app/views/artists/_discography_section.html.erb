@@ -38,14 +38,14 @@
               <% if pagy.previous %>
                 <%= link_to discography_section_artist_path(artist, release_type: release_type, page: pagy.previous),
                             data: { turbo_frame: "discography_#{release_type}" },
-                            class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+                            class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
                   &larr;
                 <% end %>
               <% end %>
               <% if pagy.next %>
                 <%= link_to discography_section_artist_path(artist, release_type: release_type, page: pagy.next),
                             data: { turbo_frame: "discography_#{release_type}" },
-                            class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+                            class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
                   &rarr;
                 <% end %>
               <% end %>

@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
   <% if notice = flash[:notice] %>
-    <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-sm inline-block" id="notice"><%= notice %></p>
   <% end %>
 
   <%# Breadcrumb %>
@@ -22,7 +22,7 @@
     <%# Left column: cover, notes, actions %>
     <div class="lg:col-span-1 space-y-4">
       <% if @release.cover_art_url.present? %>
-        <div class="w-full aspect-square rounded-xl border border-woodsmoke-700 overflow-hidden bg-woodsmoke-700">
+        <div class="w-full aspect-square rounded-sm border border-woodsmoke-700 overflow-hidden bg-woodsmoke-700">
           <%= image_tag @release.cover_art_url, alt: @release.title, class: "w-full h-full object-cover" %>
         </div>
       <% else %>
@@ -32,7 +32,7 @@
       <%= render "releases/collection_buttons" %>
 
       <% if @release.notes.present? %>
-        <div class="p-4 rounded-xl border border-woodsmoke-800 bg-woodsmoke-925">
+        <div class="p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
           <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Notes</h3>
           <p class="text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line"><%= @release.notes %></p>
         </div>

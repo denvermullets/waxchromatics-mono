@@ -2,22 +2,22 @@
   <div class="flex flex-col gap-4 mb-4">
     <%# Collection button - Crusta orange %>
     <% if @collection_count > 0 %>
-      <%= button_to collection_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-lg bg-crusta-400 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer hover:bg-crusta-500" do %>
+      <%= button_to collection_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-sm bg-crusta-400 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer hover:bg-crusta-500" do %>
         In Collection (<%= @collection_count %>)
       <% end %>
     <% else %>
-      <%= button_to collection_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-lg border border-crusta-400 text-crusta-400 font-semibold text-sm transition-colors cursor-pointer hover:bg-crusta-400 hover:text-woodsmoke-950" do %>
+      <%= button_to collection_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-sm border border-crusta-400 text-crusta-400 font-semibold text-sm transition-colors cursor-pointer hover:bg-crusta-400 hover:text-woodsmoke-950" do %>
         Add to Collection
       <% end %>
     <% end %>
 
     <%# Wantlist button - Bright Turquoise %>
     <% if @wantlist_count > 0 %>
-      <%= button_to wantlist_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-lg bg-bright-turquoise-400 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer hover:bg-bright-turquoise-500" do %>
+      <%= button_to wantlist_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-sm bg-bright-turquoise-400 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer hover:bg-bright-turquoise-500" do %>
         In Wantlist (<%= @wantlist_count %>)
       <% end %>
     <% else %>
-      <%= button_to wantlist_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-lg border border-bright-turquoise-400 text-bright-turquoise-400 font-semibold text-sm transition-colors cursor-pointer hover:bg-bright-turquoise-400 hover:text-woodsmoke-950" do %>
+      <%= button_to wantlist_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-sm border border-bright-turquoise-400 text-bright-turquoise-400 font-semibold text-sm transition-colors cursor-pointer hover:bg-bright-turquoise-400 hover:text-woodsmoke-950" do %>
         Add to Wantlist
       <% end %>
     <% end %>
@@ -25,16 +25,16 @@
     <%# Trade List button - Prelude purple %>
     <% if @collection_count > 0 %>
       <% if @trade_list_count > 0 %>
-        <%= button_to trade_list_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-lg bg-prelude-400 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer hover:bg-prelude-500" do %>
+        <%= button_to trade_list_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-sm bg-prelude-400 text-woodsmoke-950 font-semibold text-sm transition-colors cursor-pointer hover:bg-prelude-500" do %>
           On Trade List (<%= @trade_list_count %>)
         <% end %>
       <% else %>
-        <%= button_to trade_list_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-lg border border-prelude-400 text-prelude-400 font-semibold text-sm transition-colors cursor-pointer hover:bg-prelude-400 hover:text-woodsmoke-950" do %>
+        <%= button_to trade_list_items_toggle_path, params: { release_id: @release.id }, form: { class: "w-full" }, class: "w-full px-4 py-2.5 rounded-sm border border-prelude-400 text-prelude-400 font-semibold text-sm transition-colors cursor-pointer hover:bg-prelude-400 hover:text-woodsmoke-950" do %>
           Add to Trade List
         <% end %>
       <% end %>
     <% else %>
-      <button disabled class="w-full px-4 py-2.5 rounded-lg border border-woodsmoke-700 text-woodsmoke-600 font-semibold text-sm cursor-not-allowed">
+      <button disabled class="w-full px-4 py-2.5 rounded-sm border border-woodsmoke-700 text-woodsmoke-600 font-semibold text-sm cursor-not-allowed">
         Add to Trade List
       </button>
     <% end %>

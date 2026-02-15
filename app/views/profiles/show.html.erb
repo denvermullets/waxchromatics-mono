@@ -3,7 +3,7 @@
   <aside class="lg:w-72 shrink-0 space-y-5">
 
     <%# Profile Card %>
-    <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+    <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6">
       <div class="flex flex-col items-center text-center">
         <% if @user.avatar_url.present? %>
           <%= image_tag @user.avatar_url, alt: @user.username, class: "w-24 h-24 rounded-full object-cover border-2 border-woodsmoke-700" %>
@@ -31,17 +31,17 @@
       <%# Links %>
       <div class="mt-5 space-y-2">
         <%= link_to "View Crates", crates_path(username: @user.username),
-            class: "block w-full text-center rounded-lg px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
+            class: "block w-full text-center rounded-sm px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
         <% if @own_profile %>
           <%= link_to "Settings", user_settings_path(username: @user.username),
-              class: "block w-full text-center rounded-lg px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
+              class: "block w-full text-center rounded-sm px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
         <% end %>
       </div>
     </div>
 
     <%# Profile Stats Card %>
     <% if @total_records.to_i > 0 %>
-      <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+      <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6">
         <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Profile Stats</h2>
         <div class="grid grid-cols-2 gap-4">
           <div class="text-center">
@@ -69,7 +69,7 @@
 
       <%# Condition Grades Card %>
       <% if @condition_chart_data.present? %>
-        <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-6">
+        <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6">
           <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Condition Grades</h2>
           <% condition_total = @condition_chart_data.values.sum.to_f %>
           <% condition_colors = { 'M' => 'bg-bright-turquoise-300', 'NM' => 'bg-crusta-400', 'VG+' => 'bg-woodsmoke-400', 'VG' => 'bg-prelude-400', 'G+' => 'bg-azalea-400', 'G' => 'bg-azalea-600', 'F' => 'bg-azalea-800', 'P' => 'bg-woodsmoke-600' } %>
@@ -102,7 +102,7 @@
 
         <%# By Genre %>
         <% if @genre_chart_data.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Genre</h3>
             <% genre_max = @genre_chart_data.values.max.to_f %>
             <% genre_total = @genre_chart_data.values.sum.to_f %>
@@ -122,7 +122,7 @@
 
         <%# By Decade %>
         <% if @decade_chart_data.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Decade</h3>
             <% decade_max = @decade_chart_data.values.max.to_f %>
             <div class="flex items-end justify-around gap-3">
@@ -141,7 +141,7 @@
 
         <%# By Format %>
         <% if @format_chart_data.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Format</h3>
             <% sorted_formats = @format_chart_data.sort_by { |_, c| -c } %>
             <% format_total = @format_chart_data.values.sum.to_f %>
@@ -170,7 +170,7 @@
 
         <%# Top Labels %>
         <% if @top_labels.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Top Labels</h3>
             <% label_max = @top_labels.values.max.to_f %>
             <div class="space-y-2.5">
@@ -189,7 +189,7 @@
 
         <%# Top Artists %>
         <% if @top_artists.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Top Artists</h3>
             <% artist_max = @top_artists.values.max.to_f %>
             <div class="space-y-2.5">
@@ -208,7 +208,7 @@
 
         <%# Record Size %>
         <% if @size_chart_data.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Record Size</h3>
             <% size_max = @size_chart_data.values.max.to_f %>
             <div class="flex items-end justify-around gap-3">
@@ -227,7 +227,7 @@
 
         <%# Colored Vinyl %>
         <% if @color_chart_data.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Colored Vinyl</h3>
             <% color_max = @color_chart_data.values.max.to_f %>
             <div class="space-y-2.5">
@@ -246,7 +246,7 @@
 
         <%# Styles %>
         <% if @style_chart_data.present? %>
-          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-xl p-5">
+          <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
             <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">By Style</h3>
             <% style_max = @style_chart_data.values.max.to_f %>
             <% style_total = @style_chart_data.values.sum.to_f %>

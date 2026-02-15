@@ -1,7 +1,7 @@
 <div
   data-edge-detail-target="detail"
   data-edge-index="<%= index %>"
-  class="hidden mt-4 mx-auto max-w-2xl bg-woodsmoke-900 border border-woodsmoke-800 rounded-xl p-6"
+  class="hidden mt-4 mx-auto max-w-2xl bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm p-6"
 >
   <h3 class="text-xs font-semibold tracking-widest text-crusta-400 uppercase mb-3">Connection Detail</h3>
 
@@ -23,7 +23,7 @@
     <% art_url = rg&.cover_art_url || release.cover_art_url %>
 
     <%= link_to artist_release_group_path(edge[:from_artist], rg || release),
-          class: "block bg-woodsmoke-950 border border-woodsmoke-800 rounded-lg p-4 hover:border-woodsmoke-600 transition-colors" do %>
+          class: "block bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm p-4 hover:border-woodsmoke-600 transition-colors" do %>
       <div class="flex items-center gap-4">
         <% if art_url.present? %>
           <%= image_tag art_url, alt: release.title, class: "w-14 h-14 rounded object-cover flex-shrink-0" %>

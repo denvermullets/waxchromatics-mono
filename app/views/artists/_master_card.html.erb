@@ -38,11 +38,11 @@
 <% end %>
 
 <% if local_release_group %>
-  <%= link_to artist_release_group_path(@artist, local_release_group), class: "block p-4 rounded-lg border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4" do %>
+  <%= link_to artist_release_group_path(@artist, local_release_group), class: "block p-4 rounded-sm border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4" do %>
     <%= card_content %>
   <% end %>
 <% else %>
-  <div class="p-4 rounded-lg border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4">
+  <div class="p-4 rounded-sm border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4">
     <%= card_content %>
   </div>
 <% end %>

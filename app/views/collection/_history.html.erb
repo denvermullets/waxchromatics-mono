@@ -117,13 +117,13 @@
       <div class="flex gap-1">
         <% if @pagy.previous %>
           <%= link_to crates_path(username: @user.username, tab: "history", page: @pagy.previous),
-                      class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+                      class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
             &larr; Prev
           <% end %>
         <% end %>
         <% if @pagy.next %>
           <%= link_to crates_path(username: @user.username, tab: "history", page: @pagy.next),
-                      class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
+                      class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>
             Next &rarr;
           <% end %>
         <% end %>

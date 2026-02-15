@@ -12,7 +12,7 @@
 
   <div data-collapsible-target="content" class="hidden mt-3 space-y-2">
     <% alternate_paths.each do |alt_path| %>
-      <div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-lg px-4 py-3 text-sm text-woodsmoke-300">
+      <div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-4 py-3 text-sm text-woodsmoke-300">
         <% alt_path.each_with_index do |edge, i| %>
           <% if i == 0 %>
             <span class="text-woodsmoke-100 font-medium"><%= edge[:from_artist]&.name %></span>
