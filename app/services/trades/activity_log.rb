@@ -64,7 +64,9 @@ module Trades
     def trade_update_text(version)
       changes = version.object_changes || {}
       if changes.key?('status')
-        "changed status from #{changes['status'].first} to #{changes['status'].last}"
+        "changed status to #{changes['status'].last}"
+      elsif changes.key?('proposed_by_id')
+        're-proposed the trade'
       else
         'updated the trade'
       end

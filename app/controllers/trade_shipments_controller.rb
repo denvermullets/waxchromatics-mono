@@ -76,7 +76,7 @@ class TradeShipmentsController < ApplicationController
     Turbo::StreamsChannel.broadcast_replace_later_to(
       [@trade, :shipments, @partner],
       target: 'trade_activity_log',
-      partial: 'trade_shipments/activity_log_broadcast',
+      partial: 'trades/activity_log_broadcast',
       locals: { trade: @trade }
     )
   end

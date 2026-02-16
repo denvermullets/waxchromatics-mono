@@ -26,6 +26,7 @@ Rails.application.routes.draw do
                                             as: :search_recipient_collection_trades
   post 'trades/select_recipient', to: 'trades#select_recipient', as: :select_recipient_trades
   post 'trades/add_item', to: 'trades#add_item', as: :add_item_trades
+  post 'trades/remove_item', to: 'trades#remove_item', as: :remove_item_trades
 
   post 'collection_items/toggle', to: 'collection_items#toggle'
   post 'wantlist_items/toggle', to: 'wantlist_items#toggle'
@@ -49,7 +50,7 @@ Rails.application.routes.draw do
     get ':username/crates', to: 'collection#show', as: :crates
     get ':username/trade-finder', to: 'trade_finder#show', as: :trade_finder
     scope ':username' do
-      resources :trades, only: %i[index show new create destroy] do
+      resources :trades, only: %i[index show new create update destroy] do
         member do
           patch :propose
           patch :accept
@@ -57,7 +58,7 @@ Rails.application.routes.draw do
           patch :cancel
         end
         resources :trade_messages, only: [:create], path: 'messages'
-        resources :trade_items, only: %i[create destroy], path: 'items' do
+        resources :trade_items, only: [], path: 'items' do
           collection do
             get :search_send
             get :search_receive

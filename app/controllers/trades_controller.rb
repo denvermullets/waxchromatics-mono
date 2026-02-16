@@ -1,10 +1,11 @@
 class TradesController < ApplicationController
-  include TradeSearch
+  include TradeFormActions
 
   TRADES_PER_PAGE = 20
 
-  before_action :set_trade, only: %i[show destroy propose accept decline cancel]
-  before_action :require_participant, only: %i[show]
+  before_action :set_trade, only: %i[show update destroy propose accept decline cancel]
+  before_action :require_participant, only: %i[show update]
+  before_action :require_modifiable, only: %i[update]
   before_action :require_initiator, only: %i[destroy]
 
   def index
@@ -39,14 +40,8 @@ class TradesController < ApplicationController
 
   def create
     @trade = Current.user.initiated_trades.build(trade_params)
-
-    build_trade_items
-
-    if params[:commit] == 'propose'
-      @trade.status = 'proposed'
-      @trade.proposed_at = Time.current
-      @trade.proposed_by = Current.user
-    end
+    build_new_trade_items
+    stamp_proposal if params[:commit] == 'propose'
 
     if @trade.save
       redirect_to trade_path(username: Current.user.username, id: @trade),
@@ -56,6 +51,16 @@ class TradesController < ApplicationController
       @pre_send_items = []
       @pre_receive_items = []
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    reconciler = Trades::ItemReconciler.new(trade: @trade, user: Current.user)
+    if reconciler.reconcile_and_repropose(send_ids: int_array(:send_items), receive_ids: int_array(:receive_items))
+      Trades::Broadcaster.new(trade: @trade, user: Current.user).broadcast_update
+      redirect_to trade_path(username: params[:username], id: @trade), notice: 'Trade re-proposed!'
+    else
+      redirect_to trade_path(username: params[:username], id: @trade), alert: 'Could not update trade.'
     end
   end
 
@@ -85,50 +90,6 @@ class TradesController < ApplicationController
     transition('cancel')
   end
 
-  # --- Turbo Frame search endpoints ---
-
-  def search_users
-    @users = if params[:q].present? && params[:q].length >= 2
-               User.where.not(id: Current.user.id)
-                   .where('username ILIKE ?', "%#{params[:q]}%")
-                   .limit(10)
-             else
-               User.none
-             end
-
-    render layout: false
-  end
-
-  def search_collection
-    @items = search_collection_items(Current.user, params[:q])
-    @side = 'send'
-
-    render 'trades/search_collection_results', layout: false
-  end
-
-  def search_recipient_collection
-    return head(:bad_request) unless params[:recipient_id].present?
-
-    recipient = User.find(params[:recipient_id])
-    @items = search_collection_items(recipient, params[:q])
-    @side = 'receive'
-
-    render 'trades/search_collection_results', layout: false
-  end
-
-  # --- Turbo Stream actions ---
-
-  def select_recipient
-    @recipient = User.find(params[:recipient_id])
-    respond_to(&:turbo_stream)
-  end
-
-  def add_item
-    @collection_item = CollectionItem.joins(release: %i[artist release_group]).find(params[:collection_item_id])
-    @side = params[:side]
-    respond_to(&:turbo_stream)
-  end
-
   private
 
   def set_trade
@@ -141,6 +102,12 @@ class TradesController < ApplicationController
     redirect_to trades_path(username: params[:username]), alert: 'Not authorized.'
   end
 
+  def require_modifiable
+    return if @trade.can_modify?(Current.user)
+
+    redirect_to trade_path(username: params[:username], id: @trade), alert: 'This trade cannot be modified.'
+  end
+
   def require_initiator
     return if @trade.initiator_id == Current.user.id
 
@@ -151,22 +118,26 @@ class TradesController < ApplicationController
     params.require(:trade).permit(:recipient_id)
   end
 
-  def build_trade_items
-    (params[:send_items] || []).each do |ci_id|
-      col_item = CollectionItem.find(ci_id)
-      @trade.trade_items.build(user: Current.user, release: col_item.release, collection_item: col_item)
-    end
+  def build_new_trade_items
+    Trades::ItemReconciler.new(trade: @trade, user: Current.user)
+                          .build_from_params(send_ids: params[:send_items], receive_ids: params[:receive_items])
+  end
 
-    (params[:receive_items] || []).each do |ci_id|
-      col_item = CollectionItem.find(ci_id)
-      @trade.trade_items.build(user: @trade.recipient, release: col_item.release, collection_item: col_item)
-    end
+  def stamp_proposal
+    @trade.status = 'proposed'
+    @trade.proposed_at = Time.current
+    @trade.proposed_by = Current.user
+  end
+
+  def int_array(key)
+    Array(params[key]).map(&:to_i)
   end
 
   def transition(action)
     machine = Trades::StatusMachine.new(trade: @trade, user: Current.user, action: action)
     trade_url = trade_path(username: params[:username], id: @trade)
     if machine.call
+      Trades::Broadcaster.new(trade: @trade, user: Current.user).broadcast_update
       redirect_to trade_url, notice: "Trade #{@trade.status}."
     else
       redirect_to trade_url, alert: machine.error

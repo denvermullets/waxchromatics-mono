@@ -1,9 +1,0 @@
-<%= turbo_stream.remove @trade_item %>
-
-<%= turbo_stream.update "trade_status_badge" do %>
-  <%= render "trades/status_badge", status: @trade.status %>
-<% end %>
-
-<%= turbo_stream.replace "trade_action_buttons" do %>
-  <%= render "trades/action_buttons", trade: @trade %>
-<% end %>

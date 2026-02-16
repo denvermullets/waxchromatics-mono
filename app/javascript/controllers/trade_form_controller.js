@@ -1,22 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
-// Handles client-side-only operations for the trade form.
-// Search and item addition are handled by Turbo Frames/Streams.
+// Handles the new trade form's recipient selection.
+// Item add/remove is handled entirely by Turbo Streams.
 export default class extends Controller {
-  // Remove a selected item (card + hidden field) — no server round-trip needed
-  removeItem(event) {
-    event.preventDefault();
-    const button = event.target.closest("[data-item-id]");
-    if (!button) return;
-
-    const { itemId, side } = button.dataset;
-    const card = document.getElementById(`${side}_item_${itemId}`);
-    const hidden = document.getElementById(`${side}_hidden_${itemId}`);
-
-    if (card) card.remove();
-    if (hidden) hidden.remove();
-  }
-
   // Clear the selected recipient and reset receive side
   clearRecipient() {
     const area = document.getElementById("recipient_area");

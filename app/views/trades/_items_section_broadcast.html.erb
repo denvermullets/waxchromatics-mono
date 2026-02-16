@@ -1,0 +1,86 @@
+<%# locals: (trade:, partner:) %>
+<%# partner here is the user RECEIVING this broadcast (the one viewing the page) %>
+<%# So "send" = items from that user, "receive" = items from the other user %>
+<% send_items = trade.items_from(partner)
+                     .includes(release: %i[artist release_group release_formats], collection_item: {}) %>
+<% receive_items = trade.items_for(partner)
+                        .includes(release: %i[artist release_group release_formats], collection_item: {}) %>
+<% can_modify = trade.can_modify?(partner) %>
+
+<div id="trade_items_section">
+  <% if can_modify %>
+    <form id="trade_edit_form" action="<%= trade_path(username: partner.username, id: trade) %>" method="post">
+      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="authenticity_token" value="">
+      <div id="send_hidden_fields">
+        <% send_items.each do |item| %>
+          <input type="hidden" name="send_items[]" value="<%= item.collection_item_id %>"
+                 id="send_hidden_<%= item.collection_item_id %>">
+        <% end %>
+      </div>
+      <div id="receive_hidden_fields">
+        <% receive_items.each do |item| %>
+          <input type="hidden" name="receive_items[]" value="<%= item.collection_item_id %>"
+                 id="receive_hidden_<%= item.collection_item_id %>">
+        <% end %>
+      </div>
+    </form>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <h3 class="text-xs font-semibold text-crusta-400 uppercase tracking-wider mb-3">You Send</h3>
+        <div id="send_items" class="space-y-2">
+          <% send_items.each do |item| %>
+            <%= render "trades/selected_item", collection_item: item.collection_item, side: "send" %>
+          <% end %>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold text-blue-ribbon-400 uppercase tracking-wider mb-3">You Receive</h3>
+        <div id="receive_items" class="space-y-2">
+          <% receive_items.each do |item| %>
+            <%= render "trades/selected_item", collection_item: item.collection_item, side: "receive" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <button type="submit" form="trade_edit_form"
+          class="px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors cursor-pointer">
+        Re-propose Trade
+      </button>
+    </div>
+  <% else %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <h3 class="text-xs font-semibold text-crusta-400 uppercase tracking-wider mb-3">
+          You Send <span class="text-woodsmoke-500 normal-case font-normal">(<%= send_items.size %>)</span>
+        </h3>
+        <% if send_items.any? %>
+          <div class="space-y-2">
+            <% send_items.each do |item| %>
+              <%= render "trades/trade_item_card", item: item %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-xs text-woodsmoke-500 py-4">No items.</p>
+        <% end %>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold text-blue-ribbon-400 uppercase tracking-wider mb-3">
+          You Receive <span class="text-woodsmoke-500 normal-case font-normal">(<%= receive_items.size %>)</span>
+        </h3>
+        <% if receive_items.any? %>
+          <div class="space-y-2">
+            <% receive_items.each do |item| %>
+              <%= render "trades/trade_item_card", item: item %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-xs text-woodsmoke-500 py-4">No items.</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
