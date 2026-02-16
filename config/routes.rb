@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
   mount MissionControl::Jobs::Engine, at: '/jobs'
 
   resource :session, only: %i[new create destroy]
@@ -55,6 +56,7 @@ Rails.application.routes.draw do
           patch :decline
           patch :cancel
         end
+        resources :trade_messages, only: [:create], path: 'messages'
       end
       resources :imports, only: %i[new create show], controller: 'collection_imports',
                           path: 'collections/imports',

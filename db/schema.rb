@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_15_025739) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_16_113557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -253,6 +253,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_15_025739) do
     t.index ["user_id"], name: "index_trade_list_items_on_user_id"
   end
 
+  create_table "trade_messages", force: :cascade do |t|
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.bigint "trade_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["trade_id", "created_at"], name: "index_trade_messages_on_trade_id_and_created_at"
+    t.index ["trade_id"], name: "index_trade_messages_on_trade_id"
+    t.index ["user_id"], name: "index_trade_messages_on_user_id"
+  end
+
   create_table "trades", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "initiator_id", null: false
@@ -337,6 +348,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_15_025739) do
   add_foreign_key "trade_list_items", "collection_items"
   add_foreign_key "trade_list_items", "releases"
   add_foreign_key "trade_list_items", "users"
+  add_foreign_key "trade_messages", "trades"
+  add_foreign_key "trade_messages", "users"
   add_foreign_key "trades", "users", column: "initiator_id"
   add_foreign_key "trades", "users", column: "recipient_id"
   add_foreign_key "wantlist_items", "releases"
