@@ -1,0 +1,5 @@
+<%# locals: (trade:) %>
+<div id="trade_activity_log">
+  <% activity = Trades::ActivityLog.new(trade: trade).entries %>
+  <%= render "trades/activity_log", activity: activity %>
+</div>

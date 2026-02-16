@@ -22,9 +22,9 @@ class TradesController < ApplicationController
   def show
     @partner = @trade.partner_for(Current.user)
     @send_items = @trade.items_from(Current.user)
-                        .includes(release: %i[artist release_group], collection_item: {})
+                        .includes(release: %i[artist release_group release_formats], collection_item: {})
     @receive_items = @trade.items_for(Current.user)
-                           .includes(release: %i[artist release_group], collection_item: {})
+                           .includes(release: %i[artist release_group release_formats], collection_item: {})
     @activity = Trades::ActivityLog.new(trade: @trade).entries
     @messages = @trade.trade_messages.includes(:user).order(:created_at)
   end
@@ -45,6 +45,7 @@ class TradesController < ApplicationController
     if params[:commit] == 'propose'
       @trade.status = 'proposed'
       @trade.proposed_at = Time.current
+      @trade.proposed_by = Current.user
     end
 
     if @trade.save
@@ -147,7 +148,7 @@ class TradesController < ApplicationController
   end
 
   def trade_params
-    params.require(:trade).permit(:recipient_id, :notes)
+    params.require(:trade).permit(:recipient_id)
   end
 
   def build_trade_items

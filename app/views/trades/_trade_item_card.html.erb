@@ -1,5 +1,5 @@
-<%# locals: (item:) %>
-<div class="flex items-center gap-2 bg-woodsmoke-925 rounded-sm p-2">
+<%# locals: (item:, trade: nil, removable: false) %>
+<div id="<%= dom_id(item) %>" class="flex items-center gap-2 bg-woodsmoke-925 rounded-sm p-2">
   <%= render "shared/cover_art",
              thumb: item.release.release_group&.cover_art_url,
              alt: item.release.title,
@@ -8,9 +8,32 @@
     <p class="text-xs text-woodsmoke-200 truncate"><%= item.release.title %></p>
     <p class="text-[10px] text-woodsmoke-400 truncate"><%= item.release.artist&.name %></p>
   </div>
-  <% if item.collection_item&.condition.present? %>
-    <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-800 text-woodsmoke-300 rounded">
-      <%= item.collection_item.condition %>
+  <% format = item.release.release_formats.first %>
+  <% if format&.name.present? %>
+    <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-700 text-woodsmoke-200 rounded">
+      <%= format.name %>
     </span>
+  <% end %>
+  <% if item.collection_item&.condition.present? %>
+    <% condition = item.collection_item.condition %>
+    <% condition_color = case condition
+         when 'M', 'NM', 'VG+', 'VG' then 'bg-bright-turquoise-500/15 text-bright-turquoise-400'
+         when 'G+', 'G' then 'bg-crusta-500/15 text-crusta-400'
+         when 'F', 'P' then 'bg-red-500/15 text-red-400'
+         else 'bg-woodsmoke-800 text-woodsmoke-300'
+       end %>
+    <span class="shrink-0 px-1.5 py-0.5 text-[10px] rounded <%= condition_color %>">
+      <%= condition %>
+    </span>
+  <% end %>
+  <% if removable && trade %>
+    <%= button_to trade_trade_item_path(username: params[:username], trade_id: trade, id: item),
+        method: :delete,
+        data: { turbo_stream: true },
+        class: "shrink-0 text-woodsmoke-500 hover:text-red-400 transition-colors cursor-pointer" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    <% end %>
   <% end %>
 </div>

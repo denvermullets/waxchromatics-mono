@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_113557) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_16_142239) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -264,17 +264,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_113557) do
     t.index ["user_id"], name: "index_trade_messages_on_user_id"
   end
 
+  create_table "trade_shipments", force: :cascade do |t|
+    t.string "carrier"
+    t.datetime "created_at", null: false
+    t.datetime "last_event_at"
+    t.text "last_event_description"
+    t.string "status", default: "pending", null: false
+    t.string "tracking_number"
+    t.bigint "trade_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["trade_id", "user_id"], name: "index_trade_shipments_on_trade_id_and_user_id", unique: true
+    t.index ["trade_id"], name: "index_trade_shipments_on_trade_id"
+    t.index ["user_id"], name: "index_trade_shipments_on_user_id"
+  end
+
   create_table "trades", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "initiator_id", null: false
-    t.text "notes"
     t.datetime "proposed_at"
+    t.bigint "proposed_by_id"
     t.bigint "recipient_id", null: false
     t.datetime "responded_at"
     t.string "status", default: "draft", null: false
     t.datetime "updated_at", null: false
     t.index ["initiator_id", "status"], name: "index_trades_on_initiator_id_and_status"
     t.index ["initiator_id"], name: "index_trades_on_initiator_id"
+    t.index ["proposed_by_id"], name: "index_trades_on_proposed_by_id"
     t.index ["recipient_id", "status"], name: "index_trades_on_recipient_id_and_status"
     t.index ["recipient_id"], name: "index_trades_on_recipient_id"
     t.index ["status"], name: "index_trades_on_status"
@@ -350,7 +366,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_113557) do
   add_foreign_key "trade_list_items", "users"
   add_foreign_key "trade_messages", "trades"
   add_foreign_key "trade_messages", "users"
+  add_foreign_key "trade_shipments", "trades"
+  add_foreign_key "trade_shipments", "users"
   add_foreign_key "trades", "users", column: "initiator_id"
+  add_foreign_key "trades", "users", column: "proposed_by_id"
   add_foreign_key "trades", "users", column: "recipient_id"
   add_foreign_key "wantlist_items", "releases"
   add_foreign_key "wantlist_items", "users"

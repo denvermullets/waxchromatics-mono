@@ -5,8 +5,10 @@ class Trade < ApplicationRecord
 
   belongs_to :initiator, class_name: 'User'
   belongs_to :recipient, class_name: 'User'
+  belongs_to :proposed_by, class_name: 'User', optional: true
   has_many :trade_items, dependent: :destroy
   has_many :trade_messages, dependent: :destroy
+  has_many :trade_shipments, dependent: :destroy
 
   validates :status, inclusion: { in: STATUSES }
   validate :participants_must_differ
@@ -31,6 +33,22 @@ class Trade < ApplicationRecord
 
   def items_for(user)
     trade_items.where.not(user: user)
+  end
+
+  def modifiable?
+    draft? || proposed?
+  end
+
+  def can_modify?(user)
+    participant?(user) && modifiable?
+  end
+
+  def proposer?(user)
+    proposed_by_id == user.id
+  end
+
+  def shipment_for(user)
+    trade_shipments.find_by(user: user)
   end
 
   private

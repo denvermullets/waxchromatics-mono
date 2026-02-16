@@ -1,5 +1,5 @@
 <%# locals: (trade:) %>
-<div class="flex items-center gap-2">
+<div id="trade_action_buttons" class="flex items-center gap-2">
   <% un = params[:username] %>
   <% if trade.draft? && trade.initiator_id == Current.user.id %>
     <%= button_to "Propose", propose_trade_path(username: un, id: trade), method: :patch,
@@ -8,14 +8,14 @@
         data: { turbo_confirm: "Delete this draft?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>
 
-  <% elsif trade.proposed? && trade.recipient_id == Current.user.id %>
+  <% elsif trade.proposed? && trade.proposed_by_id != Current.user.id %>
     <%= button_to "Accept", accept_trade_path(username: un, id: trade), method: :patch,
         class: "px-4 py-2 text-sm rounded-sm bg-green-600 text-white font-medium hover:bg-green-500 transition-colors cursor-pointer" %>
     <%= button_to "Decline", decline_trade_path(username: un, id: trade), method: :patch,
         data: { turbo_confirm: "Decline this trade?" },
         class: "px-4 py-2 text-sm rounded-sm bg-red-600 text-white font-medium hover:bg-red-500 transition-colors cursor-pointer" %>
 
-  <% elsif trade.proposed? && trade.initiator_id == Current.user.id %>
+  <% elsif trade.proposed? && trade.proposed_by_id == Current.user.id %>
     <%= button_to "Cancel", cancel_trade_path(username: un, id: trade), method: :patch,
         data: { turbo_confirm: "Cancel this trade proposal?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>

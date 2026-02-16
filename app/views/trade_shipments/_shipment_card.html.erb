@@ -1,0 +1,38 @@
+<%# locals: (shipment:, editable: false, trade:) %>
+<div id="<%= dom_id(shipment) %>" class="space-y-2">
+  <% if editable %>
+    <%= render "trade_shipments/form", trade: trade, shipment: shipment %>
+  <% else %>
+    <div class="space-y-1.5">
+      <% if shipment.carrier.present? %>
+        <p class="text-sm text-woodsmoke-200">
+          <span class="text-woodsmoke-400">Carrier:</span> <%= shipment.carrier %>
+        </p>
+      <% end %>
+      <% if shipment.tracking_number.present? %>
+        <p class="text-sm text-woodsmoke-200">
+          <span class="text-woodsmoke-400">Tracking:</span> <%= shipment.tracking_number %>
+        </p>
+      <% end %>
+      <p class="text-sm">
+        <span class="text-woodsmoke-400">Status:</span>
+        <% status_color = case shipment.status
+             when 'pending' then 'text-woodsmoke-300'
+             when 'shipped' then 'text-crusta-400'
+             when 'in_transit' then 'text-blue-ribbon-400'
+             when 'delivered' then 'text-bright-turquoise-400'
+             else 'text-woodsmoke-300'
+           end %>
+        <span class="<%= status_color %> font-medium"><%= shipment.status.titleize %></span>
+      </p>
+      <% if shipment.last_event_description.present? %>
+        <p class="text-xs text-woodsmoke-400">
+          <%= shipment.last_event_description %>
+          <% if shipment.last_event_at.present? %>
+            &middot; <%= time_ago_in_words(shipment.last_event_at) %> ago
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

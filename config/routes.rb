@@ -57,6 +57,13 @@ Rails.application.routes.draw do
           patch :cancel
         end
         resources :trade_messages, only: [:create], path: 'messages'
+        resources :trade_items, only: %i[create destroy], path: 'items' do
+          collection do
+            get :search_send
+            get :search_receive
+          end
+        end
+        resources :trade_shipments, only: %i[create update], path: 'shipments'
       end
       resources :imports, only: %i[new create show], controller: 'collection_imports',
                           path: 'collections/imports',

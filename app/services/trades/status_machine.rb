@@ -5,13 +5,6 @@ module Trades
       'proposed' => { 'accept' => 'accepted', 'decline' => 'declined', 'cancel' => 'cancelled' }
     }.freeze
 
-    PERMISSIONS = {
-      'propose' => :initiator,
-      'cancel' => :initiator,
-      'accept' => :recipient,
-      'decline' => :recipient
-    }.freeze
-
     attr_reader :trade, :user, :action, :error
 
     def initialize(trade:, user:, action:)
@@ -45,18 +38,32 @@ module Trades
     end
 
     def stamp_timestamps
-      trade.proposed_at = Time.current if action == 'propose'
+      if action == 'propose'
+        trade.proposed_at = Time.current
+        trade.proposed_by = user
+      end
       trade.responded_at = Time.current if %w[accept decline].include?(action)
     end
 
     def permitted?
-      required_role = PERMISSIONS[action]
-      return false unless required_role
-
-      case required_role
-      when :initiator then trade.initiator_id == user.id
-      when :recipient then trade.recipient_id == user.id
+      case action
+      when 'propose' then initiator?
+      when 'accept', 'decline' then non_proposer?
+      when 'cancel' then trade.draft? ? initiator? : proposer?
+      else false
       end
+    end
+
+    def initiator?
+      trade.initiator_id == user.id
+    end
+
+    def proposer?
+      trade.proposed_by_id == user.id
+    end
+
+    def non_proposer?
+      trade.participant?(user) && !proposer?
     end
   end
 end
