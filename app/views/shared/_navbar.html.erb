@@ -5,14 +5,54 @@
         <span class="text-crusta-400">wax</span><span class="text-woodsmoke-50">chromatics</span>
       <% end %>
 
-      <%= link_to "Profile", profile_path(username: Current.user.username), class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Crates", crates_path(username: Current.user.username), class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Artists", artists_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Connections", connections_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Trade Finder", trade_finder_path(username: Current.user.username), class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Trades", trades_path(username: Current.user.username), class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Add Release", new_release_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
-      <%= link_to "Add Artist", new_artist_path, class: "text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors" %>
+      <%# Browse dropdown %>
+      <div data-controller="dropdown" class="relative" data-action="click@window->dropdown#close">
+        <button data-action="click->dropdown#toggle" class="text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors cursor-pointer flex items-center gap-1">
+          Browse
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
+          <%= link_to "Artists", artists_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+          <%= link_to "Releases", browse_releases_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        </div>
+      </div>
+
+      <%# My Stuff dropdown %>
+      <div data-controller="dropdown" class="relative" data-action="click@window->dropdown#close">
+        <button data-action="click->dropdown#toggle" class="text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors cursor-pointer flex items-center gap-1">
+          My Stuff
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
+          <%= link_to "Profile", profile_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+          <%= link_to "Crates", crates_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+          <%= link_to "Connections", connections_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        </div>
+      </div>
+
+      <%# Trading dropdown %>
+      <div data-controller="dropdown" class="relative" data-action="click@window->dropdown#close">
+        <button data-action="click->dropdown#toggle" class="text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors cursor-pointer flex items-center gap-1">
+          Trading
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
+          <%= link_to "Trade Finder", trade_finder_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+          <%= link_to "Trades", trades_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        </div>
+      </div>
+
+      <%# Add dropdown %>
+      <div data-controller="dropdown" class="relative" data-action="click@window->dropdown#close">
+        <button data-action="click->dropdown#toggle" class="text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors cursor-pointer flex items-center gap-1">
+          Add
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
+          <%= link_to "Add Release", new_release_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+          <%= link_to "Add Artist", new_artist_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        </div>
+      </div>
     </div>
 
     <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-woodsmoke-400 hover:text-woodsmoke-50 cursor-pointer transition-colors" %>

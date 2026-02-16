@@ -8,6 +8,7 @@ class IngestCreditedArtistDiscographyJob < ApplicationJob
 
     enrich_artist_profile(artist, artist_discogs_id)
     artist.update!(discography_ingested: true)
+    WaxApiClient::MarkArtistIngested.call(discogs_id: artist_discogs_id)
 
     IngestArtistDiscographyJob.perform_later(artist_discogs_id)
   end

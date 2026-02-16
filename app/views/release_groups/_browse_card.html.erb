@@ -1,0 +1,43 @@
+<%# locals: (rg:, variant_count:) %>
+<% artist = rg.releases.first&.artist %>
+<% release = rg.releases.first %>
+<% fmt = release&.release_formats&.first %>
+<% label = release&.release_labels&.first&.label %>
+<% cover = rg.cover_art_url || release&.cover_art_url %>
+
+<div class="rounded-sm border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden">
+  <% if artist %>
+    <%= link_to artist_release_group_path(artist, rg), class: "block" do %>
+      <%= render "shared/cover_art", thumb: cover, alt: rg.title, size: :xl %>
+    <% end %>
+  <% else %>
+    <%= render "shared/cover_art", thumb: cover, alt: rg.title, size: :xl %>
+  <% end %>
+
+  <div class="px-2 py-1.5">
+    <% if artist %>
+      <%= link_to artist.name, artist_path(artist), class: "text-xs text-crusta-400 hover:text-crusta-300 transition-colors block truncate" %>
+    <% end %>
+    <% if artist %>
+      <%= link_to rg.title, artist_release_group_path(artist, rg),
+                  class: "text-sm font-medium text-woodsmoke-100 hover:text-woodsmoke-50 transition-colors block truncate" %>
+    <% else %>
+      <p class="text-sm font-medium text-woodsmoke-100 truncate"><%= rg.title %></p>
+    <% end %>
+
+    <div class="flex flex-wrap items-center gap-1 mt-1">
+      <% if fmt&.name.present? %>
+        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= fmt.name %></span>
+      <% end %>
+      <% if rg.year.present? %>
+        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= rg.year %></span>
+      <% end %>
+      <% if label&.name.present? %>
+        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400 truncate max-w-[8rem]"><%= label.name %></span>
+      <% end %>
+      <% if variant_count > 1 %>
+        <span class="ml-auto text-xs font-semibold text-crusta-400"><%= variant_count %> var.</span>
+      <% end %>
+    </div>
+  </div>
+</div>
