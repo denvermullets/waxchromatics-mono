@@ -88,5 +88,8 @@
   </div>
 <% end %>
 
-<%# Activity Log %>
-<%= render "trades/activity_log", activity: @activity %>
+<%# Activity Log & Messages %>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <%= render "trades/activity_log", activity: @activity %>
+  <%= render "trade_messages/messages_panel", trade: @trade, messages: @messages %>
+</div>
