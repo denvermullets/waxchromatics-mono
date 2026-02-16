@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :session, only: %i[new create destroy]
   resource :registration, only: %i[new create]
   resources :passwords, param: :token
+  get 'releases/browse', to: 'release_groups#index', as: :browse_releases
   resources :releases, only: %i[index new create]
   get 'artists/search', to: 'artists#search', as: :search_artists
   get 'release_groups/search', to: 'release_groups#search', as: :search_release_groups

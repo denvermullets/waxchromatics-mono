@@ -16,4 +16,8 @@
       <p class="text-woodsmoke-400">No discography data available.</p>
     </div>
   <% end %>
+
+  <% if @appearances.any? %>
+    <%= render 'artists/appearances' %>
+  <% end %>
 </div>

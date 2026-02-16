@@ -1,0 +1,35 @@
+<%# locals: (rg:, variant_count:) %>
+<% artist = rg.releases.first&.artist %>
+<% release = rg.releases.first %>
+<% fmt = release&.release_formats&.first %>
+<% label = release&.release_labels&.first&.label %>
+<% cover = rg.cover_art_url || release&.cover_art_url %>
+
+<tr class="border-b border-woodsmoke-800/50 hover:bg-woodsmoke-900 transition-colors">
+  <td class="py-2 px-2">
+    <%= render "shared/cover_art", thumb: cover, alt: rg.title, size: :sm %>
+  </td>
+  <td class="py-2 px-2">
+    <% if artist %>
+      <%= link_to artist.name, artist_path(artist), class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+    <% end %>
+  </td>
+  <td class="py-2 px-2">
+    <% if artist %>
+      <%= link_to rg.title, artist_release_group_path(artist, rg),
+                  class: "text-woodsmoke-100 hover:text-woodsmoke-50 font-medium transition-colors" %>
+    <% else %>
+      <span class="text-woodsmoke-100 font-medium"><%= rg.title %></span>
+    <% end %>
+  </td>
+  <td class="py-2 px-2 text-woodsmoke-300 hidden md:table-cell"><%= fmt&.name %></td>
+  <td class="py-2 px-2 text-woodsmoke-300 hidden md:table-cell"><%= rg.year %></td>
+  <td class="py-2 px-2 text-woodsmoke-300 hidden lg:table-cell truncate max-w-[10rem]"><%= label&.name %></td>
+  <td class="py-2 px-2 text-right">
+    <% if variant_count > 1 %>
+      <span class="text-xs font-semibold text-crusta-400"><%= variant_count %></span>
+    <% else %>
+      <span class="text-xs text-woodsmoke-500"><%= variant_count %></span>
+    <% end %>
+  </td>
+</tr>

@@ -1,0 +1,11 @@
+<div class="mt-10">
+  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Appearances</h2>
+
+  <div>
+    <% @appearances.each do |appearance| %>
+      <%= render 'artists/appearance_section',
+                 role: appearance[:role],
+                 release_groups: appearance[:release_groups] %>
+    <% end %>
+  </div>
+</div>

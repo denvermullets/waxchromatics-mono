@@ -128,6 +128,7 @@ class ArtistsController < ApplicationController
     @artist = Artist.find_by(id: params[:id]) || Artist.find_by(discogs_id: params[:id])
     @local_releases = @artist&.releases || Release.none
     load_discography
+    load_appearances
   end
 
   def load_discography
@@ -138,6 +139,35 @@ class ArtistsController < ApplicationController
 
       pagy_obj, records = pagy(:offset, scope, limit: DISCOGRAPHY_PER_PAGE, page_key: 'page')
       { type: type, pagy: pagy_obj, release_groups: records }
+    end
+  end
+
+  def load_appearances
+    @appearances = []
+    return unless @artist
+
+    rg_ids_by_role = appearance_rg_ids_by_role
+    return if rg_ids_by_role.empty?
+
+    @appearances = build_appearances(rg_ids_by_role)
+  end
+
+  def appearance_rg_ids_by_role
+    @artist.release_contributors
+           .where.not(role: [nil, ''])
+           .joins(release: :release_group)
+           .select('release_contributors.role, release_groups.id AS release_group_id')
+           .distinct
+           .each_with_object({}) { |rc, hash| (hash[rc.role] ||= Set.new) << rc.release_group_id }
+  end
+
+  def build_appearances(rg_ids_by_role)
+    all_rg_ids = rg_ids_by_role.values.reduce(:+).to_a
+    rg_lookup = ReleaseGroup.where(id: all_rg_ids).includes(releases: :artist).index_by(&:id)
+
+    rg_ids_by_role.sort_by { |role, _| role.downcase }.filter_map do |role, rg_ids|
+      rgs = rg_ids.filter_map { |id| rg_lookup[id] }.sort_by { |rg| rg.year || 0 }
+      { role: role, release_groups: rgs } if rgs.any?
     end
   end
 end
