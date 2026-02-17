@@ -147,7 +147,7 @@ class TradesController < ApplicationController
   def compute_index_stats(base)
     @stats = {
       active: base.active.count,
-      completed: base.with_status('accepted').count,
+      completed: base.where(status: %w[accepted delivered]).count,
       pending: base.with_status('proposed').count
     }
 

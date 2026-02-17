@@ -4,6 +4,8 @@ class ProfilesController < ApplicationController
   def show
     @user = User.find_by!(username: params[:username])
     @own_profile = Current.user == @user
+    @average_rating = @user.average_rating
+    @completed_trade_count = @user.completed_trade_count
 
     items = @user.default_collection.collection_items
     @total_records = items.count

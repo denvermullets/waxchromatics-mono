@@ -65,6 +65,7 @@ Rails.application.routes.draw do
           end
         end
         resources :trade_shipments, only: %i[create update], path: 'shipments'
+        resource :rating, only: %i[new create], controller: 'ratings'
       end
       resources :imports, only: %i[new create show], controller: 'collection_imports',
                           path: 'collections/imports',

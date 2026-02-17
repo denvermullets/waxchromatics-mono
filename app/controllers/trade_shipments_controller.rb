@@ -44,7 +44,7 @@ class TradeShipmentsController < ApplicationController
   end
 
   def require_accepted
-    return if @trade.accepted?
+    return if @trade.accepted? || @trade.delivered?
 
     redirect_to trade_path(username: params[:username], id: @trade), alert: 'Trade must be accepted first.'
   end
@@ -61,8 +61,19 @@ class TradeShipmentsController < ApplicationController
 
   def after_save
     @partner = @trade.partner_for(Current.user)
+    check_both_delivered
     @activity = Trades::ActivityLog.new(trade: @trade).entries
     broadcast_to_partner
+  end
+
+  def check_both_delivered
+    return unless @trade.accepted?
+
+    both = @trade.trade_shipments.where(status: 'delivered').count == 2
+    return unless both
+
+    machine = Trades::StatusMachine.new(trade: @trade, user: Current.user, action: 'deliver')
+    machine.call
   end
 
   def broadcast_to_partner

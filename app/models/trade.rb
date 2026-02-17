@@ -1,7 +1,7 @@
 class Trade < ApplicationRecord
   has_paper_trail
 
-  STATUSES = %w[draft proposed accepted declined cancelled].freeze
+  STATUSES = %w[draft proposed accepted declined cancelled delivered].freeze
 
   belongs_to :initiator, class_name: 'User'
   belongs_to :recipient, class_name: 'User'
@@ -9,6 +9,7 @@ class Trade < ApplicationRecord
   has_many :trade_items, dependent: :destroy
   has_many :trade_messages, dependent: :destroy
   has_many :trade_shipments, dependent: :destroy
+  has_many :ratings, as: :rateable, dependent: :destroy
 
   validates :status, inclusion: { in: STATUSES }
   validate :participants_must_differ
@@ -51,6 +52,14 @@ class Trade < ApplicationRecord
 
   def shipment_for(user)
     trade_shipments.find_by(user: user)
+  end
+
+  def rating_by(user)
+    ratings.find_by(reviewer: user)
+  end
+
+  def both_rated?
+    ratings.count == 2
   end
 
   private
