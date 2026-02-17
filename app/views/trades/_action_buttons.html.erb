@@ -1,9 +1,16 @@
 <%# locals: (trade:) %>
 <div id="trade_action_buttons" class="flex items-center gap-2">
   <% un = params[:username] %>
+  <% can_edit = trade.can_modify?(Current.user) %>
+
+  <% if can_edit %>
+    <button type="submit" form="trade_edit_form"
+        class="px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors cursor-pointer">
+      <%= trade.draft? ? 'Propose Trade' : 'Re-propose Trade' %>
+    </button>
+  <% end %>
+
   <% if trade.draft? && trade.initiator_id == Current.user.id %>
-    <%= button_to "Propose", propose_trade_path(username: un, id: trade), method: :patch,
-        class: "px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors cursor-pointer" %>
     <%= button_to "Delete", trade_path(username: un, id: trade), method: :delete,
         data: { turbo_confirm: "Delete this draft?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>

@@ -58,7 +58,7 @@ class TradesController < ApplicationController
     reconciler = Trades::ItemReconciler.new(trade: @trade, user: Current.user)
     if reconciler.reconcile_and_repropose(send_ids: int_array(:send_items), receive_ids: int_array(:receive_items))
       Trades::Broadcaster.new(trade: @trade, user: Current.user).broadcast_update
-      redirect_to trade_path(username: params[:username], id: @trade), notice: 'Trade re-proposed!'
+      redirect_to trade_path(username: params[:username], id: @trade), notice: 'Trade proposed!'
     else
       redirect_to trade_path(username: params[:username], id: @trade), alert: 'Could not update trade.'
     end
