@@ -18,7 +18,7 @@ module Trades
       broadcast_replace(stream, 'trade_activity_log',
                         'trades/activity_log_broadcast', trade: trade)
       broadcast_replace(stream, 'trade_items_section',
-                        'trades/items_section_broadcast', trade: trade, partner: user)
+                        'trades/items_section_broadcast', trade: trade, partner: partner)
     end
 
     private

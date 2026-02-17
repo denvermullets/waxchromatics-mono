@@ -8,3 +8,9 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* Hide the remove button when it's the last item on a trade side */
+#send_items > :only-child [data-remove],
+#receive_items > :only-child [data-remove] {
+  display: none;
+}
