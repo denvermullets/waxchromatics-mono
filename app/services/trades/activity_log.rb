@@ -24,12 +24,24 @@ module Trades
     private
 
     def collect_versions
-      trade_versions = trade.versions.to_a
-      item_versions = PaperTrail::Version
-                      .where(item_type: 'TradeItem', item_id: trade.trade_items.select(:id))
-                      .to_a
+      (trade.versions.to_a + item_versions + shipment_versions).sort_by(&:created_at).reverse
+    end
 
-      (trade_versions + item_versions).sort_by(&:created_at)
+    def item_versions
+      PaperTrail::Version.where(item_type: 'TradeItem', item_id: all_trade_item_ids).to_a
+    end
+
+    def all_trade_item_ids
+      current_ids = trade.trade_items.pluck(:id)
+      destroyed_ids = PaperTrail::Version
+                      .where(item_type: 'TradeItem', event: 'destroy')
+                      .where("(object->>'trade_id')::integer = ?", trade.id)
+                      .pluck(:item_id)
+      (current_ids + destroyed_ids).uniq
+    end
+
+    def shipment_versions
+      PaperTrail::Version.where(item_type: 'TradeShipment', item_id: trade.trade_shipments.select(:id)).to_a
     end
 
     def resolve_users(versions)
@@ -41,6 +53,7 @@ module Trades
       case version.item_type
       when 'Trade' then describe_trade(version)
       when 'TradeItem' then describe_trade_item(version)
+      when 'TradeShipment' then describe_trade_shipment(version)
       else { text: version.event, badge: nil }
       end
     end
@@ -60,9 +73,11 @@ module Trades
     def trade_update_text(version)
       changes = version.object_changes || {}
       if changes.key?('status')
-        "changed status from #{changes['status'].first} to #{changes['status'].last}"
-      elsif changes.key?('notes')
-        'updated the notes'
+        from = changes['status'].first
+        to = changes['status'].last
+        from == to ? 're-proposed the trade' : "changed status to #{to}"
+      elsif changes.key?('proposed_by_id')
+        're-proposed the trade'
       else
         'updated the trade'
       end
@@ -73,6 +88,21 @@ module Trades
       badge = badge_for(version)
       verb = version.event == 'destroy' ? 'removed' : 'added'
       { text: "#{verb} #{release_name}", badge: badge }
+    end
+
+    def describe_trade_shipment(version)
+      changes = version.object_changes || {}
+      text = case version.event
+             when 'create'
+               'added shipping info'
+             when 'update'
+               if changes.key?('status')
+                 "updated shipment status to #{changes['status'].last}"
+               else
+                 'updated shipping info'
+               end
+             end
+      { text: text, badge: :shipping }
     end
 
     def badge_for(version)

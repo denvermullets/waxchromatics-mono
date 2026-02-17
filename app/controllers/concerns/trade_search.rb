@@ -7,7 +7,7 @@ module TradeSearch
     CollectionItem.joins(:collection, release: %i[artist release_group])
                   .where(collections: { user_id: user.id })
                   .where('releases.title ILIKE :q OR artists.name ILIKE :q', q: "%#{query}%")
-                  .includes(release: %i[artist release_group])
+                  .includes(release: %i[artist release_group release_formats])
                   .limit(20)
   end
 
@@ -15,6 +15,6 @@ module TradeSearch
     return [] if ci_ids.blank?
 
     CollectionItem.where(id: Array(ci_ids))
-                  .includes(release: %i[artist release_group])
+                  .includes(release: %i[artist release_group release_formats])
   end
 end

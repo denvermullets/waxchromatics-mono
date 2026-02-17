@@ -1,0 +1,32 @@
+<%# locals: (trade:, partner:) %>
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 mb-6">
+  <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-wider mb-4">Shipping</h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <%# Your Shipment %>
+    <div>
+      <h4 class="text-xs font-medium text-crusta-400 mb-3">Your Shipment</h4>
+      <div id="my_shipment">
+        <% my_shipment = trade.shipment_for(Current.user) %>
+        <% if my_shipment %>
+          <%= render "trade_shipments/shipment_card", shipment: my_shipment, editable: true, trade: trade %>
+        <% else %>
+          <%= render "trade_shipments/form", trade: trade, shipment: TradeShipment.new %>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Their Shipment %>
+    <div>
+      <h4 class="text-xs font-medium text-blue-ribbon-400 mb-3"><%= partner.username %>'s Shipment</h4>
+      <div id="their_shipment">
+        <% their_shipment = trade.shipment_for(partner) %>
+        <% if their_shipment %>
+          <%= render "trade_shipments/shipment_card", shipment: their_shipment, editable: false, trade: trade %>
+        <% else %>
+          <p class="text-xs text-woodsmoke-500">Not yet shipped.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,13 @@
+<%# Update the hidden recipient_id in the form %>
+<%= turbo_stream.replace "recipient_hidden" do %>
+  <div id="recipient_hidden">
+    <input type="hidden" name="trade[recipient_id]" value="<%= @recipient.id %>">
+  </div>
+<% end %>
+
+<%# Update the visible recipient display %>
 <%= turbo_stream.replace "recipient_area" do %>
   <div id="recipient_area">
-    <input type="hidden" name="trade[recipient_id]" value="<%= @recipient.id %>">
     <div class="flex items-center gap-2 bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2">
       <span class="text-sm text-woodsmoke-100"><%= @recipient.username %></span>
       <button type="button"

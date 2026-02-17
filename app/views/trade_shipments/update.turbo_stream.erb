@@ -1,0 +1,9 @@
+<%= turbo_stream.replace dom_id(@shipment) do %>
+  <%= render "trade_shipments/shipment_card", shipment: @shipment, editable: true, trade: @trade %>
+<% end %>
+
+<%= turbo_stream.replace "trade_activity_log" do %>
+  <div id="trade_activity_log">
+    <%= render "trades/activity_log", activity: @activity %>
+  </div>
+<% end %>

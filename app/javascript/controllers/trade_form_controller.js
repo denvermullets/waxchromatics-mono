@@ -1,34 +1,26 @@
 import { Controller } from "@hotwired/stimulus";
 
-// Handles client-side-only operations for the trade form.
-// Search and item addition are handled by Turbo Frames/Streams.
+// Handles the new trade form's recipient selection.
+// Item add/remove is handled entirely by Turbo Streams.
 export default class extends Controller {
-  // Remove a selected item (card + hidden field) — no server round-trip needed
-  removeItem(event) {
-    event.preventDefault();
-    const button = event.target.closest("[data-item-id]");
-    if (!button) return;
-
-    const { itemId, side } = button.dataset;
-    const card = document.getElementById(`${side}_item_${itemId}`);
-    const hidden = document.getElementById(`${side}_hidden_${itemId}`);
-
-    if (card) card.remove();
-    if (hidden) hidden.remove();
-  }
-
   // Clear the selected recipient and reset receive side
   clearRecipient() {
+    // Clear the hidden recipient_id in the form
+    const recipientHidden = document.getElementById("recipient_hidden");
+    if (recipientHidden) {
+      recipientHidden.innerHTML = `<input type="hidden" name="trade[recipient_id]" value="">`;
+    }
+
+    // Reset the visible recipient area to show search input
     const area = document.getElementById("recipient_area");
     if (area) {
       area.innerHTML = `
-        <input type="hidden" name="trade[recipient_id]" value="">
         <input type="text" placeholder="Search users..." autocomplete="off"
                data-controller="debounce-submit"
                data-debounce-submit-url-value="${this.searchUsersUrl}"
                data-debounce-submit-frame-value="recipient_results"
                data-action="input->debounce-submit#search"
-               class="w-full bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
+               class="w-full bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none">
         <turbo-frame id="recipient_results" class="absolute left-0 top-full z-10 w-full mt-1 max-h-48 overflow-y-auto"></turbo-frame>
       `;
     }

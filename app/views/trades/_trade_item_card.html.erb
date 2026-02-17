@@ -8,9 +8,22 @@
     <p class="text-xs text-woodsmoke-200 truncate"><%= item.release.title %></p>
     <p class="text-[10px] text-woodsmoke-400 truncate"><%= item.release.artist&.name %></p>
   </div>
+  <% format = item.release.release_formats.first %>
+  <% if format&.name.present? %>
+    <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-700 text-woodsmoke-200 rounded">
+      <%= format.name %>
+    </span>
+  <% end %>
   <% if item.collection_item&.condition.present? %>
-    <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-800 text-woodsmoke-300 rounded">
-      <%= item.collection_item.condition %>
+    <% condition = item.collection_item.condition %>
+    <% condition_color = case condition
+         when 'M', 'NM', 'VG+', 'VG' then 'bg-bright-turquoise-500/15 text-bright-turquoise-400'
+         when 'G+', 'G' then 'bg-crusta-500/15 text-crusta-400'
+         when 'F', 'P' then 'bg-red-500/15 text-red-400'
+         else 'bg-woodsmoke-800 text-woodsmoke-300'
+       end %>
+    <span class="shrink-0 px-1.5 py-0.5 text-[10px] rounded <%= condition_color %>">
+      <%= condition %>
     </span>
   <% end %>
 </div>

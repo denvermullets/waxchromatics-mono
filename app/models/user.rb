@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :initiated_trades, class_name: 'Trade', foreign_key: :initiator_id, dependent: :destroy
   has_many :received_trades, class_name: 'Trade', foreign_key: :recipient_id, dependent: :destroy
   has_many :trade_messages, dependent: :destroy
+  has_many :trade_shipments, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
