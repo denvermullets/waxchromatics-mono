@@ -24,15 +24,24 @@ module Trades
     private
 
     def collect_versions
-      trade_versions = trade.versions.to_a
-      item_versions = PaperTrail::Version
-                      .where(item_type: 'TradeItem', item_id: trade.trade_items.select(:id))
-                      .to_a
-      shipment_versions = PaperTrail::Version
-                          .where(item_type: 'TradeShipment', item_id: trade.trade_shipments.select(:id))
-                          .to_a
+      (trade.versions.to_a + item_versions + shipment_versions).sort_by(&:created_at).reverse
+    end
 
-      (trade_versions + item_versions + shipment_versions).sort_by(&:created_at)
+    def item_versions
+      PaperTrail::Version.where(item_type: 'TradeItem', item_id: all_trade_item_ids).to_a
+    end
+
+    def all_trade_item_ids
+      current_ids = trade.trade_items.pluck(:id)
+      destroyed_ids = PaperTrail::Version
+                      .where(item_type: 'TradeItem', event: 'destroy')
+                      .where("(object->>'trade_id')::integer = ?", trade.id)
+                      .pluck(:item_id)
+      (current_ids + destroyed_ids).uniq
+    end
+
+    def shipment_versions
+      PaperTrail::Version.where(item_type: 'TradeShipment', item_id: trade.trade_shipments.select(:id)).to_a
     end
 
     def resolve_users(versions)
@@ -64,7 +73,9 @@ module Trades
     def trade_update_text(version)
       changes = version.object_changes || {}
       if changes.key?('status')
-        "changed status to #{changes['status'].last}"
+        from = changes['status'].first
+        to = changes['status'].last
+        from == to ? 're-proposed the trade' : "changed status to #{to}"
       elsif changes.key?('proposed_by_id')
         're-proposed the trade'
       else

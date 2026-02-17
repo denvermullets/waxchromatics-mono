@@ -13,7 +13,9 @@ class Trade < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validate :participants_must_differ
 
-  scope :involving, ->(user) { where(initiator: user).or(where(recipient: user)) }
+  scope :involving, lambda { |user|
+    where(initiator: user).or(where(recipient: user)).where.not(status: 'draft', recipient: user)
+  }
   scope :with_status, ->(status) { where(status: status) }
   scope :active, -> { where(status: %w[draft proposed]) }
 
