@@ -31,10 +31,10 @@
       <% if @average_rating || @completed_trade_count > 0 %>
         <div class="flex items-center justify-center gap-3 mt-4 pt-4 border-t border-woodsmoke-800">
           <% if @average_rating %>
-            <div class="text-center">
-              <p class="text-lg font-bold text-crusta-400"><%= @average_rating %></p>
-              <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider">Rating</p>
-            </div>
+            <%= link_to user_reviews_path(username: @user.username), class: "text-center group" do %>
+              <p class="text-lg font-bold text-crusta-400 group-hover:text-crusta-300 transition-colors"><%= @average_rating %></p>
+              <p class="text-[10px] text-woodsmoke-400 uppercase tracking-wider group-hover:text-woodsmoke-300 transition-colors">Rating</p>
+            <% end %>
           <% end %>
           <div class="text-center">
             <p class="text-lg font-bold text-crusta-400"><%= @completed_trade_count %></p>
