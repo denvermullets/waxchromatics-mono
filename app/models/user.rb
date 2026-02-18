@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :received_trades, class_name: 'Trade', foreign_key: :recipient_id, dependent: :destroy
   has_many :trade_messages, dependent: :destroy
   has_many :trade_shipments, dependent: :destroy
+  has_many :ratings_given, class_name: 'Rating', foreign_key: :reviewer_id, dependent: :destroy
+  has_many :ratings_received, class_name: 'Rating', foreign_key: :reviewed_user_id, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -24,5 +26,15 @@ class User < ApplicationRecord
 
   def default_collection
     collections.first_or_create!(name: 'My Collection')
+  end
+
+  def average_rating
+    ratings_received.visible.average(:overall_rating)&.round(1)
+  end
+
+  def completed_trade_count
+    Trade.where(status: 'delivered')
+         .where('initiator_id = :id OR recipient_id = :id', id: id)
+         .count
   end
 end

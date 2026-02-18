@@ -41,6 +41,16 @@
         <% end %>
         &middot; <%= time_ago_in_words(@trade.created_at) %> ago
       </p>
+      <% partner_avg = @partner.average_rating %>
+      <% partner_trades = @partner.completed_trade_count %>
+      <% if partner_avg || partner_trades > 0 %>
+        <p class="text-xs text-woodsmoke-400 mt-0.5">
+          <% if partner_avg %>
+            <span class="text-crusta-400 font-medium"><%= partner_avg %></span> avg rating &middot;
+          <% end %>
+          <%= partner_trades %> completed trades
+        </p>
+      <% end %>
     </div>
   </div>
 </div>
@@ -151,9 +161,47 @@
 <% end %>
 </div>
 
-<%# Shipping (only when accepted) %>
-<% if @trade.accepted? %>
+<%# Shipping (when accepted or delivered) %>
+<% if @trade.accepted? || @trade.delivered? %>
   <%= render "trade_shipments/shipping_section", trade: @trade, partner: @partner %>
+<% end %>
+
+<%# Rating details (when both have rated - double-blind reveal) %>
+<% if @trade.delivered? && @trade.both_rated? %>
+  <% my_rating = @trade.rating_by(Current.user) %>
+  <% partner_rating = @trade.rating_by(@partner) %>
+  <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 mb-6">
+    <h3 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-3">Ratings</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <h4 class="text-xs font-medium text-woodsmoke-300 mb-1">Your Rating</h4>
+        <p class="text-xs text-woodsmoke-400">
+          Overall: <%= my_rating.overall_rating %>/5 &middot;
+          Communication: <%= my_rating.communication_rating %>/5 &middot;
+          Packing: <%= my_rating.packing_shipping_rating %>/5
+        </p>
+      </div>
+      <div>
+        <h4 class="text-xs font-medium text-woodsmoke-300 mb-1"><%= @partner.username %>'s Rating</h4>
+        <p class="text-xs text-woodsmoke-400">
+          Overall: <%= partner_rating.overall_rating %>/5 &middot;
+          Communication: <%= partner_rating.communication_rating %>/5 &middot;
+          Packing: <%= partner_rating.packing_shipping_rating %>/5 &middot;
+          Condition: <%= partner_rating.condition_accuracy.titleize %>
+        </p>
+        <% if partner_rating.tags.present? %>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <% partner_rating.tags.each do |tag| %>
+              <span class="px-2 py-0.5 text-[10px] rounded-full bg-crusta-400/10 text-crusta-400"><%= tag.titleize %></span>
+            <% end %>
+          </div>
+        <% end %>
+        <% if partner_rating.comments.present? %>
+          <p class="text-xs text-woodsmoke-300 mt-2 italic">"<%= partner_rating.comments %>"</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <%= turbo_stream_from @trade, :shipments, Current.user %>

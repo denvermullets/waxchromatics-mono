@@ -15,6 +15,6 @@ class TradeShipment < ApplicationRecord
   private
 
   def trade_must_be_accepted
-    errors.add(:trade, 'must be accepted') unless trade&.accepted?
+    errors.add(:trade, 'must be accepted') unless trade&.accepted? || trade&.delivered?
   end
 end

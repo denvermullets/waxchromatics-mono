@@ -1,0 +1,183 @@
+<%# Breadcrumb %>
+<nav class="flex items-center gap-2 text-sm text-woodsmoke-400 mb-6">
+  <%= link_to "Home", root_path, class: "hover:text-woodsmoke-200 transition-colors" %>
+  <span>/</span>
+  <%= link_to "Trades", trades_path(username: params[:username]), class: "hover:text-woodsmoke-200 transition-colors" %>
+  <span>/</span>
+  <%= link_to "Trade ##{@trade.id}", trade_path(username: params[:username], id: @trade), class: "hover:text-woodsmoke-200 transition-colors" %>
+  <span>/</span>
+  <span class="text-woodsmoke-50">Rate Trade</span>
+</nav>
+
+<%# Header %>
+<div class="flex items-center gap-3 mb-6">
+  <h1 class="text-2xl font-bold text-woodsmoke-50">Rate Trade</h1>
+  <%= render "trades/status_badge", status: @trade.status %>
+  <span class="text-sm text-woodsmoke-400">
+    Trade #<%= @trade.id %>
+    <% if @trade.delivered_at %>
+      &middot; Completed <%= time_ago_in_words(@trade.delivered_at) %> ago
+    <% end %>
+  </span>
+</div>
+
+<%# Rating For card %>
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 mb-6">
+  <h3 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-3">Rating For</h3>
+  <div class="flex items-center gap-3">
+    <div class="shrink-0 w-12 h-12 rounded-full bg-woodsmoke-800 flex items-center justify-center overflow-hidden">
+      <% if @partner.avatar_url.present? %>
+        <%= image_tag @partner.avatar_url, alt: @partner.username, class: "w-full h-full object-cover" %>
+      <% else %>
+        <span class="text-lg font-semibold text-woodsmoke-400"><%= @partner.username[0].upcase %></span>
+      <% end %>
+    </div>
+    <div>
+      <p class="text-sm font-medium text-woodsmoke-100">
+        <%= link_to @partner.username, profile_path(username: @partner.username),
+            class: "text-crusta-400 hover:text-crusta-300 transition-colors" %>
+      </p>
+      <p class="text-xs text-woodsmoke-400">
+        <% if @partner.location.present? %>
+          <%= @partner.location %> &middot;
+        <% end %>
+        <% avg = @partner.average_rating %>
+        <% if avg %>
+          <span class="text-crusta-400"><%= avg %></span> avg &middot;
+        <% end %>
+        <%= @partner.completed_trade_count %> trades
+      </p>
+    </div>
+  </div>
+</div>
+
+<%# Trade Summary %>
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 mb-6">
+  <h3 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-3">Trade Summary</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <h4 class="text-xs font-medium text-crusta-400 mb-2">You Sent (<%= @send_items.size %>)</h4>
+      <div class="space-y-1.5">
+        <% @send_items.each do |item| %>
+          <%= render "trades/trade_item_card", item: item %>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <h4 class="text-xs font-medium text-blue-ribbon-400 mb-2">You Received (<%= @receive_items.size %>)</h4>
+      <div class="space-y-1.5">
+        <% @receive_items.each do |item| %>
+          <%= render "trades/trade_item_card", item: item %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# Rating Form %>
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 mb-6">
+  <h3 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-4">Your Rating</h3>
+
+  <% if @rating.errors.any? %>
+    <div class="bg-red-500/10 border border-red-500/20 rounded-sm p-3 mb-4">
+      <ul class="text-sm text-red-400 space-y-1">
+        <% @rating.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @rating, url: trade_rating_path(username: params[:username], trade_id: @trade), method: :post do |f| %>
+
+    <%# Dot Rating Rows %>
+    <% [
+      { field: :overall_rating, label: "Overall Experience" },
+      { field: :communication_rating, label: "Communication" },
+      { field: :packing_shipping_rating, label: "Packing & Shipping" }
+    ].each do |row| %>
+      <div class="mb-5">
+        <label class="block text-sm font-medium text-woodsmoke-200 mb-2"><%= row[:label] %></label>
+        <div class="flex items-center gap-1.5">
+          <% (1..5).each do |val| %>
+            <label class="cursor-pointer">
+              <input type="radio" name="rating[<%= row[:field] %>]" value="<%= val %>"
+                     class="peer sr-only"
+                     <%= 'checked' if @rating.send(row[:field]) == val %>>
+              <span class="block w-8 h-8 rounded-full border-2 border-woodsmoke-600
+                           peer-checked:bg-crusta-400 peer-checked:border-crusta-400
+                           hover:border-crusta-400/50 transition-colors
+                           flex items-center justify-center text-xs font-semibold
+                           peer-checked:text-woodsmoke-950 text-woodsmoke-500">
+                <%= val %>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Condition Accuracy %>
+    <div class="mb-5">
+      <label class="block text-sm font-medium text-woodsmoke-200 mb-2">Condition Accuracy</label>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <% [
+          { value: "better_than_listed", label: "Better Than Listed", icon: "&#x2191;" },
+          { value: "accurate", label: "Accurate", icon: "&#x2713;" },
+          { value: "slightly_off", label: "Slightly Off", icon: "&#x223C;" },
+          { value: "worse_than_listed", label: "Worse Than Listed", icon: "&#x2193;" }
+        ].each do |opt| %>
+          <label class="cursor-pointer">
+            <input type="radio" name="rating[condition_accuracy]" value="<%= opt[:value] %>"
+                   class="peer sr-only"
+                   <%= 'checked' if @rating.condition_accuracy == opt[:value] %>>
+            <div class="border-2 border-woodsmoke-700 rounded-sm p-3 text-center
+                        peer-checked:border-crusta-400 peer-checked:bg-crusta-400/10
+                        hover:border-woodsmoke-500 transition-colors">
+              <span class="block text-lg mb-1"><%= opt[:icon].html_safe %></span>
+              <span class="block text-xs text-woodsmoke-300 peer-checked:text-crusta-400"><%= opt[:label] %></span>
+            </div>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Quick Tags %>
+    <div class="mb-5">
+      <label class="block text-sm font-medium text-woodsmoke-200 mb-2">Quick Tags</label>
+      <div class="flex flex-wrap gap-2">
+        <% Rating::ALLOWED_TAGS.each do |tag| %>
+          <label class="cursor-pointer">
+            <input type="checkbox" name="rating[tags][]" value="<%= tag %>"
+                   class="peer sr-only"
+                   <%= 'checked' if @rating.tags&.include?(tag) %>>
+            <span class="inline-flex px-3 py-1.5 text-xs rounded-full border border-woodsmoke-600
+                         peer-checked:bg-crusta-400/15 peer-checked:border-crusta-400 peer-checked:text-crusta-400
+                         text-woodsmoke-400 hover:border-woodsmoke-500 transition-colors cursor-pointer">
+              <%= tag.titleize %>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Comments %>
+    <div class="mb-6" data-controller="char-counter">
+      <label class="block text-sm font-medium text-woodsmoke-200 mb-2">Comments <span class="text-woodsmoke-500">(optional)</span></label>
+      <%= f.text_area :comments, rows: 4, maxlength: 500,
+          data: { char_counter_target: "input", action: "input->char-counter#update" },
+          placeholder: "Share your experience...",
+          class: "w-full bg-woodsmoke-950 border border-woodsmoke-700 rounded-sm px-3 py-2 text-sm text-woodsmoke-100 placeholder-woodsmoke-500 focus:border-crusta-400 focus:outline-none resize-none" %>
+      <p class="text-xs text-woodsmoke-500 mt-1 text-right" data-char-counter-target="counter">0 / 500</p>
+    </div>
+
+    <%# Buttons %>
+    <div class="flex items-center justify-between">
+      <%= link_to "SKIP FOR NOW",
+          trade_path(username: params[:username], id: @trade),
+          class: "px-4 py-2 text-sm font-medium text-woodsmoke-400 hover:text-woodsmoke-200 transition-colors" %>
+      <%= f.submit "SUBMIT RATING",
+          class: "px-6 py-2 text-sm font-semibold rounded-sm bg-crusta-500 text-woodsmoke-950 hover:bg-crusta-400 transition-colors cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

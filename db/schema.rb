@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_142239) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_124740) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -102,6 +102,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_142239) do
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
     t.index ["discogs_id", "resource_type"], name: "index_pending_ingests_on_discogs_id_and_resource_type", unique: true
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.text "comments"
+    t.integer "communication_rating", null: false
+    t.string "condition_accuracy", null: false
+    t.datetime "created_at", null: false
+    t.integer "overall_rating", null: false
+    t.integer "packing_shipping_rating", null: false
+    t.bigint "rateable_id", null: false
+    t.string "rateable_type", null: false
+    t.bigint "reviewed_user_id", null: false
+    t.bigint "reviewer_id", null: false
+    t.text "tags", default: [], array: true
+    t.datetime "updated_at", null: false
+    t.index ["rateable_type", "rateable_id", "reviewer_id"], name: "index_ratings_unique_per_reviewer", unique: true
+    t.index ["rateable_type", "rateable_id"], name: "index_ratings_on_rateable_type_and_rateable_id"
+    t.index ["reviewed_user_id"], name: "index_ratings_on_reviewed_user_id"
+    t.index ["reviewer_id"], name: "index_ratings_on_reviewer_id"
   end
 
   create_table "release_contributors", force: :cascade do |t|
@@ -281,6 +300,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_142239) do
 
   create_table "trades", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.datetime "delivered_at"
     t.bigint "initiator_id", null: false
     t.datetime "proposed_at"
     t.bigint "proposed_by_id"
@@ -345,6 +365,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_142239) do
   add_foreign_key "collection_items", "releases"
   add_foreign_key "collections", "users"
   add_foreign_key "labels", "labels", column: "parent_label_id"
+  add_foreign_key "ratings", "users", column: "reviewed_user_id"
+  add_foreign_key "ratings", "users", column: "reviewer_id"
   add_foreign_key "release_contributors", "artists"
   add_foreign_key "release_contributors", "releases"
   add_foreign_key "release_formats", "releases"

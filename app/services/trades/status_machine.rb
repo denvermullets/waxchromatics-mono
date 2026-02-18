@@ -2,7 +2,8 @@ module Trades
   class StatusMachine
     TRANSITIONS = {
       'draft' => { 'propose' => 'proposed', 'cancel' => 'cancelled' },
-      'proposed' => { 'accept' => 'accepted', 'decline' => 'declined', 'cancel' => 'cancelled' }
+      'proposed' => { 'accept' => 'accepted', 'decline' => 'declined', 'cancel' => 'cancelled' },
+      'accepted' => { 'deliver' => 'delivered' }
     }.freeze
 
     attr_reader :trade, :user, :action, :error
@@ -43,6 +44,7 @@ module Trades
         trade.proposed_by = user
       end
       trade.responded_at = Time.current if %w[accept decline].include?(action)
+      trade.delivered_at = Time.current if action == 'deliver'
     end
 
     def permitted?
@@ -50,6 +52,7 @@ module Trades
       when 'propose' then initiator?
       when 'accept', 'decline' then non_proposer?
       when 'cancel' then trade.draft? ? initiator? : proposer?
+      when 'deliver' then trade.participant?(user)
       else false
       end
     end

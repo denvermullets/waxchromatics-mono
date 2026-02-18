@@ -1,6 +1,13 @@
 <%# locals: (trade:, partner:) %>
 <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 mb-6">
-  <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-wider mb-4">Shipping</h3>
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-wider">Shipping</h3>
+    <% delivered_count = trade.trade_shipments.where(status: 'delivered').count %>
+    <span class="text-xs text-woodsmoke-400">
+      <span class="<%= delivered_count == 2 ? 'text-bright-turquoise-400' : 'text-woodsmoke-300' %> font-medium"><%= delivered_count %> of 2</span>
+      delivered
+    </span>
+  </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <%# Your Shipment %>

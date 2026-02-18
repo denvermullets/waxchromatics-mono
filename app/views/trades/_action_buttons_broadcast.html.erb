@@ -1,7 +1,7 @@
-<%# locals: (trade:) %>
+<%# locals: (trade:, user:) %>
 <div id="trade_action_buttons" class="flex items-center gap-2">
-  <% un = params[:username] %>
-  <% can_edit = trade.can_modify?(Current.user) %>
+  <% un = user.username %>
+  <% can_edit = trade.can_modify?(user) %>
 
   <% if can_edit %>
     <button type="submit" form="trade_edit_form"
@@ -10,25 +10,25 @@
     </button>
   <% end %>
 
-  <% if trade.draft? && trade.initiator_id == Current.user.id %>
+  <% if trade.draft? && trade.initiator_id == user.id %>
     <%= button_to "Delete", trade_path(username: un, id: trade), method: :delete,
         data: { turbo_confirm: "Delete this draft?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>
 
-  <% elsif trade.proposed? && trade.proposed_by_id != Current.user.id %>
+  <% elsif trade.proposed? && trade.proposed_by_id != user.id %>
     <%= button_to "Accept", accept_trade_path(username: un, id: trade), method: :patch,
         class: "px-4 py-2 text-sm rounded-sm bg-green-600 text-white font-medium hover:bg-green-500 transition-colors cursor-pointer" %>
     <%= button_to "Decline", decline_trade_path(username: un, id: trade), method: :patch,
         data: { turbo_confirm: "Decline this trade?" },
         class: "px-4 py-2 text-sm rounded-sm bg-red-600 text-white font-medium hover:bg-red-500 transition-colors cursor-pointer" %>
 
-  <% elsif trade.proposed? && trade.proposed_by_id == Current.user.id %>
+  <% elsif trade.proposed? && trade.proposed_by_id == user.id %>
     <%= button_to "Cancel", cancel_trade_path(username: un, id: trade), method: :patch,
         data: { turbo_confirm: "Cancel this trade proposal?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>
 
   <% elsif trade.delivered? %>
-    <% my_rating = trade.rating_by(Current.user) %>
+    <% my_rating = trade.rating_by(user) %>
     <% if my_rating.nil? %>
       <%= link_to "Rate Trade",
           new_trade_rating_path(username: un, trade_id: trade),
