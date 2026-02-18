@@ -1,6 +1,4 @@
 class ReleaseGroupsController < ApplicationController
-  include CollectionCountable
-
   BROWSE_PER_PAGE = 60
 
   def index
@@ -22,7 +20,7 @@ class ReleaseGroupsController < ApplicationController
 
   def show
     load_release_group
-    @collection_counts = collection_counts_by_release(@releases.map(&:id))
+    @collection_counts = Collections::OwnershipQuery.new(Current.user).by_release(@releases.map(&:id))
   end
 
   private
