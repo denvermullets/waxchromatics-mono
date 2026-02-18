@@ -68,12 +68,12 @@ class TradeShipmentsController < ApplicationController
 
   def check_both_delivered
     return unless @trade.accepted?
-
-    both = @trade.trade_shipments.where(status: 'delivered').count == 2
-    return unless both
+    return unless @trade.trade_shipments.where(status: 'delivered').count == 2
 
     machine = Trades::StatusMachine.new(trade: @trade, user: Current.user, action: 'deliver')
-    machine.call
+    return unless machine.call
+
+    Trades::Broadcaster.new(trade: @trade, user: Current.user).broadcast_to_all
   end
 
   def broadcast_to_partner
