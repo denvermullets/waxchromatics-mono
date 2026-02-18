@@ -1,4 +1,6 @@
 class ReleaseGroupsController < ApplicationController
+  include CollectionCountable
+
   BROWSE_PER_PAGE = 60
 
   def index
@@ -19,6 +21,13 @@ class ReleaseGroupsController < ApplicationController
   end
 
   def show
+    load_release_group
+    @collection_counts = collection_counts_by_release(@releases.map(&:id))
+  end
+
+  private
+
+  def load_release_group
     @release_group = ReleaseGroup.find(params[:id])
     @releases = @release_group.releases
                               .includes(:release_formats, :tracks, :artist,
@@ -30,8 +39,6 @@ class ReleaseGroupsController < ApplicationController
     @main_release = main_release
     @tracklist = main_release&.tracks&.order(:sequence) || Track.none
   end
-
-  private
 
   def load_stats
     base = ReleaseGroup.joins(:releases).where.not(releases: { artist_id: nil })

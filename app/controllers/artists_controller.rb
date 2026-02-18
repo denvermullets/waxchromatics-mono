@@ -1,4 +1,6 @@
 class ArtistsController < ApplicationController
+  include CollectionCountable
+
   RELEASE_TYPE_ORDER = ['Album', 'EP', 'Single', 'Compilation', 'Unofficial Release'].freeze
   DISCOGRAPHY_PER_PAGE = 25
   ARTISTS_PER_PAGE = 250
@@ -23,6 +25,7 @@ class ArtistsController < ApplicationController
     scope = @artist.release_groups.where(release_type: release_type).order(:year)
     @pagy, @release_groups = pagy(:offset, scope, limit: DISCOGRAPHY_PER_PAGE, page_key: 'page')
     @release_type = release_type
+    @collection_counts = collection_counts_by_release_group(@release_groups.map(&:id))
 
     render partial: 'artists/discography_section', locals: {
       artist: @artist, pagy: @pagy, release_groups: @release_groups, release_type: release_type
@@ -36,6 +39,7 @@ class ArtistsController < ApplicationController
 
     @release_groups = @artist.release_groups.where(release_type: @release_type).order(:year)
     @local_releases = @artist.releases
+    @collection_counts = collection_counts_by_release_group(@release_groups.map(&:id))
   end
 
   def new
@@ -129,6 +133,8 @@ class ArtistsController < ApplicationController
     @local_releases = @artist&.releases || Release.none
     load_discography
     load_appearances
+    rg_ids = @sections.flat_map { |s| s[:release_groups].map(&:id) }
+    @collection_counts = collection_counts_by_release_group(rg_ids)
   end
 
   def load_discography

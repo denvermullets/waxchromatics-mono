@@ -1,7 +1,7 @@
 <% release_count = release_group.releases.size %>
 <% card_artist = local_assigns.fetch(:artist, @artist) %>
 
-<%= link_to artist_release_group_path(card_artist, release_group), data: { turbo_frame: "_top" }, class: "block p-4 rounded-sm border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4" do %>
+<%= link_to artist_release_group_path(card_artist, release_group), data: { turbo_frame: "_top" }, class: "relative block p-4 rounded-sm border border-woodsmoke-700 hover:border-crusta-400 transition-colors bg-woodsmoke-925 flex items-start gap-4" do %>
   <%= render "shared/cover_art", thumb: release_group.cover_art_url, alt: release_group.title, size: :md %>
 
   <div class="flex-1 min-w-0">
@@ -18,4 +18,9 @@
       <% end %>
     </div>
   </div>
+
+  <% owned = @collection_counts&.dig(release_group.id) || 0 %>
+  <% if owned > 0 %>
+    <span class="absolute bottom-2 right-3 px-1.5 py-0.5 text-xs rounded border border-crusta-400 text-crusta-400"><%= owned %> owned</span>
+  <% end %>
 <% end %>
