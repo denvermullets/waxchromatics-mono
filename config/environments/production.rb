@@ -79,6 +79,10 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [:id]
 
+  MissionControl::Jobs.base_controller_class = 'ActionController::Base'
+  MissionControl::Jobs.http_basic_auth_user = ENV.fetch('MISSION_USER', nil)
+  MissionControl::Jobs.http_basic_auth_password = ENV.fetch('MISSION_PASS', nil)
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
