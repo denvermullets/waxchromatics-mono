@@ -1,0 +1,85 @@
+<%# locals: (rating:) %>
+<% trade = rating.rateable %>
+<% reviewer = rating.reviewer %>
+
+<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
+  <%# Header: reviewer info + rating badges %>
+  <div class="flex items-start justify-between gap-3 mb-3">
+    <div class="flex items-center gap-3 min-w-0">
+      <% if reviewer.avatar_url.present? %>
+        <%= image_tag reviewer.avatar_url, alt: reviewer.username, class: "shrink-0 w-9 h-9 rounded-full object-cover" %>
+      <% else %>
+        <div class="shrink-0 w-9 h-9 rounded-full bg-woodsmoke-800 flex items-center justify-center">
+          <span class="text-sm font-semibold text-woodsmoke-400"><%= reviewer.username[0].upcase %></span>
+        </div>
+      <% end %>
+      <div class="min-w-0">
+        <p class="text-sm font-medium text-woodsmoke-100 truncate">
+          <%= reviewer.username %>
+        </p>
+        <p class="text-xs text-woodsmoke-500">
+          <%= rating.created_at.strftime('%b %d, %Y') %>
+          <% if trade %>
+            &middot; Trade #<%= trade.id %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <%# Overall rating badge %>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded bg-crusta-400/15 text-crusta-400">
+        <span class="w-2 h-2 rounded-full bg-crusta-400"></span>
+        <%= rating.overall_rating %>/5
+      </span>
+      <%# Condition accuracy badge %>
+      <% accuracy_label = case rating.condition_accuracy
+           when 'better_than_listed' then 'Better'
+           when 'accurate' then 'Accurate'
+           when 'slightly_off' then 'Slightly Off'
+           when 'worse_than_listed' then 'Worse'
+         end %>
+      <% accuracy_color = case rating.condition_accuracy
+           when 'better_than_listed', 'accurate' then 'bg-bright-turquoise-500/15 text-bright-turquoise-400'
+           when 'slightly_off' then 'bg-crusta-500/15 text-crusta-400'
+           when 'worse_than_listed' then 'bg-red-500/15 text-red-400'
+         end %>
+      <span class="px-2 py-0.5 text-xs rounded <%= accuracy_color %>"><%= accuracy_label %></span>
+    </div>
+  </div>
+
+  <%# Comments %>
+  <% if rating.comments.present? %>
+    <p class="text-sm text-woodsmoke-300 leading-relaxed mb-3">"<%= rating.comments %>"</p>
+  <% end %>
+
+  <%# Trade items %>
+  <% if trade %>
+    <% sent_items = trade.trade_items.select { |ti| ti.user_id == rating.reviewed_user_id } %>
+    <% received_items = trade.trade_items.select { |ti| ti.user_id == rating.reviewer_id } %>
+
+    <% if sent_items.any? || received_items.any? %>
+      <div class="flex flex-wrap gap-1.5 mb-3">
+        <% sent_items.each do |item| %>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded bg-woodsmoke-800 text-woodsmoke-300">
+            <span class="text-crusta-400">Sent:</span> <%= item.release.title %>
+          </span>
+        <% end %>
+        <% received_items.each do |item| %>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded bg-woodsmoke-800 text-woodsmoke-300">
+            <span class="text-blue-ribbon-400">Received:</span> <%= item.release.title %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%# Tags %>
+  <% if rating.tags.present? %>
+    <div class="flex flex-wrap gap-1.5">
+      <% rating.tags.each do |tag| %>
+        <span class="px-2 py-0.5 text-[10px] rounded-full bg-crusta-400/10 text-crusta-400"><%= tag.titleize %></span>
+      <% end %>
+    </div>
+  <% end %>
+</div>
