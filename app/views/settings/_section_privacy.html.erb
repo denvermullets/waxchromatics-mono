@@ -1,0 +1,22 @@
+<section id="privacy" data-settings-section class="scroll-mt-20">
+  <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Privacy</h2>
+  <p class="text-sm text-woodsmoke-400 mb-6">Control your privacy settings</p>
+
+  <div class="divide-y divide-woodsmoke-800">
+    <%= render "settings/toggle_row",
+      field: :private_profile,
+      label: "Private profile",
+      description: "Hide your collection and wantlist from other users",
+      value: @user.setting.private_profile,
+      enabled: true,
+      form_url: user_settings_setting_path(username: @user.username) %>
+
+    <%= render "settings/toggle_row",
+      field: :show_location,
+      label: "Show location",
+      description: "Display your location on your profile",
+      value: @user.setting.show_location,
+      enabled: true,
+      form_url: user_settings_setting_path(username: @user.username) %>
+  </div>
+</section>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_17_124740) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_19_114419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -316,6 +316,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_124740) do
     t.index ["status"], name: "index_trades_on_status"
   end
 
+  create_table "user_settings", force: :cascade do |t|
+    t.boolean "accept_trade_requests", default: true, null: false
+    t.integer "auto_decline_days", default: 7, null: false
+    t.boolean "collection_list_view", default: false, null: false
+    t.datetime "created_at", null: false
+    t.boolean "notify_messages", default: true, null: false
+    t.boolean "notify_trade_updates", default: true, null: false
+    t.boolean "notify_wantlist_alerts", default: true, null: false
+    t.boolean "private_profile", default: false, null: false
+    t.boolean "require_message_with_trade", default: false, null: false
+    t.boolean "show_location", default: true, null: false
+    t.string "theme", default: "ember", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_user_settings_on_user_id", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "avatar_url"
     t.text "bio"
@@ -393,6 +410,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_124740) do
   add_foreign_key "trades", "users", column: "initiator_id"
   add_foreign_key "trades", "users", column: "proposed_by_id"
   add_foreign_key "trades", "users", column: "recipient_id"
+  add_foreign_key "user_settings", "users"
   add_foreign_key "wantlist_items", "releases"
   add_foreign_key "wantlist_items", "users"
 end

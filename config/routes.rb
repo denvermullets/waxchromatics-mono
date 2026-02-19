@@ -45,9 +45,12 @@ Rails.application.routes.draw do
   # Username-scoped routes — must be last to avoid conflicts
   constraints(username: /[a-zA-Z0-9_-]+/) do
     get ':username', to: 'profiles#show', as: :profile
+    get ':username/edit', to: 'profiles#edit', as: :edit_profile
+    patch ':username/edit', to: 'profiles#update'
     get ':username/reviews', to: 'reviews#show', as: :user_reviews
     get ':username/settings', to: 'settings#show', as: :user_settings
-    patch ':username/settings', to: 'settings#update'
+    patch ':username/settings/setting', to: 'settings#update_setting', as: :user_settings_setting
+    delete ':username/settings', to: 'settings#destroy', as: :destroy_user_settings
     get ':username/crates', to: 'collection#show', as: :crates
     get ':username/trade-finder', to: 'trade_finder#show', as: :trade_finder
     scope ':username' do

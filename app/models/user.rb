@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :trade_shipments, dependent: :destroy
   has_many :ratings_given, class_name: 'Rating', foreign_key: :reviewer_id, dependent: :destroy
   has_many :ratings_received, class_name: 'Rating', foreign_key: :reviewed_user_id, dependent: :destroy
+  has_one :user_setting, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -22,7 +23,10 @@ class User < ApplicationRecord
                          message: 'only allows letters, numbers, underscores, and hyphens'
                        },
                        exclusion: { in: RESERVED_USERNAMES, message: 'is reserved' }
-  validates :default_collection_view, inclusion: { in: %w[grid list] }
+
+  def setting
+    user_setting || create_user_setting
+  end
 
   def default_collection
     collections.first_or_create!(name: 'My Collection')

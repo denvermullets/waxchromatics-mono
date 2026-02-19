@@ -1,0 +1,36 @@
+<section id="trading" data-settings-section class="scroll-mt-20">
+  <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Trading</h2>
+  <p class="text-sm text-woodsmoke-400 mb-6">Manage your trade preferences</p>
+
+  <div class="divide-y divide-woodsmoke-800">
+    <%= render "settings/toggle_row",
+      field: :accept_trade_requests,
+      label: "Accept trade requests",
+      description: "Allow other users to send you trade proposals",
+      value: @user.setting.accept_trade_requests,
+      enabled: true,
+      form_url: user_settings_setting_path(username: @user.username) %>
+
+    <%# Auto-decline: disabled, no background job yet %>
+    <div class="flex items-center justify-between py-4 opacity-50 pointer-events-none">
+      <div class="flex-1 mr-4">
+        <div class="flex items-center gap-2">
+          <p class="text-sm font-semibold text-woodsmoke-100">Auto-decline after</p>
+          <span class="text-xs bg-woodsmoke-700 text-woodsmoke-400 px-2 py-0.5 rounded-full">Coming soon</span>
+        </div>
+        <p class="text-sm text-woodsmoke-400 mt-0.5">Automatically decline trade requests after a set number of days</p>
+      </div>
+      <select disabled class="rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50">
+        <option><%= @user.setting.auto_decline_days %> days</option>
+      </select>
+    </div>
+
+    <%= render "settings/toggle_row",
+      field: :require_message_with_trade,
+      label: "Require message with trade",
+      description: "Require a message when someone proposes a trade",
+      value: @user.setting.require_message_with_trade,
+      enabled: true,
+      form_url: user_settings_setting_path(username: @user.username) %>
+  </div>
+</section>

@@ -48,6 +48,8 @@
         <%= link_to "View Crates", crates_path(username: @user.username),
             class: "block w-full text-center rounded-sm px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
         <% if @own_profile %>
+          <%= link_to "Edit Profile", edit_profile_path(username: @user.username),
+              class: "block w-full text-center rounded-sm px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
           <%= link_to "Settings", user_settings_path(username: @user.username),
               class: "block w-full text-center rounded-sm px-4 py-2 text-sm font-medium bg-woodsmoke-800 text-woodsmoke-100 hover:bg-woodsmoke-700 transition-colors" %>
         <% end %>

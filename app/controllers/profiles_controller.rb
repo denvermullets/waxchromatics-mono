@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
   allow_unauthenticated_access only: [:show]
+  before_action :set_user, only: %i[edit update]
+  before_action :authorize_user, only: %i[edit update]
 
   def show
     @user = User.find_by!(username: params[:username])
@@ -15,7 +17,29 @@ class ProfilesController < ApplicationController
     load_charts(items)
   end
 
+  def edit; end
+
+  def update
+    if @user.update(profile_params)
+      redirect_to profile_path(username: @user.username), notice: 'Profile updated.'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
+
+  def set_user
+    @user = User.find_by!(username: params[:username])
+  end
+
+  def authorize_user
+    redirect_to root_path unless Current.user == @user
+  end
+
+  def profile_params
+    params.require(:user).permit(:bio, :location, :avatar_url)
+  end
 
   def load_stats(items)
     @artist_count = items.joins(release: :artist).distinct.count('artists.id')
