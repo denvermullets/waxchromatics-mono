@@ -1,0 +1,30 @@
+<section id="account" data-settings-section class="scroll-mt-20">
+  <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Account</h2>
+  <p class="text-sm text-woodsmoke-400 mb-6">Manage your account</p>
+
+  <div class="space-y-4">
+    <div class="flex items-center justify-between py-4 opacity-50 pointer-events-none">
+      <div>
+        <p class="text-sm font-semibold text-woodsmoke-100">Export data</p>
+        <p class="text-sm text-woodsmoke-400 mt-0.5">Download a copy of your collection, wantlist, and trade data</p>
+      </div>
+      <button disabled class="rounded-sm px-4 py-2 text-sm border border-woodsmoke-700 text-woodsmoke-400 cursor-not-allowed">
+        Export
+      </button>
+    </div>
+
+    <div class="border-t border-woodsmoke-800 pt-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold text-red-400">Delete account</p>
+          <p class="text-sm text-woodsmoke-400 mt-0.5">Permanently delete your account and all associated data</p>
+        </div>
+        <%= button_to "Delete Account",
+          destroy_user_settings_path(username: @user.username),
+          method: :delete,
+          class: "rounded-sm px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white font-semibold cursor-pointer transition-colors",
+          data: { turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone." } %>
+      </div>
+    </div>
+  </div>
+</section>

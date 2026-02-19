@@ -96,3 +96,33 @@
   --font-sans: "JetBrains Mono", monospace;
   --font-mono: "JetBrains Mono", monospace;
 }
+
+/*
+ * Theme overrides
+ *
+ * Ember is the default — its values are defined in @theme above.
+ * Themes override --color-crusta-* (accent) and/or --color-woodsmoke-*
+ * (backgrounds) so every existing class responds automatically.
+ * Add [data-theme="slate"] or [data-theme="moss"] to <body> to activate.
+ */
+
+/* Slate — cool blue accent */
+[data-theme="slate"] {
+  --color-crusta-50: #eff2ff;
+  --color-crusta-100: #dce2fd;
+  --color-crusta-200: #c1cdfc;
+  --color-crusta-300: #96aefa;
+  --color-crusta-400: #6483f6;
+  --color-crusta-500: #415bf1;
+  --color-crusta-600: #2a39e6;
+  --color-crusta-700: #2227d3;
+  --color-crusta-800: #2222ab;
+  --color-crusta-900: #212387;
+  --color-crusta-950: #191952;
+}
+
+/* Moss — same accent, green-tinted backgrounds */
+[data-theme="moss"] {
+  --color-woodsmoke-950: #1a221e;
+  --color-woodsmoke-925: #374741;
+}

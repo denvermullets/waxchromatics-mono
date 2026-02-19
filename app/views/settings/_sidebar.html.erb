@@ -1,0 +1,17 @@
+<nav data-controller="settings-nav" class="lg:sticky lg:top-20 space-y-1">
+  <% [
+    ["profile", "Profile"],
+    ["collection", "Collection"],
+    ["appearance", "Appearance"],
+    ["trading", "Trading"],
+    ["privacy", "Privacy"],
+    ["notifications", "Notifications"],
+    ["account", "Account"]
+  ].each do |id, label| %>
+    <a href="#<%= id %>"
+       data-settings-nav-target="link"
+       class="block px-3 py-2 text-sm rounded-md text-woodsmoke-400 hover:text-woodsmoke-50 hover:bg-woodsmoke-800 transition-colors">
+      <%= label %>
+    </a>
+  <% end %>
+</nav>

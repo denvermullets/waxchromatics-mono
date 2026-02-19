@@ -1,0 +1,30 @@
+<section id="notifications" data-settings-section class="scroll-mt-20">
+  <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Notifications</h2>
+  <p class="text-sm text-woodsmoke-400 mb-6">Choose what you get notified about</p>
+
+  <div class="divide-y divide-woodsmoke-800">
+    <%= render "settings/toggle_row",
+      field: :notify_trade_updates,
+      label: "Trade updates",
+      description: "Get notified when a trade status changes",
+      value: @user.setting.notify_trade_updates,
+      enabled: false,
+      form_url: user_settings_setting_path(username: @user.username) %>
+
+    <%= render "settings/toggle_row",
+      field: :notify_messages,
+      label: "Messages",
+      description: "Get notified when you receive a new message",
+      value: @user.setting.notify_messages,
+      enabled: false,
+      form_url: user_settings_setting_path(username: @user.username) %>
+
+    <%= render "settings/toggle_row",
+      field: :notify_wantlist_alerts,
+      label: "Wantlist alerts",
+      description: "Get notified when a wantlist item becomes available for trade",
+      value: @user.setting.notify_wantlist_alerts,
+      enabled: false,
+      form_url: user_settings_setting_path(username: @user.username) %>
+  </div>
+</section>

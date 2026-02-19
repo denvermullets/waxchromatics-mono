@@ -1,22 +1,53 @@
 <div id="connection-results" data-controller="edge-detail">
   <%# Degrees badge %>
   <div class="text-center mb-6">
-    <div class="inline-flex items-center gap-2 bg-woodsmoke-900 border border-crusta-500/30 rounded-full px-4 py-2">
+    <div class="inline-flex items-center gap-2 bg-woodsmoke-925 border border-crusta-500/30 rounded-full px-4 py-2">
       <span class="text-2xl font-bold text-crusta-400"><%= degrees %></span>
       <span class="text-sm text-woodsmoke-300">degree<%= degrees == 1 ? "" : "s" %> of separation</span>
     </div>
   </div>
 
-  <%# Connection graph %>
-  <%= render "connections/graph", path: path %>
+  <%# Vertical timeline %>
+  <div class="relative border-l-2 border-woodsmoke-700 ml-4">
+    <% path.each_with_index do |edge, index| %>
+      <%# Start artist (only on first edge) %>
+      <% if index == 0 %>
+        <%= render "connections/node",
+              artist: edge[:from_artist],
+              position: :start,
+              position_label: "START",
+              role_label: "Artist A" %>
+      <% end %>
 
-  <%# Connection detail panels (one per edge, hidden by default) %>
-  <% path.each_with_index do |edge, index| %>
-    <%= render "connections/connection_detail", edge: edge, index: index %>
-  <% end %>
+      <%# Edge pill %>
+      <%= render "connections/edge_label", edge: edge, index: index %>
+
+      <%# Inline connection detail (hidden by default) %>
+      <%= render "connections/connection_detail", edge: edge, index: index %>
+
+      <%# To-artist node %>
+      <% if index == path.length - 1 %>
+        <%= render "connections/node",
+              artist: edge[:to_artist],
+              position: :end,
+              position_label: "END",
+              role_label: "Artist B" %>
+      <% else %>
+        <% middle_num = index + 1 %>
+        <% middle_total = path.length - 1 %>
+        <%= render "connections/node",
+              artist: edge[:to_artist],
+              position: :middle,
+              position_label: "#{middle_num} of #{middle_total}",
+              role_label: edge[:role].presence || "credit" %>
+      <% end %>
+    <% end %>
+  </div>
 
   <%# Alternate paths %>
   <% if alternate_paths.any? %>
-    <%= render "connections/alternate_paths", alternate_paths: alternate_paths, artist_a: artist_a, artist_b: artist_b %>
+    <div>
+      <%= render "connections/alternate_paths", alternate_paths: alternate_paths, artist_a: artist_a, artist_b: artist_b %>
+    </div>
   <% end %>
 </div>

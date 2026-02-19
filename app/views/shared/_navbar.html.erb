@@ -14,18 +14,6 @@
         <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
           <%= link_to "Artists", artists_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
           <%= link_to "Releases", browse_releases_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
-        </div>
-      </div>
-
-      <%# My Stuff dropdown %>
-      <div data-controller="dropdown" class="relative" data-action="click@window->dropdown#close">
-        <button data-action="click->dropdown#toggle" class="text-sm text-woodsmoke-300 hover:text-woodsmoke-50 transition-colors cursor-pointer flex items-center gap-1">
-          My Stuff
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div data-dropdown-target="menu" class="hidden absolute left-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
-          <%= link_to "Profile", profile_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
-          <%= link_to "Crates", crates_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
           <%= link_to "Connections", connections_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
         </div>
       </div>
@@ -55,6 +43,26 @@
       </div>
     </div>
 
-    <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-woodsmoke-400 hover:text-woodsmoke-50 cursor-pointer transition-colors" %>
+    <%# User menu (turntable icon) %>
+    <div data-controller="dropdown" class="relative" data-action="click@window->dropdown#close">
+      <button data-action="click->dropdown#toggle" class="w-10 h-10 rounded-full border-2 border-woodsmoke-700 hover:border-crusta-400 flex items-center justify-center text-crusta-400 hover:text-crusta-300 transition-colors cursor-pointer">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="22" height="18" rx="2"/>
+          <circle cx="10" cy="12" r="6.5"/>
+          <circle cx="10" cy="12" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="10" cy="12" r="0.7" fill="currentColor" stroke="none" opacity="0.4"/>
+          <circle cx="20" cy="6" r="1" fill="currentColor" stroke="none"/>
+          <line x1="20" y1="6" x2="15" y2="14" stroke-width="1.5"/>
+          <line x1="15" y1="14" x2="14" y2="15.5" stroke-width="2"/>
+        </svg>
+      </button>
+      <div data-dropdown-target="menu" class="hidden absolute right-0 top-full mt-1 bg-woodsmoke-900 border border-woodsmoke-700 rounded-sm shadow-lg py-1 min-w-[10rem] z-50">
+        <%= link_to "Profile", profile_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        <%= link_to "Crates", crates_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        <%= link_to "Settings", user_settings_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+        <div class="border-t border-woodsmoke-700 my-1"></div>
+        <%= button_to "Logout", session_path, method: :delete, class: "block w-full text-left px-4 py-2 text-sm text-woodsmoke-400 hover:bg-woodsmoke-800 hover:text-woodsmoke-50 cursor-pointer" %>
+      </div>
+    </div>
   </div>
 </nav>
