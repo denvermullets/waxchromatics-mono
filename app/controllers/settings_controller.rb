@@ -20,7 +20,11 @@ class SettingsController < ApplicationController
     setting = @user.setting
     if setting.update(setting_params)
       field = setting_params.keys.first
-      render partial: 'settings/toggle_row', locals: toggle_locals_for(field), status: :ok
+      if field == 'theme'
+        render partial: 'settings/section_appearance', status: :ok
+      else
+        render partial: 'settings/toggle_row', locals: toggle_locals_for(field), status: :ok
+      end
     else
       head :unprocessable_entity
     end
@@ -48,7 +52,8 @@ class SettingsController < ApplicationController
       :collection_list_view,
       :require_message_with_trade,
       :private_profile,
-      :show_location
+      :show_location,
+      :theme
     )
   end
 

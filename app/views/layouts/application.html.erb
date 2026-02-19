@@ -28,7 +28,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-woodsmoke-950 text-woodsmoke-50 min-h-screen">
+  <body class="bg-woodsmoke-950 text-woodsmoke-50 min-h-screen" <%= "data-theme=#{Current.user.setting.theme}" if authenticated? && Current.user.setting.theme != "ember" %>>
     <%= render "shared/navbar" if authenticated? %>
 
     <main class="container mx-auto px-2 pt-24 pb-10">
