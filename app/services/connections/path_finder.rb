@@ -1,6 +1,6 @@
 module Connections
   class PathFinder < Service
-    MAX_DEPTH = 4
+    MAX_DEPTH = 6
 
     def initialize(artist_a_id:, artist_b_id:)
       @artist_a_id = artist_a_id.to_i

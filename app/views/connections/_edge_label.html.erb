@@ -1,16 +1,32 @@
-<div class="flex flex-col items-center mx-1 flex-shrink-0">
-  <div class="flex items-center gap-0">
-    <div class="w-8 h-px bg-woodsmoke-600"></div>
-    <button
-      type="button"
-      data-edge-detail-target="pill"
-      data-action="click->edge-detail#select"
+<%# Timeline edge pill — clickable to expand/collapse connection detail
+     Locals: edge, index
+%>
+<div class="relative pl-10 py-1">
+  <%# Timeline triangle marker %>
+  <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 text-woodsmoke-500">
+    <svg
+      data-edge-detail-target="arrow"
       data-edge-index="<%= index %>"
-      class="flex flex-col items-center px-3 py-1.5 rounded-sm bg-woodsmoke-800 border border-woodsmoke-700 hover:border-crusta-400 text-woodsmoke-300 hover:text-crusta-400 transition-colors cursor-pointer"
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-4 w-4 transition-transform duration-200"
+      viewBox="0 0 20 20"
+      fill="currentColor"
     >
-      <span class="text-xs font-medium whitespace-nowrap"><%= edge[:role].presence || "credit" %></span>
-      <span class="text-[10px] text-woodsmoke-500">click to expand</span>
-    </button>
-    <div class="w-8 h-px bg-woodsmoke-600"></div>
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+    </svg>
   </div>
+
+  <%# Pill button %>
+  <button
+    type="button"
+    data-edge-detail-target="pill"
+    data-action="click->edge-detail#select"
+    data-edge-index="<%= index %>"
+    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-woodsmoke-925 border border-woodsmoke-700 hover:border-crusta-400 text-woodsmoke-300 hover:text-crusta-400 transition-colors cursor-pointer text-xs font-medium"
+  >
+    <span><%= edge[:role].presence || "credit" %></span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+    </svg>
+  </button>
 </div>
