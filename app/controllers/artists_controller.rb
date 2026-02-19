@@ -23,6 +23,7 @@ class ArtistsController < ApplicationController
     scope = @artist.release_groups.where(release_type: release_type).order(:year)
     @pagy, @release_groups = pagy(:offset, scope, limit: DISCOGRAPHY_PER_PAGE, page_key: 'page')
     @release_type = release_type
+    @collection_counts = Collections::OwnershipQuery.new(Current.user).by_release_group(@release_groups.map(&:id))
 
     render partial: 'artists/discography_section', locals: {
       artist: @artist, pagy: @pagy, release_groups: @release_groups, release_type: release_type
@@ -36,6 +37,7 @@ class ArtistsController < ApplicationController
 
     @release_groups = @artist.release_groups.where(release_type: @release_type).order(:year)
     @local_releases = @artist.releases
+    @collection_counts = Collections::OwnershipQuery.new(Current.user).by_release_group(@release_groups.map(&:id))
   end
 
   def new
@@ -125,49 +127,19 @@ class ArtistsController < ApplicationController
   end
 
   def load_artist
-    @artist = Artist.find_by(id: params[:id]) || Artist.find_by(discogs_id: params[:id])
-    @local_releases = @artist&.releases || Release.none
-    load_discography
-    load_appearances
+    artist = Artist.find_by(id: params[:id]) || Artist.find_by(discogs_id: params[:id])
+    paginate = ->(scope) { pagy(:offset, scope, limit: DISCOGRAPHY_PER_PAGE, page_key: 'page') }
+
+    result = Artists::ShowQuery.new(
+      artist: artist, tab: params[:tab].presence || 'discography', user: Current.user, paginate: paginate
+    ).call
+
+    assign_show_ivars(result)
   end
 
-  def load_discography
-    @sections = RELEASE_TYPE_ORDER.filter_map do |type|
-      groups = @artist&.release_groups
-      scope = groups ? groups.where(release_type: type).order(:year) : ReleaseGroup.none
-      next if scope.none?
-
-      pagy_obj, records = pagy(:offset, scope, limit: DISCOGRAPHY_PER_PAGE, page_key: 'page')
-      { type: type, pagy: pagy_obj, release_groups: records }
-    end
-  end
-
-  def load_appearances
-    @appearances = []
-    return unless @artist
-
-    rg_ids_by_role = appearance_rg_ids_by_role
-    return if rg_ids_by_role.empty?
-
-    @appearances = build_appearances(rg_ids_by_role)
-  end
-
-  def appearance_rg_ids_by_role
-    @artist.release_contributors
-           .where.not(role: [nil, ''])
-           .joins(release: :release_group)
-           .select('release_contributors.role, release_groups.id AS release_group_id')
-           .distinct
-           .each_with_object({}) { |rc, hash| (hash[rc.role] ||= Set.new) << rc.release_group_id }
-  end
-
-  def build_appearances(rg_ids_by_role)
-    all_rg_ids = rg_ids_by_role.values.reduce(:+).to_a
-    rg_lookup = ReleaseGroup.where(id: all_rg_ids).includes(releases: :artist).index_by(&:id)
-
-    rg_ids_by_role.sort_by { |role, _| role.downcase }.filter_map do |role, rg_ids|
-      rgs = rg_ids.filter_map { |id| rg_lookup[id] }.sort_by { |rg| rg.year || 0 }
-      { role: role, release_groups: rgs } if rgs.any?
+  def assign_show_ivars(result)
+    %i[artist tab has_appearances sections appearances local_releases collection_counts].each do |attr|
+      instance_variable_set(:"@#{attr}", result.public_send(attr))
     end
   end
 end
