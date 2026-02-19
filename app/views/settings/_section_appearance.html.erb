@@ -1,0 +1,27 @@
+<section id="appearance" data-settings-section class="scroll-mt-20">
+  <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Appearance</h2>
+  <p class="text-sm text-woodsmoke-400 mb-6">Customize the look and feel</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <%= render "settings/theme_card",
+      name: "ember",
+      label: "Ember",
+      swatches: %w[bg-crusta-400 bg-woodsmoke-900 bg-woodsmoke-50],
+      selected: @user.setting.theme == "ember",
+      enabled: true %>
+
+    <%= render "settings/theme_card",
+      name: "slate",
+      label: "Slate",
+      swatches: %w[bg-blue-400 bg-slate-900 bg-slate-50],
+      selected: @user.setting.theme == "slate",
+      enabled: false %>
+
+    <%= render "settings/theme_card",
+      name: "moss",
+      label: "Moss",
+      swatches: %w[bg-emerald-400 bg-zinc-900 bg-zinc-50],
+      selected: @user.setting.theme == "moss",
+      enabled: false %>
+  </div>
+</section>

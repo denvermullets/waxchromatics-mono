@@ -27,6 +27,7 @@
           <%= link_to "Profile", profile_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
           <%= link_to "Crates", crates_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
           <%= link_to "Connections", connections_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+          <%= link_to "Settings", user_settings_path(username: Current.user.username), class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
         </div>
       </div>
 
