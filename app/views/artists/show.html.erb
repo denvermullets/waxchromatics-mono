@@ -1,8 +1,22 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
-  <div class="mb-6 flex items-center gap-2 text-sm text-woodsmoke-400">
-    <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
-    <span>/</span>
-    <span class="text-woodsmoke-300"><%= @artist&.name || "Artist" %></span>
+  <div class="mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-2 text-sm text-woodsmoke-400">
+      <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+      <span>/</span>
+      <span class="text-woodsmoke-300"><%= @artist&.name || "Artist" %></span>
+    </div>
+    <nav class="flex items-center gap-1">
+      <%= link_to artist_path(@artist, tab: "discography"),
+                  class: "px-4 py-1.5 text-sm font-medium rounded-sm transition-colors #{@tab == 'discography' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+        Discography
+      <% end %>
+      <% if @has_appearances %>
+        <%= link_to artist_path(@artist, tab: "appearances"),
+                    class: "px-4 py-1.5 text-sm font-medium rounded-sm transition-colors #{@tab == 'appearances' ? 'bg-woodsmoke-800 text-woodsmoke-50' : 'text-woodsmoke-400 hover:text-woodsmoke-200'}" do %>
+          Appearances
+        <% end %>
+      <% end %>
+    </nav>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -11,9 +25,13 @@
       <%= render "artists/artist_header" %>
     </div>
 
-    <%# Right column: Discography %>
+    <%# Right column: Discography / Appearances %>
     <div class="lg:col-span-2">
-      <%= render "artists/discography" %>
+      <% if @tab == 'appearances' %>
+        <%= render "artists/appearances" %>
+      <% else %>
+        <%= render "artists/discography" %>
+      <% end %>
     </div>
   </div>
 </div>
