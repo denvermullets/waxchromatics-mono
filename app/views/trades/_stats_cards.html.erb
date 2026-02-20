@@ -4,12 +4,17 @@
     <p class="text-2xl font-bold text-woodsmoke-50"><%= stats[:active] %></p>
     <p class="text-xs text-woodsmoke-400 mt-1">Active</p>
   </div>
+
   <div class="bg-woodsmoke-925 rounded-sm p-4 border border-woodsmoke-800">
     <p class="text-2xl font-bold text-green-400"><%= stats[:completed] %></p>
     <p class="text-xs text-woodsmoke-400 mt-1">Completed</p>
   </div>
+
   <div class="bg-woodsmoke-925 rounded-sm p-4 border border-woodsmoke-800">
-    <p class="text-2xl font-bold text-blue-ribbon-400"><%= stats[:pending] %></p>
+    <p class="text-2xl font-bold text-blue-ribbon-400">
+      <%= stats[:pending] %>
+    </p>
+
     <p class="text-xs text-woodsmoke-400 mt-1">Pending</p>
   </div>
 </div>

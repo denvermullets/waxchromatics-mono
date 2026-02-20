@@ -1,9 +1,14 @@
 <%# locals: (trade_message:, own: false) %>
-<div id="<%= dom_id(trade_message) %>"
-     class="flex <%= own ? 'flex-row-reverse' : 'flex-row' %>">
+<div
+  id="<%= dom_id(trade_message) %>"
+  class="flex <%= own ? 'flex-row-reverse' : 'flex-row' %>"
+>
   <div class="max-w-[75%] rounded-lg px-3 py-2 <%= own ? 'bg-crusta-500/20 text-crusta-100' : 'bg-woodsmoke-800 text-woodsmoke-300' %>">
     <p class="text-xs font-medium mb-0.5"><%= trade_message.user.username %></p>
     <p class="text-sm break-words"><%= trade_message.body %></p>
-    <p class="text-[10px] mt-1 opacity-60"><%= trade_message.created_at.strftime("%b %d, %I:%M %p") %></p>
+
+    <p class="text-[10px] mt-1 opacity-60">
+      <%= trade_message.created_at.strftime("%b %d, %I:%M %p") %>
+    </p>
   </div>
 </div>

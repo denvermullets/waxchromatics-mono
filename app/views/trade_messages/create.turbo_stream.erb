@@ -1,6 +1,7 @@
 <%= turbo_stream.append "trade_messages" do %>
   <%= render "trade_messages/message", trade_message: @message, own: true %>
 <% end %>
+
 <%= turbo_stream.replace "new_trade_message" do %>
   <%= render "trade_messages/form", trade: @trade %>
 <% end %>

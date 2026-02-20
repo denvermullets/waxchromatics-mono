@@ -1,9 +1,15 @@
 <div class="max-w-3xl mx-auto px-4 py-8" data-controller="degrees">
   <%# Header %>
   <div class="mb-8 text-center">
-    <p class="text-xs font-semibold tracking-widest text-crusta-400 uppercase mb-1">Discover</p>
+    <p class="text-xs font-semibold tracking-widest text-crusta-400 uppercase mb-1">
+      Discover
+    </p>
+
     <h1 class="text-3xl font-bold text-woodsmoke-50">Degrees of Separation</h1>
-    <p class="text-woodsmoke-400 mt-2 text-sm">Find how two artists are connected through shared releases and credits.</p>
+
+    <p class="text-woodsmoke-400 mt-2 text-sm">
+      Find how two artists are connected through shared releases and credits.
+    </p>
   </div>
 
   <%# Artist Pickers %>
@@ -15,11 +21,22 @@
       <button
         type="button"
         data-action="click->degrees#swap"
-        class="p-2 rounded-full bg-woodsmoke-800 border border-woodsmoke-700 text-woodsmoke-400 hover:text-crusta-400 hover:border-crusta-400 transition-colors cursor-pointer"
+        class="
+          p-2 rounded-full bg-woodsmoke-800 border border-woodsmoke-700
+          text-woodsmoke-400 hover:text-crusta-400 hover:border-crusta-400
+          transition-colors cursor-pointer
+        "
         title="Swap artists"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M8 5a1 1 0 011 1v4.586l1.293-1.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L7 10.586V6a1 1 0 011-1zm6 10a1 1 0 01-1-1V9.414l-1.293 1.293a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L13 9.414V14a1 1 0 01-1 1z"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            d="M8 5a1 1 0 011 1v4.586l1.293-1.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L7 10.586V6a1 1 0 011-1zm6 10a1 1 0 01-1-1V9.414l-1.293 1.293a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L13 9.414V14a1 1 0 01-1 1z"
+          />
         </svg>
       </button>
     </div>
@@ -34,10 +51,23 @@
       data-degrees-target="submitBtn"
       data-action="click->degrees#findConnections"
       disabled
-      class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-crusta-500 text-white font-semibold rounded-lg hover:bg-crusta-600 transition-colors opacity-50 cursor-not-allowed"
+      class="
+        w-full flex items-center justify-center gap-2 px-6 py-3
+        bg-crusta-500 text-white font-semibold rounded-lg
+        hover:bg-crusta-600 transition-colors opacity-50 cursor-not-allowed
+      "
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+          clip-rule="evenodd"
+        />
       </svg>
       Find Connections
     </button>
@@ -48,10 +78,22 @@
     <div class="flex items-center justify-center py-12">
       <div class="flex flex-col items-center gap-3">
         <div class="flex gap-2">
-          <div class="w-3 h-3 rounded-full bg-crusta-400 animate-bounce" style="animation-delay: 0ms;"></div>
-          <div class="w-3 h-3 rounded-full bg-crusta-400 animate-bounce" style="animation-delay: 150ms;"></div>
-          <div class="w-3 h-3 rounded-full bg-crusta-400 animate-bounce" style="animation-delay: 300ms;"></div>
+          <div
+            class="w-3 h-3 rounded-full bg-crusta-400 animate-bounce"
+            style="animation-delay: 0ms;"
+          ></div>
+
+          <div
+            class="w-3 h-3 rounded-full bg-crusta-400 animate-bounce"
+            style="animation-delay: 150ms;"
+          ></div>
+
+          <div
+            class="w-3 h-3 rounded-full bg-crusta-400 animate-bounce"
+            style="animation-delay: 300ms;"
+          ></div>
         </div>
+
         <p class="text-woodsmoke-400 text-sm">Searching for connections...</p>
       </div>
     </div>

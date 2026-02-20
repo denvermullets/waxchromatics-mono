@@ -11,20 +11,51 @@
     <% if @user.avatar_url.present? %>
       <%= image_tag @user.avatar_url, alt: @user.username, class: "w-16 h-16 rounded-full object-cover border-2 border-woodsmoke-700" %>
     <% else %>
-      <div class="w-16 h-16 rounded-full bg-woodsmoke-800 border-2 border-woodsmoke-700 flex items-center justify-center">
-        <span class="text-2xl font-bold text-crusta-400"><%= @user.username[0].upcase %></span>
+      <div
+        class="
+          w-16 h-16 rounded-full bg-woodsmoke-800 border-2
+          border-woodsmoke-700 flex items-center justify-center
+        "
+      >
+        <span class="text-2xl font-bold text-crusta-400">
+          <%= @user.username[0].upcase %>
+        </span>
       </div>
     <% end %>
 
     <div>
       <h1 class="text-xl font-bold text-woodsmoke-50"><%= @user.username %></h1>
       <p class="text-sm text-crusta-400">@<%= @user.username %></p>
+
       <div class="flex flex-wrap gap-2 mt-2">
         <% if @user.location.present? %>
-          <span class="px-2.5 py-0.5 text-xs text-woodsmoke-300 border border-woodsmoke-700 rounded"><%= @user.location %></span>
+          <span
+            class="
+              px-2.5 py-0.5 text-xs text-woodsmoke-300 border
+              border-woodsmoke-700 rounded
+            "
+          >
+            <%= @user.location %>
+          </span>
         <% end %>
-        <span class="px-2.5 py-0.5 text-xs text-woodsmoke-300 border border-woodsmoke-700 rounded"><%= @completed_trade_count %> trades</span>
-        <span class="px-2.5 py-0.5 text-xs text-woodsmoke-300 border border-woodsmoke-700 rounded">Since <%= @user.created_at.strftime('%B %Y') %></span>
+
+        <span
+          class="
+            px-2.5 py-0.5 text-xs text-woodsmoke-300 border
+            border-woodsmoke-700 rounded
+          "
+        >
+          <%= @completed_trade_count %> trades
+        </span>
+
+        <span
+          class="
+            px-2.5 py-0.5 text-xs text-woodsmoke-300 border
+            border-woodsmoke-700 rounded
+          "
+        >
+          Since <%= @user.created_at.strftime('%B %Y') %>
+        </span>
       </div>
     </div>
   </div>
@@ -33,18 +64,29 @@
 <% if @total_ratings.positive? %>
   <%# Section 3: Trader Rating Card %>
   <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6 mb-6">
-    <h2 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-4">Trader Rating</h2>
+    <h2
+      class="
+        text-[10px] font-semibold text-woodsmoke-500 uppercase
+        tracking-wider mb-4
+      "
+    >
+      Trader Rating
+    </h2>
 
     <div class="flex flex-col md:flex-row gap-6">
       <%# Left: Big average + rating count %>
       <div class="flex flex-col items-center justify-center md:w-36 shrink-0">
         <p class="text-5xl font-bold text-crusta-400"><%= @avg_overall %></p>
+
         <div class="flex items-center gap-0.5 mt-2">
           <% 5.times do |i| %>
             <span class="w-2.5 h-2.5 rounded-full <%= i < (@avg_overall || 0).round ? 'bg-crusta-400' : 'bg-woodsmoke-700' %>"></span>
           <% end %>
         </div>
-        <p class="text-xs text-woodsmoke-400 mt-1">from <%= @total_ratings %> <%= 'rating'.pluralize(@total_ratings) %></p>
+
+        <p class="text-xs text-woodsmoke-400 mt-1">
+          from <%= @total_ratings %> <%= 'rating'.pluralize(@total_ratings) %>
+        </p>
       </div>
 
       <%# Right: Horizontal bars %>
@@ -55,42 +97,93 @@
           { label: "Packing & Shipping", value: @avg_packing }
         ].each do |bar| %>
           <div class="flex items-center gap-3">
-            <span class="w-36 shrink-0 text-xs text-woodsmoke-300 text-right"><%= bar[:label] %></span>
+            <span class="w-36 shrink-0 text-xs text-woodsmoke-300 text-right">
+              <%= bar[:label] %>
+            </span>
+
             <div class="flex-1 h-3 bg-woodsmoke-800 rounded overflow-hidden">
-              <div class="h-full bg-crusta-400 rounded" style="width: <%= ((bar[:value] || 0) / 5.0 * 100).round(1) %>%"></div>
+              <div
+                class="h-full bg-crusta-400 rounded"
+                style="width: <%= ((bar[:value] || 0) / 5.0 * 100).round(1) %>%"
+              ></div>
             </div>
-            <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right"><%= bar[:value] %></span>
+
+            <span class="w-8 shrink-0 text-xs text-crusta-400 font-semibold text-right">
+              <%= bar[:value] %>
+            </span>
           </div>
         <% end %>
       </div>
     </div>
   </div>
-
   <%# Section 4: Condition Accuracy + Community Tags %>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
     <%# Left: Condition Accuracy %>
     <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
-      <h2 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-4">Condition Accuracy</h2>
+      <h2
+        class="
+          text-[10px] font-semibold text-woodsmoke-500 uppercase
+          tracking-wider mb-4
+        "
+      >
+        Condition Accuracy
+      </h2>
+
       <div class="grid grid-cols-3 gap-3">
-        <div class="bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm overflow-hidden">
+        <div
+          class="
+            bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm
+            overflow-hidden
+          "
+        >
           <div class="text-center px-3 pt-4 pb-3">
-            <p class="text-2xl font-bold text-bright-turquoise-400"><%= @condition_breakdown[:accurate_or_better] %>%</p>
-            <p class="text-[10px] text-woodsmoke-500 uppercase tracking-wider mt-1">Accurate or Better</p>
+            <p class="text-2xl font-bold text-bright-turquoise-400">
+              <%= @condition_breakdown[:accurate_or_better] %>%
+            </p>
+
+            <p class="text-[10px] text-woodsmoke-500 uppercase tracking-wider mt-1">
+              Accurate or Better
+            </p>
           </div>
+
           <div class="h-1 bg-bright-turquoise-400"></div>
         </div>
-        <div class="bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm overflow-hidden">
+
+        <div
+          class="
+            bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm
+            overflow-hidden
+          "
+        >
           <div class="text-center px-3 pt-4 pb-3">
-            <p class="text-2xl font-bold text-crusta-400"><%= @condition_breakdown[:slightly_off] %>%</p>
-            <p class="text-[10px] text-woodsmoke-500 uppercase tracking-wider mt-1">Slightly Off</p>
+            <p class="text-2xl font-bold text-crusta-400">
+              <%= @condition_breakdown[:slightly_off] %>%
+            </p>
+
+            <p class="text-[10px] text-woodsmoke-500 uppercase tracking-wider mt-1">
+              Slightly Off
+            </p>
           </div>
+
           <div class="h-1 bg-crusta-400"></div>
         </div>
-        <div class="bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm overflow-hidden">
+
+        <div
+          class="
+            bg-woodsmoke-950 border border-woodsmoke-800 rounded-sm
+            overflow-hidden
+          "
+        >
           <div class="text-center px-3 pt-4 pb-3">
-            <p class="text-2xl font-bold text-red-400"><%= @condition_breakdown[:worse] %>%</p>
-            <p class="text-[10px] text-woodsmoke-500 uppercase tracking-wider mt-1">Worse</p>
+            <p class="text-2xl font-bold text-red-400">
+              <%= @condition_breakdown[:worse] %>%
+            </p>
+
+            <p class="text-[10px] text-woodsmoke-500 uppercase tracking-wider mt-1">
+              Worse
+            </p>
           </div>
+
           <div class="h-1 bg-red-400"></div>
         </div>
       </div>
@@ -98,17 +191,35 @@
 
     <%# Right: Community Tags %>
     <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-5">
-      <h2 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-4">Community Tags</h2>
+      <h2
+        class="
+          text-[10px] font-semibold text-woodsmoke-500 uppercase
+          tracking-wider mb-4
+        "
+      >
+        Community Tags
+      </h2>
+
       <% if @tag_frequencies.present? %>
         <div class="space-y-2.5">
           <% max_pct = @tag_frequencies.values.max || 1 %>
+
           <% @tag_frequencies.each do |tag, pct| %>
             <div class="flex items-center gap-3">
-              <span class="w-28 shrink-0 text-xs text-woodsmoke-300 text-right"><%= tag.titleize %></span>
+              <span class="w-28 shrink-0 text-xs text-woodsmoke-300 text-right">
+                <%= tag.titleize %>
+              </span>
+
               <div class="flex-1 h-3 bg-woodsmoke-800 rounded overflow-hidden">
-                <div class="h-full bg-crusta-400 rounded" style="width: <%= pct %>%"></div>
+                <div
+                  class="h-full bg-crusta-400 rounded"
+                  style="width: <%= pct %>%"
+                ></div>
               </div>
-              <span class="w-10 shrink-0 text-xs text-woodsmoke-400 text-right"><%= pct %>%</span>
+
+              <span class="w-10 shrink-0 text-xs text-woodsmoke-400 text-right">
+                <%= pct %>%
+              </span>
             </div>
           <% end %>
         </div>
@@ -117,32 +228,46 @@
       <% end %>
     </div>
   </div>
-
   <%# Section 5: Trade Reviews List %>
   <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6">
-    <h2 class="text-[10px] font-semibold text-woodsmoke-500 uppercase tracking-wider mb-4">Trade Reviews</h2>
+    <h2
+      class="
+        text-[10px] font-semibold text-woodsmoke-500 uppercase
+        tracking-wider mb-4
+      "
+    >
+      Trade Reviews
+    </h2>
 
     <%# Filter tabs %>
     <% star_counts = @user.ratings_received.visible.group(:overall_rating).count %>
     <% all_count = star_counts.values.sum %>
     <% low_count = star_counts.select { |k, _| k <= 3 }.values.sum %>
+
     <div class="flex flex-wrap gap-2 mb-5">
       <% current_stars = params[:stars] %>
+
       <%= link_to user_reviews_path(username: @user.username),
           class: "px-3 py-1 text-xs rounded-sm transition-colors #{current_stars.blank? ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" do %>
         All (<%= all_count %>)
       <% end %>
+
       <%= link_to user_reviews_path(username: @user.username, stars: 5),
           class: "px-3 py-1 text-xs rounded-sm transition-colors #{current_stars == '5' ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" do %>
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-crusta-400 mr-0.5"></span> 5 (<%= star_counts.fetch(5, 0) %>)
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-crusta-400 mr-0.5"></span>
+        5 (<%= star_counts.fetch(5, 0) %>)
       <% end %>
+
       <%= link_to user_reviews_path(username: @user.username, stars: 4),
           class: "px-3 py-1 text-xs rounded-sm transition-colors #{current_stars == '4' ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" do %>
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-crusta-400 mr-0.5"></span> 4 (<%= star_counts.fetch(4, 0) %>)
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-crusta-400 mr-0.5"></span>
+        4 (<%= star_counts.fetch(4, 0) %>)
       <% end %>
+
       <%= link_to user_reviews_path(username: @user.username, stars: 3),
           class: "px-3 py-1 text-xs rounded-sm transition-colors #{current_stars == '3' ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" do %>
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-crusta-400 mr-0.5"></span> &le;3 (<%= low_count %>)
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-crusta-400 mr-0.5"></span>
+        &le;3 (<%= low_count %>)
       <% end %>
     </div>
 
@@ -150,7 +275,9 @@
     <div class="bg-woodsmoke-950 border border-woodsmoke-700 rounded-sm p-3 mb-5">
       <p class="text-xs text-woodsmoke-400">
         <span class="font-semibold text-woodsmoke-300">Double-blind reviews:</span>
-        Ratings are hidden until both traders submit their review, or 7 days after delivery &mdash; whichever comes first. This ensures honest, unbiased feedback.
+        Ratings are hidden until both traders submit their review, or 7 days
+        after delivery &mdash; whichever comes first. This ensures honest,
+        unbiased feedback.
       </p>
     </div>
 
@@ -161,11 +288,18 @@
           <%= render "reviews/review_card", rating: rating %>
         <% end %>
       </div>
-
       <%# Pagination %>
       <% if @pagy.last > 1 %>
-        <div class="flex items-center justify-center gap-4 mt-6 pt-4 border-t border-woodsmoke-800">
-          <span class="text-xs text-woodsmoke-500">Page <%= @pagy.page %> of <%= @pagy.last %></span>
+        <div
+          class="
+            flex items-center justify-center gap-4 mt-6 pt-4 border-t
+            border-woodsmoke-800
+          "
+        >
+          <span class="text-xs text-woodsmoke-500">
+            Page <%= @pagy.page %> of <%= @pagy.last %>
+          </span>
+
           <div class="flex gap-2">
             <% if @pagy.previous %>
               <%= link_to user_reviews_path(username: @user.username, stars: params[:stars], page: @pagy.previous),
@@ -173,6 +307,7 @@
                 &larr; Prev
               <% end %>
             <% end %>
+
             <% if @pagy.next %>
               <%= link_to user_reviews_path(username: @user.username, stars: params[:stars], page: @pagy.next),
                   class: "px-3 py-1 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors" do %>
@@ -183,14 +318,18 @@
         </div>
       <% end %>
     <% else %>
-      <p class="text-sm text-woodsmoke-500 text-center py-8">No reviews match this filter.</p>
+      <p class="text-sm text-woodsmoke-500 text-center py-8">
+        No reviews match this filter.
+      </p>
     <% end %>
   </div>
-
 <% else %>
   <%# Empty state %>
   <div class="text-center py-16">
     <p class="text-woodsmoke-400 text-lg">No reviews yet.</p>
-    <p class="text-woodsmoke-500 text-sm mt-2">Ratings will appear here after completed trades are reviewed.</p>
+
+    <p class="text-woodsmoke-500 text-sm mt-2">
+      Ratings will appear here after completed trades are reviewed.
+    </p>
   </div>
 <% end %>

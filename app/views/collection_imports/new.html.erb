@@ -1,26 +1,45 @@
 <div class="max-w-2xl mx-auto px-4 py-8">
   <div class="mb-8">
-    <h1 class="text-2xl font-bold text-crusta-400 tracking-wide uppercase">Import Discogs Collection</h1>
+    <h1 class="text-2xl font-bold text-crusta-400 tracking-wide uppercase">
+      Import Discogs Collection
+    </h1>
+
     <p class="text-woodsmoke-400 text-sm mt-2">
-      Upload a CSV file exported from your Discogs collection. Go to your Discogs collection,
-      click the <span class="text-woodsmoke-200">Export</span> button, and select <span class="text-woodsmoke-200">CSV</span>.
+      Upload a CSV file exported from your Discogs collection. Go to your
+      Discogs collection, click the
+      <span class="text-woodsmoke-200">Export</span> button, and select
+      <span class="text-woodsmoke-200">CSV</span>.
     </p>
   </div>
 
   <% if flash[:alert] %>
-    <div class="mb-6 p-4 rounded-sm border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+    <div
+      class="
+        mb-6 p-4 rounded-sm border border-red-500/30 bg-red-500/10
+        text-red-400 text-sm
+      "
+    >
       <%= flash[:alert] %>
     </div>
   <% end %>
 
   <%= form_with url: collection_imports_path(username: Current.user.username), method: :post, multipart: true, class: "space-y-6" do |f| %>
     <div>
-      <label class="block text-sm font-medium text-woodsmoke-300 mb-2">CSV File</label>
-      <input type="file" name="file" accept=".csv,text/csv"
-             class="block w-full text-sm text-woodsmoke-400 file:mr-4 file:py-2 file:px-4
-                    file:rounded-sm file:border file:border-woodsmoke-700 file:text-sm file:font-semibold
-                    file:bg-woodsmoke-800 file:text-woodsmoke-200 hover:file:bg-woodsmoke-700
-                    file:cursor-pointer file:transition-colors">
+      <label class="block text-sm font-medium text-woodsmoke-300 mb-2">
+        CSV File
+      </label>
+
+      <input
+        type="file"
+        name="file"
+        accept=".csv,text/csv"
+        class="
+          block w-full text-sm text-woodsmoke-400 file:mr-4 file:py-2 file:px-4
+          file:rounded-sm file:border file:border-woodsmoke-700 file:text-sm file:font-semibold
+          file:bg-woodsmoke-800 file:text-woodsmoke-200 hover:file:bg-woodsmoke-700
+          file:cursor-pointer file:transition-colors
+        "
+      >
     </div>
 
     <div>
@@ -31,9 +50,13 @@
   <% end %>
 
   <div class="mt-8 p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
-    <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Expected CSV columns</p>
+    <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">
+      Expected CSV columns
+    </p>
+
     <p class="text-xs text-woodsmoke-500 font-mono">
-      release_id, Artist, Title, Label, Catalog#, Released, Collection Media Condition, ...
+      release_id, Artist, Title, Label, Catalog#, Released, Collection Media
+      Condition, ...
     </p>
   </div>
 </div>

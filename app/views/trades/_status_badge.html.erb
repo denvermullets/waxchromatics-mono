@@ -1,14 +1,13 @@
 <%# locals: (status:) %>
-<%
-  colors = {
+<% colors = {
     "draft"     => "bg-woodsmoke-700 text-woodsmoke-300",
     "proposed"  => "bg-blue-ribbon-500/20 text-blue-ribbon-400",
     "accepted"  => "bg-green-500/20 text-green-400",
     "delivered" => "bg-bright-turquoise-500/20 text-bright-turquoise-400",
     "declined"  => "bg-red-500/20 text-red-400",
     "cancelled" => "bg-woodsmoke-700 text-woodsmoke-400"
-  }
-%>
+  } %>
+
 <span class="inline-flex px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded <%= colors[status] %>">
   <%= status %>
 </span>

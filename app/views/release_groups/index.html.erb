@@ -5,10 +5,22 @@
       Releases
       <span class="text-base font-normal text-woodsmoke-500">(<%= @total_release_groups %>)</span>
     </h1>
+
     <div class="flex items-center gap-6 text-sm text-woodsmoke-400">
-      <span><span class="text-woodsmoke-200 font-semibold"><%= number_with_delimiter(@total_variants) %></span> variants</span>
-      <span><span class="text-woodsmoke-200 font-semibold"><%= number_with_delimiter(@total_labels) %></span> labels</span>
-      <span><span class="text-woodsmoke-200 font-semibold"><%= number_with_delimiter(@total_genres) %></span> genres</span>
+      <span>
+        <span class="text-woodsmoke-200 font-semibold"><%= number_with_delimiter(@total_variants) %></span>
+        variants
+      </span>
+
+      <span>
+        <span class="text-woodsmoke-200 font-semibold"><%= number_with_delimiter(@total_labels) %></span>
+        labels
+      </span>
+
+      <span>
+        <span class="text-woodsmoke-200 font-semibold"><%= number_with_delimiter(@total_genres) %></span>
+        genres
+      </span>
     </div>
   </div>
 
@@ -23,13 +35,17 @@
       <%= f.hidden_field :genre, value: @genre_filter %>
       <%= f.hidden_field :country, value: @country_filter %>
       <%= f.hidden_field :colored, value: params[:colored] %>
+
       <%= f.text_field :q, value: params[:q], placeholder: "Search releases...",
             autocomplete: "off",
             class: "rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none w-48" %>
     <% end %>
 
     <div class="flex items-center gap-2">
-      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Sort</span>
+      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">
+        Sort
+      </span>
+
       <% [
         ['artist_az', 'ARTIST A-Z'],
         ['artist_za', 'ARTIST Z-A'],
@@ -47,11 +63,24 @@
     <div class="ml-auto flex items-center gap-1">
       <%= link_to browse_releases_path(browse_params(view: 'list')),
                   class: "p-2 rounded-sm border transition-colors #{@view == 'list' ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-500 hover:border-woodsmoke-500 hover:text-woodsmoke-300'}" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
       <% end %>
+
       <%= link_to browse_releases_path(browse_params(view: 'grid')),
                   class: "p-2 rounded-sm border transition-colors #{@view == 'grid' ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-500 hover:border-woodsmoke-500 hover:text-woodsmoke-300'}" do %>
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"
+          />
+        </svg>
       <% end %>
     </div>
   </div>
@@ -60,9 +89,13 @@
   <div class="flex flex-wrap items-center gap-4 mb-4">
     <%# Format pills %>
     <div class="flex items-center gap-2">
-      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Format</span>
+      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">
+        Format
+      </span>
+
       <%= link_to "ALL", browse_releases_path(browse_params(format_filter: nil, page: nil)),
                   class: "px-3 py-1 text-xs font-semibold rounded-sm border transition-colors #{@format_filter.blank? ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
+
       <% %w[Vinyl CD Cassette].each do |fmt| %>
         <%= link_to fmt.upcase, browse_releases_path(browse_params(format_filter: fmt, page: nil)),
                     class: "px-3 py-1 text-xs font-semibold rounded-sm border transition-colors #{browse_pill_class(:format_filter, fmt)}" %>
@@ -71,9 +104,13 @@
 
     <%# Decade pills %>
     <div class="flex items-center gap-2">
-      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">Decade</span>
+      <span class="text-xs text-woodsmoke-500 uppercase tracking-wider">
+        Decade
+      </span>
+
       <%= link_to "ALL", browse_releases_path(browse_params(decade: nil, page: nil)),
                   class: "px-3 py-1 text-xs font-semibold rounded-sm border transition-colors #{@decade.blank? ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
+
       <% [1970, 1980, 1990, 2000, 2010, 2020].each do |d| %>
         <%= link_to "#{d}s", browse_releases_path(browse_params(decade: d, page: nil)),
                     class: "px-3 py-1 text-xs font-semibold rounded-sm border transition-colors #{browse_pill_class(:decade, d)}" %>
@@ -87,33 +124,75 @@
   </div>
 
   <%# Dropdown filters %>
-  <div class="flex flex-wrap items-center gap-4 mb-4" data-controller="select-nav">
+  <div
+    class="flex flex-wrap items-center gap-4 mb-4"
+    data-controller="select-nav"
+  >
     <% if @label_options.any? %>
-      <select data-action="change->select-nav#navigate" data-select-nav-param-value="label"
-              class="rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+      <select
+        data-action="change->select-nav#navigate"
+        data-select-nav-param-value="label"
+        class="
+          rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3
+          py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400
+          focus:ring-1 focus:ring-crusta-400 focus:outline-none
+        "
+      >
         <option value="">All Labels</option>
+
         <% @label_options.each do |name| %>
-          <option value="<%= name %>" <%= 'selected' if @label_filter == name %>><%= name %></option>
+          <option
+            value="<%= name %>"
+            <%= 'selected' if @label_filter == name %>
+          >
+            <%= name %>
+          </option>
         <% end %>
       </select>
     <% end %>
 
     <% if @genre_options.any? %>
-      <select data-action="change->select-nav#navigate" data-select-nav-param-value="genre"
-              class="rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+      <select
+        data-action="change->select-nav#navigate"
+        data-select-nav-param-value="genre"
+        class="
+          rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3
+          py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400
+          focus:ring-1 focus:ring-crusta-400 focus:outline-none
+        "
+      >
         <option value="">All Genres</option>
+
         <% @genre_options.each do |name| %>
-          <option value="<%= name %>" <%= 'selected' if @genre_filter == name %>><%= name %></option>
+          <option
+            value="<%= name %>"
+            <%= 'selected' if @genre_filter == name %>
+          >
+            <%= name %>
+          </option>
         <% end %>
       </select>
     <% end %>
 
     <% if @country_options.any? %>
-      <select data-action="change->select-nav#navigate" data-select-nav-param-value="country"
-              class="rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+      <select
+        data-action="change->select-nav#navigate"
+        data-select-nav-param-value="country"
+        class="
+          rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3
+          py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400
+          focus:ring-1 focus:ring-crusta-400 focus:outline-none
+        "
+      >
         <option value="">All Countries</option>
+
         <% @country_options.each do |name| %>
-          <option value="<%= name %>" <%= 'selected' if @country_filter == name %>><%= name %></option>
+          <option
+            value="<%= name %>"
+            <%= 'selected' if @country_filter == name %>
+          >
+            <%= name %>
+          </option>
         <% end %>
       </select>
     <% end %>
@@ -132,7 +211,9 @@
             <%= link_to char, browse_releases_path(browse_params(letter: char, page: nil)),
                         class: "text-sm font-semibold px-2 py-0.5 rounded transition-colors #{@letter == char ? 'text-crusta-400 bg-woodsmoke-800' : 'text-woodsmoke-300 hover:text-crusta-400'}" %>
           <% else %>
-            <span class="text-sm font-semibold px-2 py-0.5 text-woodsmoke-700"><%= char %></span>
+            <span class="text-sm font-semibold px-2 py-0.5 text-woodsmoke-700">
+              <%= char %>
+            </span>
           <% end %>
         <% end %>
 
@@ -155,12 +236,21 @@
           <div id="letter-<%= letter %>" class="mb-8 scroll-mt-20">
             <div class="flex items-baseline gap-3 mb-3">
               <h2 class="text-3xl font-bold text-crusta-400"><%= letter %></h2>
-              <span class="text-sm text-woodsmoke-500"><%= rgs.size %> release<%= rgs.size == 1 ? '' : 's' %></span>
+
+              <span class="text-sm text-woodsmoke-500">
+                <%= rgs.size %> release<%= rgs.size == 1 ? '' : 's' %>
+              </span>
             </div>
+
             <div class="border-t border-crusta-400 mb-4"></div>
 
             <% if @view == 'grid' %>
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <div
+                class="
+                  grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+                  lg:grid-cols-5 gap-4
+                "
+              >
                 <% rgs.each do |rg| %>
                   <%= render 'release_groups/browse_card', rg: rg, variant_count: @variant_counts[rg.id] || 0 %>
                 <% end %>
@@ -170,15 +260,72 @@
                 <table class="w-full text-sm">
                   <thead>
                     <tr class="border-b border-woodsmoke-800">
-                      <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 w-12"></th>
-                      <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
-                      <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
-                      <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Format</th>
-                      <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Year</th>
-                      <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Label</th>
-                      <th class="text-right py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Var.</th>
+                      <th
+                        class="
+                          text-left py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500 w-12
+                        "
+                      ></th>
+
+                      <th
+                        class="
+                          text-left py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500
+                        "
+                      >
+                        Artist
+                      </th>
+
+                      <th
+                        class="
+                          text-left py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500
+                        "
+                      >
+                        Title
+                      </th>
+
+                      <th
+                        class="
+                          text-left py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500 hidden
+                          md:table-cell
+                        "
+                      >
+                        Format
+                      </th>
+
+                      <th
+                        class="
+                          text-left py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500 hidden
+                          md:table-cell
+                        "
+                      >
+                        Year
+                      </th>
+
+                      <th
+                        class="
+                          text-left py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500 hidden
+                          lg:table-cell
+                        "
+                      >
+                        Label
+                      </th>
+
+                      <th
+                        class="
+                          text-right py-3 px-2 text-xs font-semibold
+                          uppercase tracking-wider text-woodsmoke-500
+                        "
+                      >
+                        Var.
+                      </th>
                     </tr>
                   </thead>
+
                   <tbody>
                     <% rgs.each do |rg| %>
                       <%= render 'release_groups/browse_row', rg: rg, variant_count: @variant_counts[rg.id] || 0 %>
@@ -192,7 +339,12 @@
       <% else %>
         <%# Flat view (non-alphabetical sort) %>
         <% if @view == 'grid' %>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div
+            class="
+              grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
+              gap-4
+            "
+          >
             <% @release_groups.each do |rg| %>
               <%= render 'release_groups/browse_card', rg: rg, variant_count: @variant_counts[rg.id] || 0 %>
             <% end %>
@@ -202,15 +354,69 @@
             <table class="w-full text-sm">
               <thead>
                 <tr class="border-b border-woodsmoke-800">
-                  <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 w-12"></th>
-                  <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Artist</th>
-                  <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Title</th>
-                  <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Format</th>
-                  <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden md:table-cell">Year</th>
-                  <th class="text-left py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500 hidden lg:table-cell">Label</th>
-                  <th class="text-right py-3 px-2 text-xs font-semibold uppercase tracking-wider text-woodsmoke-500">Var.</th>
+                  <th
+                    class="
+                      text-left py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500 w-12
+                    "
+                  ></th>
+
+                  <th
+                    class="
+                      text-left py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500
+                    "
+                  >
+                    Artist
+                  </th>
+
+                  <th
+                    class="
+                      text-left py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500
+                    "
+                  >
+                    Title
+                  </th>
+
+                  <th
+                    class="
+                      text-left py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500 hidden md:table-cell
+                    "
+                  >
+                    Format
+                  </th>
+
+                  <th
+                    class="
+                      text-left py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500 hidden md:table-cell
+                    "
+                  >
+                    Year
+                  </th>
+
+                  <th
+                    class="
+                      text-left py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500 hidden lg:table-cell
+                    "
+                  >
+                    Label
+                  </th>
+
+                  <th
+                    class="
+                      text-right py-3 px-2 text-xs font-semibold uppercase
+                      tracking-wider text-woodsmoke-500
+                    "
+                  >
+                    Var.
+                  </th>
                 </tr>
               </thead>
+
               <tbody>
                 <% @release_groups.each do |rg| %>
                   <%= render 'release_groups/browse_row', rg: rg, variant_count: @variant_counts[rg.id] || 0 %>
@@ -224,7 +430,10 @@
       <%# Pagination %>
       <% if @pagy.last > 1 %>
         <div class="mt-6 flex items-center justify-center gap-3">
-          <span class="text-xs text-woodsmoke-500">Page <%= @pagy.page %> of <%= @pagy.last %></span>
+          <span class="text-xs text-woodsmoke-500">
+            Page <%= @pagy.page %> of <%= @pagy.last %>
+          </span>
+
           <div class="flex gap-1">
             <% if @pagy.previous %>
               <%= link_to browse_releases_path(browse_params(page: @pagy.previous)),
@@ -232,6 +441,7 @@
                 &larr; Prev
               <% end %>
             <% end %>
+
             <% if @pagy.next %>
               <%= link_to browse_releases_path(browse_params(page: @pagy.next)),
                           class: "px-3 py-1.5 text-sm font-medium rounded-sm border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 transition-colors" do %>

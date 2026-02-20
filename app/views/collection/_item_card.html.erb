@@ -7,12 +7,18 @@
 <div class="rounded-sm border border-woodsmoke-800 bg-woodsmoke-925 overflow-hidden">
   <%# Cover art with vinyl peeking out — links to release page if available %>
   <% release_url = artist && release.release_group ? artist_release_group_release_path(artist, release.release_group, release) : nil %>
+
   <% if release_url %>
     <%= link_to release_url, class: "block relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center justify-center" do %>
       <%= render "collection/item_cover", cover_thumb: cover_thumb, vinyl_svg: vinyl_svg, release: release %>
     <% end %>
   <% else %>
-    <div class="relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center justify-center">
+    <div
+      class="
+        relative w-full aspect-[4/3] bg-woodsmoke-900 flex items-center
+        justify-center
+      "
+    >
       <%= render "collection/item_cover", cover_thumb: cover_thumb, vinyl_svg: vinyl_svg, release: release %>
     </div>
   <% end %>
@@ -22,23 +28,49 @@
     <% if artist %>
       <%= link_to artist.name, artist_path(artist), class: "text-xs text-crusta-400 hover:text-crusta-300 transition-colors block truncate" %>
     <% end %>
+
     <% if artist && release.release_group %>
       <%= link_to release.title,
                   artist_release_group_release_path(artist, release.release_group, release),
                   class: "text-sm font-medium text-woodsmoke-100 hover:text-woodsmoke-50 transition-colors block truncate" %>
     <% else %>
-      <p class="text-sm font-medium text-woodsmoke-100 truncate"><%= release.title %></p>
+      <p class="text-sm font-medium text-woodsmoke-100 truncate">
+        <%= release.title %>
+      </p>
     <% end %>
 
     <div class="flex flex-wrap gap-1 mt-1">
       <% if fmt&.name.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= fmt.name %></span>
+        <span
+          class="
+            px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700
+            text-woodsmoke-400
+          "
+        >
+          <%= fmt.name %>
+        </span>
       <% end %>
+
       <% if release.released.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= release.released.to_s[0, 4] %></span>
+        <span
+          class="
+            px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700
+            text-woodsmoke-400
+          "
+        >
+          <%= release.released.to_s[0, 4] %>
+        </span>
       <% end %>
+
       <% if fmt&.color.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-crusta-400 text-crusta-400"><%= fmt.color %></span>
+        <span
+          class="
+            px-1.5 py-0.5 text-xs rounded border border-crusta-400
+            text-crusta-400
+          "
+        >
+          <%= fmt.color %>
+        </span>
       <% end %>
     </div>
   </div>

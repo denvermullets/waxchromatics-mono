@@ -19,7 +19,7 @@ class JobMetricsController < ApplicationController
   def load_chart_series
     @queue_names = SolidQueue::Job.where(created_at: range_start..Time.current).distinct.pluck(:queue_name).sort
     per_queue = build_per_queue_series
-    @labels = per_queue[:times].map { |t| format_label(t) }
+    @labels = per_queue[:times].map(&:iso8601)
     @queue_datasets = per_queue[:datasets]
   end
 
@@ -70,17 +70,5 @@ class JobMetricsController < ApplicationController
       .group(:queue_name, Arel.sql("date_trunc('#{trunc_unit}', #{column})"))
       .order(Arel.sql("date_trunc('#{trunc_unit}', #{column})"))
       .count
-  end
-
-  def format_label(time)
-    t = time.in_time_zone
-    case @range
-    when '1h'
-      t.strftime('%-l:%M %p')
-    when '24h'
-      t.strftime('%-l %p')
-    else
-      t.strftime('%-m/%-d')
-    end
   end
 end

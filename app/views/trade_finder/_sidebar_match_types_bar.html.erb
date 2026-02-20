@@ -1,17 +1,36 @@
 <% if @matches_count > 0 %>
   <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6">
-    <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Match Types</h2>
+    <h2
+      class="
+        text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest
+        mb-4
+      "
+    >
+      Match Types
+    </h2>
 
     <% total = @matches_count.to_f %>
+
     <div class="flex h-5 rounded overflow-hidden">
       <% if @mutual_count > 0 %>
-        <div class="bg-bright-turquoise-400" style="width: <%= (@mutual_count / total * 100).round(1) %>%"></div>
+        <div
+          class="bg-bright-turquoise-400"
+          style="width: <%= (@mutual_count / total * 100).round(1) %>%"
+        ></div>
       <% end %>
+
       <% if @they_have_count > 0 %>
-        <div class="bg-blue-ribbon-400" style="width: <%= (@they_have_count / total * 100).round(1) %>%"></div>
+        <div
+          class="bg-blue-ribbon-400"
+          style="width: <%= (@they_have_count / total * 100).round(1) %>%"
+        ></div>
       <% end %>
+
       <% if @they_want_count > 0 %>
-        <div class="bg-crusta-400" style="width: <%= (@they_want_count / total * 100).round(1) %>%"></div>
+        <div
+          class="bg-crusta-400"
+          style="width: <%= (@they_want_count / total * 100).round(1) %>%"
+        ></div>
       <% end %>
     </div>
 
@@ -20,10 +39,12 @@
         <span class="inline-block w-2.5 h-2.5 rounded-sm bg-bright-turquoise-400"></span>
         Mutual <%= @mutual_count %>
       </span>
+
       <span class="flex items-center gap-1 text-[10px] text-woodsmoke-300">
         <span class="inline-block w-2.5 h-2.5 rounded-sm bg-blue-ribbon-400"></span>
         They Have <%= @they_have_count %>
       </span>
+
       <span class="flex items-center gap-1 text-[10px] text-woodsmoke-300">
         <span class="inline-block w-2.5 h-2.5 rounded-sm bg-crusta-400"></span>
         They Want <%= @they_want_count %>

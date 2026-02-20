@@ -2,6 +2,7 @@
 <div class="flex flex-wrap gap-2 mb-4">
   <% [["all", "All"], ["draft", "Draft"], ["proposed", "Proposed"], ["accepted", "Accepted"], ["declined", "Declined"], ["cancelled", "Cancelled"]].each do |value, label| %>
     <% active = status_filter == value %>
+
     <%= link_to trades_path(username: params[:username], status: value),
         class: "px-3 py-1.5 text-xs rounded-sm transition-colors #{active ? 'bg-crusta-400 text-woodsmoke-950 font-semibold' : 'bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700'}" do %>
       <%= label %>

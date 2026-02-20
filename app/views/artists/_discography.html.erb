@@ -1,5 +1,7 @@
 <div>
-  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Discography</h2>
+  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">
+    Discography
+  </h2>
 
   <% if @sections.any? %>
     <div>
@@ -12,7 +14,12 @@
       <% end %>
     </div>
   <% else %>
-    <div class="p-8 text-center rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
+    <div
+      class="
+        p-8 text-center rounded-sm border border-woodsmoke-800
+        bg-woodsmoke-925
+      "
+    >
       <p class="text-woodsmoke-400">No discography data available.</p>
     </div>
   <% end %>

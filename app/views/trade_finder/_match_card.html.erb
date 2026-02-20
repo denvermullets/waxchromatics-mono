@@ -1,6 +1,5 @@
 <%# locals: (match:, index:) %>
-<%
-  type = match[:match_type]
+<% type = match[:match_type]
   border_class = case type
                  when :mutual    then "border-bright-turquoise-400"
                  when :they_have then "border-blue-ribbon-400"
@@ -21,20 +20,24 @@
                 when :they_have then "They Have"
                 when :they_want then "They Want"
                 end
-  user = match[:user]
-%>
+  user = match[:user] %>
 
 <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm overflow-hidden">
   <%# Header — always visible, acts as toggle %>
   <button
     type="button"
-    class="w-full flex items-center gap-4 p-4 text-left hover:bg-woodsmoke-900 transition-colors cursor-pointer"
+    class="
+      w-full flex items-center gap-4 p-4 text-left hover:bg-woodsmoke-900
+      transition-colors cursor-pointer
+    "
     data-action="click->trade-finder#toggle"
     data-index="<%= index %>"
   >
     <%# Score circle %>
     <div class="shrink-0 w-12 h-12 rounded-full border-2 <%= border_class %> flex items-center justify-center">
-      <span class="text-sm font-bold <%= text_class %>"><%= match[:score] %></span>
+      <span class="text-sm font-bold <%= text_class %>">
+        <%= match[:score] %>
+      </span>
     </div>
 
     <%# User info %>
@@ -43,42 +46,74 @@
         <% if user.avatar_url.present? %>
           <%= image_tag user.avatar_url, alt: user.username, class: "w-6 h-6 rounded-full object-cover" %>
         <% else %>
-          <div class="w-6 h-6 rounded-full bg-woodsmoke-800 flex items-center justify-center">
-            <span class="text-[10px] font-bold text-crusta-400"><%= user.username[0].upcase %></span>
+          <div
+            class="
+              w-6 h-6 rounded-full bg-woodsmoke-800 flex items-center
+              justify-center
+            "
+          >
+            <span class="text-[10px] font-bold text-crusta-400">
+              <%= user.username[0].upcase %>
+            </span>
           </div>
         <% end %>
-        <span class="text-sm font-medium text-woodsmoke-100 truncate"><%= user.username %></span>
+
+        <span class="text-sm font-medium text-woodsmoke-100 truncate">
+          <%= user.username %>
+        </span>
+
         <% if user.location.present? %>
-          <span class="text-[10px] text-woodsmoke-500 truncate"><%= user.location %></span>
+          <span class="text-[10px] text-woodsmoke-500 truncate">
+            <%= user.location %>
+          </span>
         <% end %>
       </div>
     </div>
 
     <%# Badge %>
-    <span class="shrink-0 px-2 py-0.5 text-[10px] font-medium rounded <%= badge_bg %> <%= text_class %>"><%= badge_label %></span>
+    <span class="shrink-0 px-2 py-0.5 text-[10px] font-medium rounded <%= badge_bg %> <%= text_class %>">
+      <%= badge_label %>
+    </span>
 
     <%# Stats %>
     <div class="hidden sm:flex items-center gap-3 shrink-0">
       <% if match[:they_have_count] > 0 %>
         <span class="text-[10px] text-woodsmoke-400">
-          <span class="font-semibold text-blue-ribbon-400"><%= match[:they_have_count] %></span> have
+          <span class="font-semibold text-blue-ribbon-400"><%= match[:they_have_count] %></span>
+          have
         </span>
       <% end %>
+
       <% if match[:they_want_count] > 0 %>
         <span class="text-[10px] text-woodsmoke-400">
-          <span class="font-semibold text-crusta-400"><%= match[:they_want_count] %></span> want
+          <span class="font-semibold text-crusta-400"><%= match[:they_want_count] %></span>
+          want
         </span>
       <% end %>
     </div>
 
     <%# Chevron %>
-    <svg data-trade-finder-target="matchIcon" class="w-5 h-5 text-woodsmoke-500 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    <svg
+      data-trade-finder-target="matchIcon"
+      class="w-5 h-5 text-woodsmoke-500 transition-transform shrink-0"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"
+      />
     </svg>
   </button>
 
   <%# Expandable detail %>
-  <div data-trade-finder-target="matchContent" class="<%= index == 0 ? '' : 'hidden' %>">
+  <div
+    data-trade-finder-target="matchContent"
+    class="<%= index == 0 ? '' : 'hidden' %>"
+  >
     <%= render "trade_finder/match_detail", match: match %>
   </div>
 </div>
