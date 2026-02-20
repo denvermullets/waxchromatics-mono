@@ -138,3 +138,11 @@
   --color-woodsmoke-925: #282c2a;
   --color-woodsmoke-950: #1a1e1c;
 }
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

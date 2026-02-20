@@ -1,5 +1,5 @@
-<div class="max-w-7xl mx-auto px-4 py-8">
-  <div class="mb-6 flex items-center gap-2 text-sm text-woodsmoke-400">
+<div class="max-w-7xl mx-auto px-4 py-4 md:py-8">
+  <div class="mb-4 md:mb-6 flex items-center gap-2 text-sm text-woodsmoke-400">
     <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
     <span>/</span>
 
@@ -11,16 +11,66 @@
     <span class="text-woodsmoke-300"><%= @release_group.title %></span>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <%# Left column: cover art, tracklist %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+    <%# Mobile: title first, then cover art — Desktop: cover art in left column %>
     <div class="lg:col-span-1 space-y-4">
+      <%# Title block — shown here on mobile, hidden on desktop (shown in right col instead) %>
+      <div class="lg:hidden"><%= render "release_groups/title_block" %></div>
+
       <%= render "shared/cover_art", thumb: @release_group.cover_art_url, alt: @release_group.title, size: :xl %>
-      <%= render "release_groups/tracklist" %>
+
+      <%# Release info — shown here on mobile, hidden on desktop %>
+      <div class="lg:hidden"><%= render "release_groups/release_info" %></div>
+
+      <%# Tracklist — collapsible on mobile, always open on desktop %>
+      <div class="lg:hidden" data-controller="collapsible">
+        <button
+          data-action="click->collapsible#toggle"
+          class="
+            w-full flex items-center justify-between p-4 rounded-sm border
+            border-woodsmoke-800 bg-woodsmoke-925 cursor-pointer
+          "
+        >
+          <h3
+            class="
+              text-xs font-semibold uppercase tracking-wider
+              text-woodsmoke-400
+            "
+          >
+            Tracklist
+          </h3>
+
+          <svg
+            data-collapsible-target="icon"
+            class="w-4 h-4 text-woodsmoke-400 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        <div data-collapsible-target="content" class="hidden">
+          <%= render "release_groups/tracklist_content" %>
+        </div>
+      </div>
+
+      <div class="hidden lg:block">
+        <%= render "release_groups/tracklist" %>
+      </div>
     </div>
 
-    <%# Right column: title, info, versions %>
+    <%# Right column: title, info, versions (desktop) %>
     <div class="lg:col-span-2 space-y-6">
-      <%= render "release_groups/header" %>
+      <%# Title + info — hidden on mobile (shown in left col), visible on desktop %>
+      <div class="hidden lg:block"><%= render "release_groups/header" %></div>
+
       <%= render "release_groups/versions_table" %>
     </div>
   </div>
