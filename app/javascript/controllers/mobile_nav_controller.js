@@ -5,13 +5,16 @@ export default class extends Controller {
 
   connect() {
     document.addEventListener("turbo:before-visit", this.hide)
+    document.addEventListener("click", this.outsideClick)
   }
 
   disconnect() {
     document.removeEventListener("turbo:before-visit", this.hide)
+    document.removeEventListener("click", this.outsideClick)
   }
 
-  toggle() {
+  toggle(event) {
+    event.stopPropagation()
     this.drawerTarget.classList.toggle("hidden")
     this.hamburgerTarget.classList.toggle("hidden")
     this.closeTarget.classList.toggle("hidden")
@@ -21,5 +24,11 @@ export default class extends Controller {
     this.drawerTarget.classList.add("hidden")
     this.hamburgerTarget.classList.remove("hidden")
     this.closeTarget.classList.add("hidden")
+  }
+
+  outsideClick = (event) => {
+    if (this.drawerTarget.classList.contains("hidden")) return
+    if (this.element.contains(event.target)) return
+    this.hide()
   }
 }
