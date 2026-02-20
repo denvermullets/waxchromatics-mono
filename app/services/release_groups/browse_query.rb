@@ -15,8 +15,9 @@ module ReleaseGroups
     end
 
     def call
-      scope = build_filtered_scope
-      @available_letters = extract_available_letters(scope)
+      base = build_filtered_scope
+      @available_letters = extract_available_letters(base)
+      scope = apply_letter_filter(base)
       sorted = apply_sort(scope)
       @pagy, id_rows = paginate(sorted)
       hydrate(id_rows)
@@ -28,7 +29,6 @@ module ReleaseGroups
     def build_filtered_scope
       scope = base_scope
       scope = apply_search(scope)
-      scope = apply_letter_filter(scope)
       scope = apply_format_filter(scope)
       scope = apply_decade_filter(scope)
       scope = apply_label_filter(scope)

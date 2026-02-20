@@ -4,6 +4,8 @@ class ReleaseGroupsController < ApplicationController
   def index
     @sort = params[:sort].presence || 'artist_az'
     @view = params[:view].presence || 'grid'
+    @filters = browse_filters
+    @letter = @filters[:letter]
 
     load_dropdown_options
     load_stats
@@ -64,7 +66,7 @@ class ReleaseGroupsController < ApplicationController
 
   def load_browse_results
     query = ReleaseGroups::BrowseQuery.new(
-      params: params, filters: browse_filters, sort: @sort,
+      params: params, filters: @filters, sort: @sort,
       page: (params[:page] || 1).to_i, limit: BROWSE_PER_PAGE
     ).call
 
@@ -76,8 +78,11 @@ class ReleaseGroupsController < ApplicationController
   end
 
   def browse_filters
+    letter = params[:letter].presence
+    letter ||= 'A' if default_letter?
+
     {
-      letter: params[:letter].presence,
+      letter: letter,
       format: params[:format_filter].presence,
       decade: params[:decade].presence,
       label: params[:label].presence,
@@ -85,5 +90,9 @@ class ReleaseGroupsController < ApplicationController
       country: params[:country].presence,
       colored: params[:colored] == '1'
     }
+  end
+
+  def default_letter?
+    %w[artist_az artist_za].include?(@sort) && params[:q].blank?
   end
 end
