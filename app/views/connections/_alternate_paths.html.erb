@@ -2,25 +2,50 @@
   <button
     type="button"
     data-action="click->collapsible#toggle"
-    class="flex items-center gap-2 text-sm text-woodsmoke-400 hover:text-woodsmoke-200 transition-colors cursor-pointer"
+    class="
+      flex items-center gap-2 text-sm text-woodsmoke-400
+      hover:text-woodsmoke-200 transition-colors cursor-pointer
+    "
   >
     <span>Alternate paths (<%= alternate_paths.length %>)</span>
-    <svg data-collapsible-target="icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+
+    <svg
+      data-collapsible-target="icon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-4 w-4 transition-transform"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+        clip-rule="evenodd"
+      />
     </svg>
   </button>
 
   <div data-collapsible-target="content" class="hidden mt-3 space-y-2">
     <% alternate_paths.each do |alt_path| %>
-      <div class="bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-4 py-3 text-sm text-woodsmoke-300">
+      <div
+        class="
+          bg-woodsmoke-900 border border-woodsmoke-800 rounded-sm px-4 py-3
+          text-sm text-woodsmoke-300
+        "
+      >
         <% alt_path.each_with_index do |edge, i| %>
           <% if i == 0 %>
-            <span class="text-woodsmoke-100 font-medium"><%= edge[:from_artist]&.name %></span>
+            <span class="text-woodsmoke-100 font-medium">
+              <%= edge[:from_artist]&.name %>
+            </span>
           <% end %>
+
           <span class="text-woodsmoke-500 mx-1">&rarr;</span>
           <span class="text-crusta-400 text-xs">(<%= edge[:label] %>)</span>
           <span class="text-woodsmoke-500 mx-1">&rarr;</span>
-          <span class="text-woodsmoke-100 font-medium"><%= edge[:to_artist]&.name %></span>
+
+          <span class="text-woodsmoke-100 font-medium">
+            <%= edge[:to_artist]&.name %>
+          </span>
         <% end %>
       </div>
     <% end %>

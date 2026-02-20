@@ -1,28 +1,46 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
   <% if notice = flash[:notice] %>
-    <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-sm inline-block" id="notice"><%= notice %></p>
+    <p
+      class="
+        py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300
+        font-medium rounded-sm inline-block
+      "
+      id="notice"
+    >
+      <%= notice %>
+    </p>
   <% end %>
 
   <%# Breadcrumb %>
   <div class="mb-6 flex items-center gap-2 text-sm text-woodsmoke-400">
     <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
     <span>/</span>
+
     <% if @artists.any? %>
       <%= link_to @artist.name, artist_path(@artist), class: "hover:text-crusta-400 transition-colors" %>
       <span>/</span>
     <% end %>
+
     <% if @release_group %>
       <%= link_to @release_group.title, artist_release_group_path(@artist, @release_group), class: "hover:text-crusta-400 transition-colors" %>
       <span>/</span>
     <% end %>
-    <span class="text-woodsmoke-300"><%= @labels.first&.catalog_number.presence || @release.title %></span>
+
+    <span class="text-woodsmoke-300">
+      <%= @labels.first&.catalog_number.presence || @release.title %>
+    </span>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <%# Left column: cover, notes, actions %>
     <div class="lg:col-span-1 space-y-4">
       <% if @release.cover_art_url.present? %>
-        <div class="w-full aspect-square rounded-sm border border-woodsmoke-700 overflow-hidden bg-woodsmoke-700">
+        <div
+          class="
+            w-full aspect-square rounded-sm border border-woodsmoke-700
+            overflow-hidden bg-woodsmoke-700
+          "
+        >
           <%= image_tag @release.cover_art_url, alt: @release.title, class: "w-full h-full object-cover" %>
         </div>
       <% else %>
@@ -33,11 +51,20 @@
 
       <% if @release.notes.present? %>
         <div class="p-4 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-2">Notes</h3>
-          <p class="text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line"><%= @release.notes %></p>
+          <h3
+            class="
+              text-xs font-semibold uppercase tracking-wider
+              text-woodsmoke-400 mb-2
+            "
+          >
+            Notes
+          </h3>
+
+          <p class="text-sm text-woodsmoke-300 leading-relaxed whitespace-pre-line">
+            <%= @release.notes %>
+          </p>
         </div>
       <% end %>
-
     </div>
 
     <%# Right column: badges, title, info, tracklist %>

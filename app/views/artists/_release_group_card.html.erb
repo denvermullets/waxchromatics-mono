@@ -6,21 +6,37 @@
 
   <div class="flex-1 min-w-0">
     <div class="flex items-start justify-between gap-2">
-      <p class="font-semibold text-woodsmoke-50 truncate"><%= release_group.title %></p>
+      <p class="font-semibold text-woodsmoke-50 truncate">
+        <%= release_group.title %>
+      </p>
+
       <% if release_group.year.present? && release_group.year > 0 %>
-        <span class="shrink-0 text-xs text-woodsmoke-400"><%= release_group.year %></span>
+        <span class="shrink-0 text-xs text-woodsmoke-400">
+          <%= release_group.year %>
+        </span>
       <% end %>
     </div>
 
     <div class="flex flex-wrap gap-1 mt-2">
       <% if release_count > 0 %>
-        <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300"><%= release_count %> <%= "version".pluralize(release_count) %></span>
+        <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300">
+          <%= release_count %>
+          <%= "version".pluralize(release_count) %>
+        </span>
       <% end %>
     </div>
   </div>
 
   <% owned = @collection_counts&.dig(release_group.id) || 0 %>
+
   <% if owned > 0 %>
-    <span class="absolute bottom-2 right-3 px-1.5 py-0.5 text-xs rounded border border-crusta-400 text-crusta-400"><%= owned %> owned</span>
+    <span
+      class="
+        absolute bottom-2 right-3 px-1.5 py-0.5 text-xs rounded border
+        border-crusta-400 text-crusta-400
+      "
+    >
+      <%= owned %> owned
+    </span>
   <% end %>
 <% end %>

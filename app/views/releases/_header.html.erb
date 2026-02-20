@@ -6,7 +6,6 @@
 
   <%# Title %>
   <h1 class="text-3xl font-bold text-woodsmoke-50"><%= @release.title %></h1>
-
 </div>
 
 <%# Badges %>
@@ -19,17 +18,41 @@
 
   <% @formats.each do |release_format| %>
     <% format_label = [(release_format.quantity.to_i > 1) ? "#{release_format.quantity.to_i}×" : nil, release_format.name].compact.join(" ") %>
-    <span class="px-2.5 py-1 text-xs font-medium rounded bg-crusta-900/30 text-crusta-400"><%= format_label %></span>
+
+    <span
+      class="
+        px-2.5 py-1 text-xs font-medium rounded bg-crusta-900/30
+        text-crusta-400
+      "
+    >
+      <%= format_label %>
+    </span>
+
     <% if release_format.descriptions.present? %>
       <% release_format.descriptions.split(";").map(&:strip).reject(&:blank?).each do |desc| %>
-        <span class="px-2.5 py-1 text-xs font-medium rounded bg-crusta-900/30 text-crusta-400"><%= desc %></span>
+        <span
+          class="
+            px-2.5 py-1 text-xs font-medium rounded bg-crusta-900/30
+            text-crusta-400
+          "
+        >
+          <%= desc %>
+        </span>
       <% end %>
     <% end %>
   <% end %>
 
   <% release_year = @release.released&.match(/\d{4}/)&.to_s %>
   <% country_year = [@release.country, release_year].compact_blank.join(" · ") %>
+
   <% if country_year.present? %>
-    <span class="px-2.5 py-1 text-xs font-medium rounded border border-woodsmoke-700 text-woodsmoke-300"><%= country_year %></span>
+    <span
+      class="
+        px-2.5 py-1 text-xs font-medium rounded border border-woodsmoke-700
+        text-woodsmoke-300
+      "
+    >
+      <%= country_year %>
+    </span>
   <% end %>
 </div>

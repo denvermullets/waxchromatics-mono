@@ -18,25 +18,54 @@
     <% if artist %>
       <%= link_to artist.name, artist_path(artist), class: "text-xs text-crusta-400 hover:text-crusta-300 transition-colors block truncate" %>
     <% end %>
+
     <% if artist %>
       <%= link_to rg.title, artist_release_group_path(artist, rg),
                   class: "text-sm font-medium text-woodsmoke-100 hover:text-woodsmoke-50 transition-colors block truncate" %>
     <% else %>
-      <p class="text-sm font-medium text-woodsmoke-100 truncate"><%= rg.title %></p>
+      <p class="text-sm font-medium text-woodsmoke-100 truncate">
+        <%= rg.title %>
+      </p>
     <% end %>
 
     <div class="flex flex-wrap items-center gap-1 mt-1">
       <% if fmt&.name.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= fmt.name %></span>
+        <span
+          class="
+            px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700
+            text-woodsmoke-400
+          "
+        >
+          <%= fmt.name %>
+        </span>
       <% end %>
+
       <% if rg.year.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400"><%= rg.year %></span>
+        <span
+          class="
+            px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700
+            text-woodsmoke-400
+          "
+        >
+          <%= rg.year %>
+        </span>
       <% end %>
+
       <% if label&.name.present? %>
-        <span class="px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700 text-woodsmoke-400 truncate max-w-[8rem]"><%= label.name %></span>
+        <span
+          class="
+            px-1.5 py-0.5 text-xs rounded border border-woodsmoke-700
+            text-woodsmoke-400 truncate max-w-[8rem]
+          "
+        >
+          <%= label.name %>
+        </span>
       <% end %>
+
       <% if variant_count > 1 %>
-        <span class="ml-auto text-xs font-semibold text-crusta-400"><%= variant_count %> var.</span>
+        <span class="ml-auto text-xs font-semibold text-crusta-400">
+          <%= variant_count %> var.
+        </span>
       <% end %>
     </div>
   </div>

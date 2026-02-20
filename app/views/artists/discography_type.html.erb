@@ -15,7 +15,14 @@
 
     <%# Right column: Release groups %>
     <div class="lg:col-span-2">
-      <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4"><%= @release_type.pluralize %></h2>
+      <h2
+        class="
+          text-xs font-semibold uppercase tracking-wider text-woodsmoke-400
+          mb-4
+        "
+      >
+        <%= @release_type.pluralize %>
+      </h2>
 
       <div class="space-y-3">
         <% @release_groups.each do |release_group| %>

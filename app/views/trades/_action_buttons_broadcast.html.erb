@@ -4,8 +4,14 @@
   <% can_edit = trade.can_modify?(user) %>
 
   <% if can_edit %>
-    <button type="submit" form="trade_edit_form"
-        class="px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950 font-medium hover:bg-crusta-300 transition-colors cursor-pointer">
+    <button
+      type="submit"
+      form="trade_edit_form"
+      class="
+        px-4 py-2 text-sm rounded-sm bg-crusta-400 text-woodsmoke-950
+        font-medium hover:bg-crusta-300 transition-colors cursor-pointer
+      "
+    >
       <%= trade.draft? ? 'Propose Trade' : 'Re-propose Trade' %>
     </button>
   <% end %>
@@ -14,19 +20,16 @@
     <%= button_to "Delete", trade_path(username: un, id: trade), method: :delete,
         data: { turbo_confirm: "Delete this draft?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>
-
   <% elsif trade.proposed? && trade.proposed_by_id != user.id %>
     <%= button_to "Accept", accept_trade_path(username: un, id: trade), method: :patch,
         class: "px-4 py-2 text-sm rounded-sm bg-green-600 text-white font-medium hover:bg-green-500 transition-colors cursor-pointer" %>
     <%= button_to "Decline", decline_trade_path(username: un, id: trade), method: :patch,
         data: { turbo_confirm: "Decline this trade?" },
         class: "px-4 py-2 text-sm rounded-sm bg-red-600 text-white font-medium hover:bg-red-500 transition-colors cursor-pointer" %>
-
   <% elsif trade.proposed? && trade.proposed_by_id == user.id %>
     <%= button_to "Cancel", cancel_trade_path(username: un, id: trade), method: :patch,
         data: { turbo_confirm: "Cancel this trade proposal?" },
         class: "px-4 py-2 text-sm rounded-sm bg-woodsmoke-800 text-woodsmoke-300 hover:bg-woodsmoke-700 transition-colors cursor-pointer" %>
-
   <% elsif trade.delivered? %>
     <% my_rating = trade.rating_by(user) %>
     <% if my_rating.nil? %>
@@ -34,7 +37,13 @@
           new_trade_rating_path(username: un, trade_id: trade),
           class: "px-4 py-2 text-sm font-semibold rounded-sm bg-crusta-500 text-woodsmoke-950 hover:bg-crusta-400 transition-colors" %>
     <% else %>
-      <span class="inline-flex px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded bg-bright-turquoise-500/20 text-bright-turquoise-400">
+      <span
+        class="
+          inline-flex px-2 py-0.5 text-[10px] font-semibold uppercase
+          tracking-wider rounded bg-bright-turquoise-500/20
+          text-bright-turquoise-400
+        "
+      >
         Rated
       </span>
     <% end %>

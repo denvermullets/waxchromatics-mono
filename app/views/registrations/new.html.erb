@@ -1,5 +1,8 @@
 <% if @user.errors.any? %>
-  <div class="py-2 px-3 bg-crusta-950 mb-5 text-crusta-300 font-medium rounded-sm" id="errors">
+  <div
+    class="py-2 px-3 bg-crusta-950 mb-5 text-crusta-300 font-medium rounded-sm"
+    id="errors"
+  >
     <% @user.errors.full_messages.each do |message| %>
       <p><%= message %></p>
     <% end %>
@@ -7,6 +10,7 @@
 <% end %>
 
 <h1 class="text-3xl font-bold text-woodsmoke-50">Create your account</h1>
+
 <p class="mt-2 text-woodsmoke-300">Start organizing your vinyl collection</p>
 
 <%= form_with model: @user, url: registration_path, class: "mt-8 space-y-6" do |form| %>

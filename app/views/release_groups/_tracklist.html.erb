@@ -1,14 +1,24 @@
 <div class="p-5 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
-  <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">Tracklist</h3>
+  <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">
+    Tracklist
+  </h3>
 
   <% if @tracklist.any? %>
     <div class="space-y-1">
       <% @tracklist.each do |track| %>
         <div class="flex items-center gap-3 py-1.5 text-sm">
-          <span class="shrink-0 w-6 text-woodsmoke-500 text-right"><%= track.position %></span>
-          <span class="flex-1 text-woodsmoke-100 truncate"><%= track.title %></span>
+          <span class="shrink-0 w-6 text-woodsmoke-500 text-right">
+            <%= track.position %>
+          </span>
+
+          <span class="flex-1 text-woodsmoke-100 truncate">
+            <%= track.title %>
+          </span>
+
           <% if track.duration.present? %>
-            <span class="shrink-0 text-woodsmoke-500"><%= track.duration %></span>
+            <span class="shrink-0 text-woodsmoke-500">
+              <%= track.duration %>
+            </span>
           <% end %>
         </div>
       <% end %>

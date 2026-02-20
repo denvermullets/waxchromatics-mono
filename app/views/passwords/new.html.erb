@@ -1,8 +1,17 @@
 <% if alert = flash[:alert] %>
-  <p class="py-2 px-3 bg-crusta-950 mb-5 text-crusta-300 font-medium rounded-sm inline-block" id="alert"><%= alert %></p>
+  <p
+    class="
+      py-2 px-3 bg-crusta-950 mb-5 text-crusta-300 font-medium rounded-sm
+      inline-block
+    "
+    id="alert"
+  >
+    <%= alert %>
+  </p>
 <% end %>
 
 <h1 class="text-3xl font-bold text-woodsmoke-50">Forgot your password?</h1>
+
 <p class="mt-2 text-woodsmoke-300">We'll send you reset instructions.</p>
 
 <%= form_with url: passwords_path, class: "mt-8 space-y-6" do |form| %>
