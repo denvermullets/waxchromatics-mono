@@ -8,7 +8,7 @@
 <%= form_with url: passwords_path, class: "mt-8 space-y-6" do |form| %>
   <div>
     <%= form.label :email_address, "Email", class: "block text-sm font-semibold text-woodsmoke-100" %>
-    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email", value: params[:email_address], class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email", value: params[:email_address], class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
   </div>
 
   <%= form.submit "Email reset instructions", class: "w-full rounded-sm px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold cursor-pointer transition-colors" %>

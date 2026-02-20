@@ -22,7 +22,7 @@
   --color-woodsmoke-950: #181818;
 
   /* grey */
-  --color-wax-grey: #282828;
+  --color-woodsmoke-950: #282828;
 
   /* oranges */
   /* main orange is crusta-400 */
@@ -123,6 +123,8 @@
 
 /* Moss — same accent, green-tinted backgrounds */
 [data-theme="moss"] {
-  --color-woodsmoke-950: #1a221e;
-  --color-woodsmoke-925: #374741;
+  --color-woodsmoke-800: #333a37;
+  --color-woodsmoke-900: #222725;
+  --color-woodsmoke-925: #282c2a;
+  --color-woodsmoke-950: #1a1e1c;
 }
