@@ -25,6 +25,7 @@ module TradeFinder
       TradeListItem
         .where(status: 'available', release_id: my_wantlist_release_ids)
         .where.not(user_id: @user.id)
+        .where.not(user_id: opted_out_user_ids)
         .includes(release: %i[artist release_group], user: [])
         .group_by(&:user_id)
     end
@@ -36,8 +37,13 @@ module TradeFinder
       WantlistItem
         .where(release_id: my_trade_release_ids)
         .where.not(user_id: @user.id)
+        .where.not(user_id: opted_out_user_ids)
         .includes(release: %i[artist release_group], user: [])
         .group_by(&:user_id)
+    end
+
+    def opted_out_user_ids
+      @opted_out_user_ids ||= UserSetting.where(accept_trade_requests: false).select(:user_id)
     end
 
     def merge_matches(they_have, they_want)
