@@ -16,7 +16,7 @@ module ReleaseGroups
 
     def call
       scope = build_filtered_scope
-      @available_letters = extract_available_letters
+      @available_letters = extract_available_letters(scope)
       sorted = apply_sort(scope)
       @pagy, id_rows = paginate(sorted)
       hydrate(id_rows)
@@ -100,35 +100,31 @@ module ReleaseGroups
            .where.not(rf_color: { color: [nil, ''] })
     end
 
-    def apply_sort(scope) # rubocop:disable Metrics/CyclomaticComplexity
-      ordered = case @sort
-                when 'artist_za'  then scope.order(Arel.sql('MIN(artists.name) DESC, release_groups.title ASC'))
-                when 'title_az'   then scope.order('release_groups.title ASC')
-                when 'newest'     then scope.order('release_groups.year DESC NULLS LAST, release_groups.title ASC')
-                when 'oldest'     then scope.order('release_groups.year ASC NULLS LAST, release_groups.title ASC')
-                when 'most_variants'   then scope.order(Arel.sql('COUNT(releases.id) DESC, release_groups.title ASC'))
-                when 'recently_added'  then scope.order('release_groups.created_at DESC')
-                else scope.order(Arel.sql('MIN(artists.name) ASC, release_groups.title ASC'))
-                end
-
-      ordered.map do |row|
-        { 'id' => row.id, 'variant_count' => row.variant_count, 'primary_artist_name' => row.primary_artist_name }
+    def apply_sort(scope)
+      case @sort
+      when 'artist_za'  then scope.order(Arel.sql('MIN(artists.name) DESC, release_groups.title ASC'))
+      when 'title_az'   then scope.order('release_groups.title ASC')
+      when 'newest'     then scope.order('release_groups.year DESC NULLS LAST, release_groups.title ASC')
+      when 'oldest'     then scope.order('release_groups.year ASC NULLS LAST, release_groups.title ASC')
+      when 'most_variants'   then scope.order(Arel.sql('COUNT(releases.id) DESC, release_groups.title ASC'))
+      when 'recently_added'  then scope.order('release_groups.created_at DESC')
+      else scope.order(Arel.sql('MIN(artists.name) ASC, release_groups.title ASC'))
       end
     end
 
-    def paginate(array)
-      offset = (@page - 1) * @limit
-      items = array[offset, @limit] || []
-      pagy = Pagy::Offset.new(count: array.size, page: @page, limit: @limit)
-      [pagy, items]
+    def paginate(scope)
+      # .count on a grouped scope returns a hash; use a subquery to get the scalar count
+      count = ReleaseGroup.from(scope, :sub).count
+      pagy = Pagy::Offset.new(count: count, page: @page, limit: @limit)
+      rows = scope.offset(pagy.offset).limit(@limit).map do |row|
+        { 'id' => row.id, 'variant_count' => row.variant_count, 'primary_artist_name' => row.primary_artist_name }
+      end
+      [pagy, rows]
     end
 
-    def extract_available_letters
-      ReleaseGroup
-        .joins(releases: :artist)
-        .where.not(releases: { artist_id: nil })
-        .pluck(Arel.sql(FIRST_ALPHA_SQL))
-        .compact.uniq.sort
+    def extract_available_letters(scope)
+      # Use the filtered scope (minus grouping) to find letters present in current result set
+      scope.pluck(Arel.sql("UPPER(SUBSTRING(MIN(artists.name) FROM '[A-Za-z]'))")).compact.uniq.sort
     end
 
     def hydrate(id_rows)

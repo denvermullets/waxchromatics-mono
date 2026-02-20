@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "CHANGED_RB=$(git diff --name-only --diff-filter=d -- '*.rb') && CHANGED_ERB=$(git diff --name-only --diff-filter=d -- '*.html.erb') && if [ -n \"$CHANGED_RB\" ]; then bin/rubocop -A $CHANGED_RB; fi && if [ -n \"$CHANGED_ERB\" ]; then yarn herb:format $CHANGED_ERB && yarn herb:lint:fix $CHANGED_ERB; fi && echo '✅ Post-task checks passed!'"
+            "command": "CHANGED_RB=$(git diff --name-only --diff-filter=d -- '*.rb') && CHANGED_ERB=$(git diff --name-only --diff-filter=d -- '*.html.erb') && if [ -n \"$CHANGED_RB\" ]; then bin/rubocop -A $CHANGED_RB; fi && if [ -n \"$CHANGED_ERB\" ]; then echo \"$CHANGED_ERB\" | xargs yarn herb:format && echo \"$CHANGED_ERB\" | xargs yarn herb:lint:fix; fi && echo '✅ Post-task checks passed!'"
           }
         ]
       }

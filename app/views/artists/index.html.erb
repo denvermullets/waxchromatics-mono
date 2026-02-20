@@ -1,18 +1,18 @@
 <div class="container mx-auto px-5 py-8">
   <%# Header: count + filter toggle %>
-  <div class="flex items-center justify-between mb-6">
+  <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
     <h1 class="text-2xl font-bold text-woodsmoke-50">
       Artists
       <span class="text-base font-normal text-woodsmoke-500">(<%= @pagy.count %>)</span>
     </h1>
 
-    <div class="flex items-center gap-4">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
       <%= form_with url: artists_path, method: :get, class: "flex-shrink-0" do |f| %>
         <%= f.hidden_field :filter, value: @filter %>
 
         <%= f.text_field :q, value: params[:q], placeholder: "Search artists...",
               autocomplete: "off",
-              class: "rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none w-48" %>
+              class: "w-full sm:w-48 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
       <% end %>
 
       <div class="flex gap-1 bg-woodsmoke-950 rounded-sm p-1">
@@ -29,8 +29,27 @@
     </div>
   </div>
 
+  <%# Mobile alphabet strip %>
+  <nav class="flex md:hidden overflow-x-auto scrollbar-hide gap-1 mb-4 pb-1">
+    <% ('A'..'Z').each do |char| %>
+      <% if @available_letters.include?(char) %>
+        <%= link_to char, artists_path(filter: @filter, letter: char),
+                    class: "flex-shrink-0 text-sm font-semibold px-2 py-1 rounded transition-colors #{@letter == char ? 'text-crusta-400 bg-woodsmoke-800' : 'text-woodsmoke-300 hover:text-crusta-400'}" %>
+      <% else %>
+        <span class="flex-shrink-0 text-sm font-semibold px-2 py-1 text-woodsmoke-700">
+          <%= char %>
+        </span>
+      <% end %>
+    <% end %>
+
+    <% if @letter.present? %>
+      <%= link_to "All", artists_path(filter: @filter),
+                  class: "flex-shrink-0 text-xs font-semibold px-2 py-1 rounded text-crusta-400 hover:text-crusta-300 transition-colors" %>
+    <% end %>
+  </nav>
+
   <div class="flex gap-8">
-    <%# Letter sidebar %>
+    <%# Letter sidebar (desktop) %>
     <nav class="hidden md:flex flex-col gap-1 sticky top-20 self-start">
       <% ('A'..'Z').each do |char| %>
         <% if @available_letters.include?(char) %>
@@ -73,8 +92,8 @@
             <% artists.each do |artist| %>
               <div
                 class="
-                  flex items-center justify-between py-2 px-3 rounded-sm
-                  hover:bg-woodsmoke-800/50 transition-colors
+                  flex flex-col sm:flex-row sm:items-center justify-between py-2 px-3 rounded-sm
+                  hover:bg-woodsmoke-800/50 transition-colors gap-1 sm:gap-0
                 "
               >
                 <%= link_to artist.name, artist_path(artist),
