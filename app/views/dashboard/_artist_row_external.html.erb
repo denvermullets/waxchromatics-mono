@@ -12,38 +12,91 @@
 
         <div class="flex-1 min-w-0">
           <div class="flex items-start justify-between gap-2">
-            <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
-            <span class="shrink-0 px-2 py-0.5 text-xs rounded-full bg-bright-turquoise-950 text-bright-turquoise-300 font-medium">Ready to view</span>
+            <p class="font-semibold text-woodsmoke-50 truncate">
+              <%= artist_name %>
+            </p>
+
+            <span
+              class="
+                shrink-0 px-2 py-0.5 text-xs rounded-full
+                bg-bright-turquoise-950 text-bright-turquoise-300
+                font-medium
+              "
+            >
+              Ready to view
+            </span>
           </div>
+
           <% if local_artist.real_name.present? %>
-            <p class="text-sm text-woodsmoke-400"><%= local_artist.real_name %></p>
+            <p class="text-sm text-woodsmoke-400">
+              <%= local_artist.real_name %>
+            </p>
           <% end %>
+
           <% if local_artist.profile.present? %>
-            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(local_artist.profile, length: 80) %></p>
+            <p class="mt-1 text-sm text-woodsmoke-300 truncate">
+              <%= truncate(local_artist.profile, length: 80) %>
+            </p>
           <% end %>
         </div>
       </div>
     <% end %>
   <% elsif pending&.processing? %>
-    <div class="block p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 opacity-60 transition-colors">
+    <div
+      class="
+        block p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925
+        opacity-60 transition-colors
+      "
+    >
       <div class="flex items-start gap-4">
         <%= render "shared/cover_art", thumb: artist_thumb, alt: artist_name, size: :md %>
 
         <div class="flex-1 min-w-0">
           <div class="flex items-start justify-between gap-2">
-            <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
+            <p class="font-semibold text-woodsmoke-50 truncate">
+              <%= artist_name %>
+            </p>
           </div>
+
           <% if artist_data['real_name'].present? %>
-            <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
+            <p class="text-sm text-woodsmoke-400">
+              <%= artist_data['real_name'] %>
+            </p>
           <% end %>
+
           <% if artist_data['profile'].present? %>
-            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist_data['profile'].to_s, length: 80) %></p>
+            <p class="mt-1 text-sm text-woodsmoke-300 truncate">
+              <%= truncate(artist_data['profile'].to_s, length: 80) %>
+            </p>
           <% end %>
+
           <div class="flex flex-wrap gap-1 mt-2">
-            <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300 font-medium flex items-center gap-1.5">
-              <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <span
+              class="
+                px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700
+                text-woodsmoke-300 font-medium flex items-center gap-1.5
+              "
+            >
+              <svg
+                class="animate-spin h-3 w-3"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               Importing…
             </span>
@@ -58,14 +111,32 @@
 
         <div class="flex-1 min-w-0">
           <div class="flex items-start justify-between gap-2">
-            <p class="font-semibold text-woodsmoke-50 truncate"><%= artist_name %></p>
-            <span class="shrink-0 px-2 py-0.5 text-xs rounded-full bg-bright-turquoise-950 text-bright-turquoise-300 font-medium opacity-0 group-hover:opacity-100 transition-opacity">Add to library</span>
+            <p class="font-semibold text-woodsmoke-50 truncate">
+              <%= artist_name %>
+            </p>
+
+            <span
+              class="
+                shrink-0 px-2 py-0.5 text-xs rounded-full
+                bg-bright-turquoise-950 text-bright-turquoise-300
+                font-medium opacity-0 group-hover:opacity-100
+                transition-opacity
+              "
+            >
+              Add to library
+            </span>
           </div>
+
           <% if artist_data['real_name'].present? %>
-            <p class="text-sm text-woodsmoke-400"><%= artist_data['real_name'] %></p>
+            <p class="text-sm text-woodsmoke-400">
+              <%= artist_data['real_name'] %>
+            </p>
           <% end %>
+
           <% if artist_data['profile'].present? %>
-            <p class="mt-1 text-sm text-woodsmoke-300 truncate"><%= truncate(artist_data['profile'].to_s, length: 80) %></p>
+            <p class="mt-1 text-sm text-woodsmoke-300 truncate">
+              <%= truncate(artist_data['profile'].to_s, length: 80) %>
+            </p>
           <% end %>
         </div>
       </div>

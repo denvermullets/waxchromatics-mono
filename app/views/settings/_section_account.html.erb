@@ -6,9 +6,19 @@
     <div class="flex items-center justify-between py-4 opacity-50 pointer-events-none">
       <div>
         <p class="text-sm font-semibold text-woodsmoke-100">Export data</p>
-        <p class="text-sm text-woodsmoke-400 mt-0.5">Download a copy of your collection, wantlist, and trade data</p>
+
+        <p class="text-sm text-woodsmoke-400 mt-0.5">
+          Download a copy of your collection, wantlist, and trade data
+        </p>
       </div>
-      <button disabled class="rounded-sm px-4 py-2 text-sm border border-woodsmoke-700 text-woodsmoke-400 cursor-not-allowed">
+
+      <button
+        disabled
+        class="
+          rounded-sm px-4 py-2 text-sm border border-woodsmoke-700
+          text-woodsmoke-400 cursor-not-allowed
+        "
+      >
         Export
       </button>
     </div>
@@ -17,8 +27,12 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm font-semibold text-red-400">Delete account</p>
-          <p class="text-sm text-woodsmoke-400 mt-0.5">Permanently delete your account and all associated data</p>
+
+          <p class="text-sm text-woodsmoke-400 mt-0.5">
+            Permanently delete your account and all associated data
+          </p>
         </div>
+
         <%= button_to "Delete Account",
           destroy_user_settings_path(username: @user.username),
           method: :delete,

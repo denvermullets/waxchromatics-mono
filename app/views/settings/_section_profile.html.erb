@@ -2,20 +2,39 @@
   <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Profile</h2>
   <p class="text-sm text-woodsmoke-400 mb-6">Your public profile information</p>
 
-  <div class="flex items-center justify-between p-4 bg-woodsmoke-800/50 rounded-lg border border-woodsmoke-800">
+  <div
+    class="
+      flex items-center justify-between p-4 bg-woodsmoke-800/50 rounded-lg
+      border border-woodsmoke-800
+    "
+  >
     <div class="flex items-center gap-4">
       <% if @user.avatar_url.present? %>
         <%= image_tag @user.avatar_url, alt: @user.username, class: "w-12 h-12 rounded-full object-cover border border-woodsmoke-700" %>
       <% else %>
-        <div class="w-12 h-12 rounded-full bg-woodsmoke-800 border border-woodsmoke-700 flex items-center justify-center">
-          <span class="text-lg font-bold text-crusta-400"><%= @user.username[0].upcase %></span>
+        <div
+          class="
+            w-12 h-12 rounded-full bg-woodsmoke-800 border
+            border-woodsmoke-700 flex items-center justify-center
+          "
+        >
+          <span class="text-lg font-bold text-crusta-400">
+            <%= @user.username[0].upcase %>
+          </span>
         </div>
       <% end %>
+
       <div>
-        <p class="text-sm font-semibold text-woodsmoke-100"><%= @user.username %></p>
-        <p class="text-sm text-woodsmoke-400"><%= @user.bio.present? ? truncate(@user.bio, length: 60) : "No bio yet" %></p>
+        <p class="text-sm font-semibold text-woodsmoke-100">
+          <%= @user.username %>
+        </p>
+
+        <p class="text-sm text-woodsmoke-400">
+          <%= @user.bio.present? ? truncate(@user.bio, length: 60) : "No bio yet" %>
+        </p>
       </div>
     </div>
+
     <%= link_to "Edit Profile", edit_profile_path(username: @user.username),
         class: "rounded-sm px-4 py-2 text-sm font-medium bg-woodsmoke-700 text-woodsmoke-100 hover:bg-woodsmoke-600 transition-colors" %>
   </div>

@@ -1,13 +1,22 @@
-<div class="p-5 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925"
-     data-controller="section-toggle nested-form"
-     data-section-toggle-empty-text-value="No identifiers added yet."
-     data-section-toggle-format-value="identifiers">
+<div
+  class="p-5 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925"
+  data-controller="section-toggle nested-form"
+  data-section-toggle-empty-text-value="No identifiers added yet."
+  data-section-toggle-format-value="identifiers"
+>
   <div class="flex items-baseline justify-between mb-4">
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">Identifiers</h3>
-    <button type="button"
-            class="text-xs text-crusta-400 hover:text-crusta-300"
-            data-section-toggle-target="toggleBtn"
-            data-action="click->section-toggle#toggle">Edit</button>
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">
+      Identifiers
+    </h3>
+
+    <button
+      type="button"
+      class="text-xs text-crusta-400 hover:text-crusta-300"
+      data-section-toggle-target="toggleBtn"
+      data-action="click->section-toggle#toggle"
+    >
+      Edit
+    </button>
   </div>
 
   <%# Display state — monospace identifier boxes %>
@@ -25,16 +34,29 @@
               <label class="block text-xs text-woodsmoke-400">Type</label>
               <%= idf.text_field :identifier_type, placeholder: "e.g. Barcode", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
+
             <div class="flex-1">
               <label class="block text-xs text-woodsmoke-400">Value</label>
               <%= idf.text_field :value, placeholder: "e.g. 012345678901", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
+
             <div class="flex-1">
-              <label class="block text-xs text-woodsmoke-400">Description</label>
+              <label class="block text-xs text-woodsmoke-400">
+                Description
+              </label>
+
               <%= idf.text_field :description, placeholder: "Optional", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
             </div>
+
             <%= idf.hidden_field :_destroy %>
-            <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+
+            <button
+              type="button"
+              class="text-woodsmoke-500 hover:text-crusta-400 pb-2"
+              data-action="click->nested-form#remove"
+            >
+              &times;
+            </button>
           </div>
         <% end %>
       <% end %>
@@ -44,23 +66,77 @@
       <div class="flex gap-3 items-end mb-3" data-nested-form-row>
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Type</label>
-          <input type="text" name="release[release_identifiers_attributes][NEW_RECORD][identifier_type]" placeholder="e.g. Barcode" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+
+          <input
+            type="text"
+            name="release[release_identifiers_attributes][NEW_RECORD][identifier_type]"
+            placeholder="e.g. Barcode"
+            autocomplete="off"
+            class="
+              block w-full mt-1 rounded-sm border border-woodsmoke-800
+              bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50
+              placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1
+              focus:ring-crusta-400 focus:outline-none
+            "
+          >
         </div>
+
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Value</label>
-          <input type="text" name="release[release_identifiers_attributes][NEW_RECORD][value]" placeholder="e.g. 012345678901" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+
+          <input
+            type="text"
+            name="release[release_identifiers_attributes][NEW_RECORD][value]"
+            placeholder="e.g. 012345678901"
+            autocomplete="off"
+            class="
+              block w-full mt-1 rounded-sm border border-woodsmoke-800
+              bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50
+              placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1
+              focus:ring-crusta-400 focus:outline-none
+            "
+          >
         </div>
+
         <div class="flex-1">
           <label class="block text-xs text-woodsmoke-400">Description</label>
-          <input type="text" name="release[release_identifiers_attributes][NEW_RECORD][description]" placeholder="Optional" autocomplete="off" class="block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none">
+
+          <input
+            type="text"
+            name="release[release_identifiers_attributes][NEW_RECORD][description]"
+            placeholder="Optional"
+            autocomplete="off"
+            class="
+              block w-full mt-1 rounded-sm border border-woodsmoke-800
+              bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50
+              placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1
+              focus:ring-crusta-400 focus:outline-none
+            "
+          >
         </div>
-        <input type="hidden" name="release[release_identifiers_attributes][NEW_RECORD][_destroy]" value="0">
-        <button type="button" class="text-woodsmoke-500 hover:text-crusta-400 pb-2" data-action="click->nested-form#remove">&times;</button>
+
+        <input
+          type="hidden"
+          name="release[release_identifiers_attributes][NEW_RECORD][_destroy]"
+          value="0"
+        >
+
+        <button
+          type="button"
+          class="text-woodsmoke-500 hover:text-crusta-400 pb-2"
+          data-action="click->nested-form#remove"
+        >
+          &times;
+        </button>
       </div>
     </template>
 
-    <button type="button"
-            class="text-sm text-crusta-400 hover:text-crusta-300"
-            data-action="click->nested-form#add">+ Add Identifier</button>
+    <button
+      type="button"
+      class="text-sm text-crusta-400 hover:text-crusta-300"
+      data-action="click->nested-form#add"
+    >
+      + Add Identifier
+    </button>
   </div>
 </div>

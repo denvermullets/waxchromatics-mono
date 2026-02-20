@@ -1,5 +1,7 @@
 <div>
-  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4"><%= @releases.size %> Versions</h2>
+  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">
+    <%= @releases.size %> Versions
+  </h2>
 
   <% if @releases.any? %>
     <div class="space-y-2">
@@ -8,12 +10,19 @@
           <div class="flex items-start gap-12">
             <% vinyl_svg = release.release_formats.first&.vinyl_image_path %>
             <% cover_thumb = release.cover_art_url || @release_group.cover_art_url %>
+
             <% if cover_thumb.present? && vinyl_svg.present? %>
               <div class="shrink-0 relative w-28 h-24">
                 <div class="absolute top-0 -right-[25%] w-full h-full">
                   <%= image_tag vinyl_svg, alt: "Vinyl record", class: "w-full h-full" %>
                 </div>
-                <div class="relative w-[80%] h-full rounded bg-woodsmoke-925 overflow-hidden">
+
+                <div
+                  class="
+                    relative w-[80%] h-full rounded bg-woodsmoke-925
+                    overflow-hidden
+                  "
+                >
                   <%= image_tag cover_thumb, alt: release.title, class: "w-full h-full object-cover" %>
                 </div>
               </div>
@@ -24,12 +33,19 @@
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 text-sm">
                 <% label = release.release_labels.first %>
+
                 <% if label&.catalog_number.present? %>
-                  <span class="font-medium text-woodsmoke-50"><%= label.catalog_number %></span>
+                  <span class="font-medium text-woodsmoke-50">
+                    <%= label.catalog_number %>
+                  </span>
                 <% end %>
+
                 <% if label&.label %>
-                  <span class="text-woodsmoke-400"><%= label.label.name %></span>
+                  <span class="text-woodsmoke-400">
+                    <%= label.label.name %>
+                  </span>
                 <% end %>
+
                 <% if release.country.present? %>
                   <span class="text-woodsmoke-500">·</span>
                   <span class="text-woodsmoke-400"><%= release.country %></span>
@@ -37,18 +53,43 @@
               </div>
 
               <% formats = release.release_formats %>
+
               <% if formats.any? %>
                 <div class="mt-1 flex flex-wrap gap-1">
                   <% formats.each do |fmt| %>
-                    <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300"><%= fmt.name %></span>
+                    <span
+                      class="
+                        px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700
+                        text-woodsmoke-300
+                      "
+                    >
+                      <%= fmt.name %>
+                    </span>
+
                     <% if fmt.descriptions.present? %>
                       <% fmt.descriptions.split(";").map(&:strip).reject(&:blank?).each do |desc| %>
-                        <span class="px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700 text-woodsmoke-300"><%= desc %></span>
+                        <span
+                          class="
+                            px-1.5 py-0.5 text-xs rounded bg-woodsmoke-700
+                            text-woodsmoke-300
+                          "
+                        >
+                          <%= desc %>
+                        </span>
                       <% end %>
                     <% end %>
+
                     <% if fmt.color.present? %>
                       <% fmt.color.split(",").map(&:strip).reject(&:blank?).each do |color| %>
-                        <span class="px-1.5 py-0.5 text-xs rounded bg-bright-turquoise-950 text-bright-turquoise-300"><%= color %></span>
+                        <span
+                          class="
+                            px-1.5 py-0.5 text-xs rounded
+                            bg-bright-turquoise-950
+                            text-bright-turquoise-300
+                          "
+                        >
+                          <%= color %>
+                        </span>
                       <% end %>
                     <% end %>
                   <% end %>
@@ -57,19 +98,34 @@
             </div>
 
             <% if release.released.present? %>
-              <span class="shrink-0 text-sm text-woodsmoke-400"><%= release.released %></span>
+              <span class="shrink-0 text-sm text-woodsmoke-400">
+                <%= release.released %>
+              </span>
             <% end %>
           </div>
 
           <% owned = @collection_counts&.dig(release.id) || 0 %>
+
           <% if owned > 0 %>
-            <span class="absolute bottom-2 right-3 px-1.5 py-0.5 text-xs rounded border border-crusta-400 text-crusta-400"><%= owned %> owned</span>
+            <span
+              class="
+                absolute bottom-2 right-3 px-1.5 py-0.5 text-xs rounded
+                border border-crusta-400 text-crusta-400
+              "
+            >
+              <%= owned %> owned
+            </span>
           <% end %>
         <% end %>
       <% end %>
     </div>
   <% else %>
-    <div class="p-8 text-center rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
+    <div
+      class="
+        p-8 text-center rounded-sm border border-woodsmoke-800
+        bg-woodsmoke-925
+      "
+    >
       <p class="text-woodsmoke-400">No versions found.</p>
     </div>
   <% end %>

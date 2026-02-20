@@ -9,6 +9,7 @@
 
 <div class="flex items-center gap-2 bg-woodsmoke-925 rounded-sm p-2">
   <% thumb_class = "shrink-0 relative w-16 h-16 rounded bg-woodsmoke-900 flex items-center justify-center overflow-hidden" %>
+
   <% if release_url %>
     <%= link_to release_url, target: "_blank", class: thumb_class do %>
       <%= render "trades/trade_item_thumb", cover_thumb: cover_thumb, vinyl_svg: vinyl_svg, alt: release.title %>
@@ -26,16 +27,28 @@
     <% else %>
       <p class="text-xs text-woodsmoke-200 truncate"><%= release.title %></p>
     <% end %>
+
     <p class="text-[10px] text-woodsmoke-400 truncate"><%= artist&.name %></p>
   </div>
 
   <div class="shrink-0 flex flex-wrap gap-1 justify-end">
     <% if fmt&.name.present? %>
-      <span class="px-1.5 py-0.5 text-[10px] bg-woodsmoke-700 text-woodsmoke-200 rounded"><%= fmt.name %></span>
+      <span
+        class="
+          px-1.5 py-0.5 text-[10px] bg-woodsmoke-700 text-woodsmoke-200
+          rounded
+        "
+      >
+        <%= fmt.name %>
+      </span>
     <% end %>
+
     <% if fmt&.color.present? %>
-      <span class="px-1.5 py-0.5 text-[10px] rounded bg-crusta-500/15 text-crusta-400"><%= fmt.color %></span>
+      <span class="px-1.5 py-0.5 text-[10px] rounded bg-crusta-500/15 text-crusta-400">
+        <%= fmt.color %>
+      </span>
     <% end %>
+
     <% if condition.present? %>
       <% condition_color = case condition
            when 'M', 'NM', 'VG+', 'VG' then 'bg-bright-turquoise-500/15 text-bright-turquoise-400'
@@ -43,7 +56,9 @@
            when 'F', 'P' then 'bg-red-500/15 text-red-400'
            else 'bg-woodsmoke-800 text-woodsmoke-300'
          end %>
-      <span class="px-1.5 py-0.5 text-[10px] rounded <%= condition_color %>"><%= condition %></span>
+      <span class="px-1.5 py-0.5 text-[10px] rounded <%= condition_color %>">
+        <%= condition %>
+      </span>
     <% end %>
   </div>
 </div>

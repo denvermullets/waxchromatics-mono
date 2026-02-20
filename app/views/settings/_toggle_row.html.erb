@@ -4,10 +4,19 @@
     <div class="flex-1 mr-4">
       <div class="flex items-center gap-2">
         <p class="text-sm font-semibold text-woodsmoke-100"><%= label %></p>
+
         <% unless enabled %>
-          <span class="text-xs bg-woodsmoke-700 text-woodsmoke-400 px-2 py-0.5 rounded-full">Coming soon</span>
+          <span
+            class="
+              text-xs bg-woodsmoke-700 text-woodsmoke-400 px-2 py-0.5
+              rounded-full
+            "
+          >
+            Coming soon
+          </span>
         <% end %>
       </div>
+
       <p class="text-sm text-woodsmoke-400 mt-0.5"><%= description %></p>
     </div>
 
@@ -18,8 +27,22 @@
           class: "sr-only peer",
           data: { controller: "form-submit", action: "change->form-submit#submit" }
         }, "true", "false" %>
-        <div class="w-11 h-6 rounded-full bg-woodsmoke-700 peer-checked:bg-crusta-400 peer-focus:ring-2 peer-focus:ring-crusta-400/50 transition-colors after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
-        <span class="ml-2 text-xs text-woodsmoke-400"><%= value ? 'On' : 'Off' %></span>
+
+        <div
+          class="
+            w-11 h-6 rounded-full bg-woodsmoke-700
+            peer-checked:bg-crusta-400 peer-focus:ring-2
+            peer-focus:ring-crusta-400/50 transition-colors
+            after:content-[''] after:absolute after:top-[2px]
+            after:start-[2px] after:bg-white after:rounded-full after:h-5
+            after:w-5 after:transition-all
+            peer-checked:after:translate-x-full
+          "
+        ></div>
+
+        <span class="ml-2 text-xs text-woodsmoke-400">
+          <%= value ? 'On' : 'Off' %>
+        </span>
       </label>
     <% end %>
   </div>

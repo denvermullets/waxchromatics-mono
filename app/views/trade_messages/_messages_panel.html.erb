@@ -1,12 +1,29 @@
 <%# locals: (trade:, messages:) %>
-<div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 flex flex-col h-[480px]">
-  <h3 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-wider mb-4 shrink-0">Messages</h3>
+<div
+  class="
+    bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 flex
+    flex-col h-[480px]
+  "
+>
+  <h3
+    class="
+      text-xs font-semibold text-woodsmoke-400 uppercase tracking-wider mb-4
+      shrink-0
+    "
+  >
+    Messages
+  </h3>
 
   <%= turbo_stream_from trade, :messages, Current.user %>
 
-  <div id="trade_messages"
-       class="flex flex-col gap-2 overflow-y-auto flex-1 min-h-0">
-    <p class="text-xs text-woodsmoke-500 self-center my-auto hidden only:block">No messages yet. Start the conversation!</p>
+  <div
+    id="trade_messages"
+    class="flex flex-col gap-2 overflow-y-auto flex-1 min-h-0"
+  >
+    <p class="text-xs text-woodsmoke-500 self-center my-auto hidden only:block">
+      No messages yet. Start the conversation!
+    </p>
+
     <% messages.each do |message| %>
       <%= render "trade_messages/message", trade_message: message, own: message.user_id == Current.user.id %>
     <% end %>

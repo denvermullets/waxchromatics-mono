@@ -1,11 +1,16 @@
-<turbo-frame id="setting_theme" data-controller="theme" data-theme-current-value="<%= @user.setting.theme %>">
-<section id="appearance" data-settings-section class="scroll-mt-20">
-  <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Appearance</h2>
-  <p class="text-sm text-woodsmoke-400 mb-6">Customize the look and feel</p>
+<turbo-frame
+  id="setting_theme"
+  data-controller="theme"
+  data-theme-current-value="<%= @user.setting.theme %>"
+>
+  <section id="appearance" data-settings-section class="scroll-mt-20">
+    <h2 class="text-lg font-bold text-woodsmoke-50 mb-1">Appearance</h2>
 
-  <%= form_with model: UserSetting.new, url: user_settings_setting_path(username: @user.username), method: :patch, data: { turbo_frame: "setting_theme" } do |f| %>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <%= render "settings/theme_card",
+    <p class="text-sm text-woodsmoke-400 mb-6">Customize the look and feel</p>
+
+    <%= form_with model: UserSetting.new, url: user_settings_setting_path(username: @user.username), method: :patch, data: { turbo_frame: "setting_theme" } do |f| %>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <%= render "settings/theme_card",
         form: f,
         name: "ember",
         label: "Ember",
@@ -13,7 +18,7 @@
         selected: @user.setting.theme == "ember",
         enabled: true %>
 
-      <%= render "settings/theme_card",
+        <%= render "settings/theme_card",
         form: f,
         name: "slate",
         label: "Slate",
@@ -21,14 +26,14 @@
         selected: @user.setting.theme == "slate",
         enabled: true %>
 
-      <%= render "settings/theme_card",
+        <%= render "settings/theme_card",
         form: f,
         name: "moss",
         label: "Cassette",
         swatches: ["bg-[#f17f41]", "bg-[#1a1e1c]", "bg-[#282c2a]"],
         selected: @user.setting.theme == "moss",
         enabled: true %>
-    </div>
-  <% end %>
-</section>
+      </div>
+    <% end %>
+  </section>
 </turbo-frame>

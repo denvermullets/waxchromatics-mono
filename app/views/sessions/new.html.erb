@@ -1,12 +1,29 @@
 <% if alert = flash[:alert] %>
-  <p class="py-2 px-3 bg-crusta-950 mb-5 text-crusta-300 font-medium rounded-sm inline-block" id="alert"><%= alert %></p>
+  <p
+    class="
+      py-2 px-3 bg-crusta-950 mb-5 text-crusta-300 font-medium rounded-sm
+      inline-block
+    "
+    id="alert"
+  >
+    <%= alert %>
+  </p>
 <% end %>
 
 <% if notice = flash[:notice] %>
-  <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-sm inline-block" id="notice"><%= notice %></p>
+  <p
+    class="
+      py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300
+      font-medium rounded-sm inline-block
+    "
+    id="notice"
+  >
+    <%= notice %>
+  </p>
 <% end %>
 
 <h1 class="text-3xl font-bold text-woodsmoke-50">Sign into your account</h1>
+
 <p class="mt-2 text-woodsmoke-300">Welcome back to WaxChromatics</p>
 
 <%= form_with url: session_url, class: "mt-8 space-y-6" do |form| %>
@@ -18,6 +35,7 @@
   <div>
     <%= form.label :password, "Password", class: "block text-sm font-semibold text-woodsmoke-100" %>
     <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+
     <div class="mt-1">
       <%= link_to "Forgot password?", new_password_path, class: "text-sm text-crusta-400 hover:text-crusta-300" %>
     </div>

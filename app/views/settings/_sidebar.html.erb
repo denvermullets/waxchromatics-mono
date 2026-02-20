@@ -8,9 +8,14 @@
     ["notifications", "Notifications"],
     ["account", "Account"]
   ].each do |id, label| %>
-    <a href="#<%= id %>"
-       data-settings-nav-target="link"
-       class="block px-3 py-2 text-sm rounded-md text-woodsmoke-400 hover:text-woodsmoke-50 hover:bg-woodsmoke-800 transition-colors">
+    <a
+      href="#<%= id %>"
+      data-settings-nav-target="link"
+      class="
+        block px-3 py-2 text-sm rounded-md text-woodsmoke-400
+        hover:text-woodsmoke-50 hover:bg-woodsmoke-800 transition-colors
+      "
+    >
       <%= label %>
     </a>
   <% end %>

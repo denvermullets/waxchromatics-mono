@@ -1,20 +1,45 @@
 <%# Update the hidden recipient_id in the form %>
 <%= turbo_stream.replace "recipient_hidden" do %>
   <div id="recipient_hidden">
-    <input type="hidden" name="trade[recipient_id]" value="<%= @recipient.id %>">
+    <input
+      type="hidden"
+      name="trade[recipient_id]"
+      value="<%= @recipient.id %>"
+    >
   </div>
 <% end %>
 
 <%# Update the visible recipient display %>
 <%= turbo_stream.replace "recipient_area" do %>
   <div id="recipient_area">
-    <div class="flex items-center gap-2 bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm px-3 py-2">
+    <div
+      class="
+        flex items-center gap-2 bg-woodsmoke-925 border border-woodsmoke-800
+        rounded-sm px-3 py-2
+      "
+    >
       <span class="text-sm text-woodsmoke-100"><%= @recipient.username %></span>
-      <button type="button"
-              data-action="click->trade-form#clearRecipient"
-              class="ml-auto text-woodsmoke-500 hover:text-crusta-400 transition-colors cursor-pointer">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+
+      <button
+        type="button"
+        data-action="click->trade-form#clearRecipient"
+        class="
+          ml-auto text-woodsmoke-500 hover:text-crusta-400 transition-colors
+          cursor-pointer
+        "
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>

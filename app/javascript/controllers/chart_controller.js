@@ -47,6 +47,7 @@ export default class extends Controller {
     label: { type: String, default: "Count" },
     datasets: { type: Array, default: [] },
     hideLegend: { type: Boolean, default: false },
+    timeRange: { type: String, default: "" },
   }
 
   connect() {
@@ -67,6 +68,22 @@ export default class extends Controller {
     this.dispatch("toggled", { detail: { index, visible: !visible } })
   }
 
+  formatTimeLabels(labels) {
+    if (!this.timeRangeValue) return labels
+
+    const range = this.timeRangeValue
+    return labels.map((iso) => {
+      const d = new Date(iso)
+      if (range === "1h") {
+        return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+      } else if (range === "24h") {
+        return d.toLocaleTimeString([], { hour: "numeric" })
+      } else {
+        return d.toLocaleDateString([], { month: "numeric", day: "numeric" })
+      }
+    })
+  }
+
   chartConfig() {
     const isDoughnut = this.typeValue === "doughnut"
     const hasMultiDatasets = this.datasetsValue.length > 0
@@ -74,7 +91,7 @@ export default class extends Controller {
     return {
       type: this.typeValue,
       data: {
-        labels: this.labelsValue,
+        labels: this.formatTimeLabels(this.labelsValue),
         datasets: hasMultiDatasets
           ? this.datasetsValue.map((ds, i) => ({
               label: ds.label,

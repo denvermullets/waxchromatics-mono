@@ -1,8 +1,9 @@
-<%# Timeline artist card
-     Locals: artist, position (:start/:middle/:end), position_label ("START"/"1 of 3"/"END"), role_label
+<%#
+  Timeline artist card
+  Locals: artist, position (:start/:middle/:end), position_label ("START"/"1 of 3"/"END"), role_label
 %>
-<%
-  dot_class = case position
+
+<% dot_class = case position
               when :start, :end then "bg-crusta-500 border-crusta-500"
               else                   "bg-woodsmoke-900 border-woodsmoke-500"
               end
@@ -10,8 +11,7 @@
   badge_class = case position
                 when :start, :end then "bg-crusta-500/15 text-crusta-400 border border-crusta-500/30"
                 else                   "bg-woodsmoke-800 text-woodsmoke-400 border border-woodsmoke-700"
-                end
-%>
+                end %>
 
 <div class="relative pl-10 py-2">
   <%# Timeline dot %>
@@ -22,15 +22,32 @@
     <%= link_to artist_path(artist), class: "block bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-4 hover:border-woodsmoke-600 transition-colors" do %>
       <div class="flex items-center gap-3">
         <%# Icon %>
-        <div class="w-10 h-10 rounded-full bg-woodsmoke-800 flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-woodsmoke-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+        <div
+          class="
+            w-10 h-10 rounded-full bg-woodsmoke-800 flex items-center
+            justify-center flex-shrink-0
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-woodsmoke-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+              clip-rule="evenodd"
+            />
           </svg>
         </div>
 
         <%# Name + role %>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-bold text-woodsmoke-50 truncate"><%= artist.name %></p>
+          <p class="text-sm font-bold text-woodsmoke-50 truncate">
+            <%= artist.name %>
+          </p>
+
           <% if role_label.present? %>
             <p class="text-xs text-crusta-400 mt-0.5"><%= role_label %></p>
           <% end %>

@@ -6,19 +6,39 @@
     <%# They Have — From Your Wantlist %>
     <% if match[:they_have_items].any? %>
       <div>
-        <h4 class="text-xs font-semibold text-blue-ribbon-400 uppercase tracking-wider mb-3">
+        <h4
+          class="
+            text-xs font-semibold text-blue-ribbon-400 uppercase
+            tracking-wider mb-3
+          "
+        >
           They Have &middot; From Your Wantlist
         </h4>
+
         <div class="space-y-2">
           <% match[:they_have_items].each do |item| %>
             <div class="flex items-center gap-2 bg-woodsmoke-900 rounded-sm p-2">
               <%= render "shared/cover_art", thumb: item.release.release_group&.cover_art_url, alt: item.release.title, size: :sm %>
+
               <div class="min-w-0 flex-1">
-                <p class="text-xs text-woodsmoke-200 truncate"><%= item.release.title %></p>
-                <p class="text-[10px] text-woodsmoke-400 truncate"><%= item.release.artist&.name %></p>
+                <p class="text-xs text-woodsmoke-200 truncate">
+                  <%= item.release.title %>
+                </p>
+
+                <p class="text-[10px] text-woodsmoke-400 truncate">
+                  <%= item.release.artist&.name %>
+                </p>
               </div>
+
               <% if item.respond_to?(:condition) && item.condition.present? %>
-                <span class="shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-800 text-woodsmoke-300 rounded"><%= item.condition %></span>
+                <span
+                  class="
+                    shrink-0 px-1.5 py-0.5 text-[10px] bg-woodsmoke-800
+                    text-woodsmoke-300 rounded
+                  "
+                >
+                  <%= item.condition %>
+                </span>
               <% end %>
             </div>
           <% end %>
@@ -29,16 +49,28 @@
     <%# They Want — From Your Trade List %>
     <% if match[:they_want_items].any? %>
       <div>
-        <h4 class="text-xs font-semibold text-crusta-400 uppercase tracking-wider mb-3">
+        <h4
+          class="
+            text-xs font-semibold text-crusta-400 uppercase tracking-wider
+            mb-3
+          "
+        >
           They Want &middot; From Your Trade List
         </h4>
+
         <div class="space-y-2">
           <% match[:they_want_items].each do |item| %>
             <div class="flex items-center gap-2 bg-woodsmoke-900 rounded-sm p-2">
               <%= render "shared/cover_art", thumb: item.release.release_group&.cover_art_url, alt: item.release.title, size: :sm %>
+
               <div class="min-w-0 flex-1">
-                <p class="text-xs text-woodsmoke-200 truncate"><%= item.release.title %></p>
-                <p class="text-[10px] text-woodsmoke-400 truncate"><%= item.release.artist&.name %></p>
+                <p class="text-xs text-woodsmoke-200 truncate">
+                  <%= item.release.title %>
+                </p>
+
+                <p class="text-[10px] text-woodsmoke-400 truncate">
+                  <%= item.release.artist&.name %>
+                </p>
               </div>
             </div>
           <% end %>
@@ -48,13 +80,20 @@
   </div>
 
   <%# Footer %>
-  <div class="flex items-center justify-between mt-4 pt-3 border-t border-woodsmoke-800">
+  <div
+    class="
+      flex items-center justify-between mt-4 pt-3 border-t
+      border-woodsmoke-800
+    "
+  >
     <span class="text-[10px] text-woodsmoke-500">
       <%= user.username %>'s collection
     </span>
+
     <div class="flex items-center gap-2">
       <%= link_to "View Profile", profile_path(username: user.username),
           class: "px-3 py-1.5 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-200 hover:bg-woodsmoke-700 transition-colors" %>
+
       <%
         # "They want" items are WantlistItems — look up MY TradeListItems for those releases
         my_trade_items_by_release = Current.user.trade_list_items
@@ -65,6 +104,7 @@
         # "They have" items are TradeListItems — they already carry collection_item_id
         receive_ci_ids = match[:they_have_items].filter_map(&:collection_item_id)
       %>
+
       <%= link_to "Propose Trade",
           new_trade_path(
             username: Current.user.username,
