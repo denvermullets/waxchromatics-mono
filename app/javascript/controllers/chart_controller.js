@@ -46,6 +46,7 @@ export default class extends Controller {
     data: Array,
     label: { type: String, default: "Count" },
     datasets: { type: Array, default: [] },
+    hideLegend: { type: Boolean, default: false },
   }
 
   connect() {
@@ -57,6 +58,13 @@ export default class extends Controller {
       this.chart.destroy()
       this.chart = null
     }
+  }
+
+  toggle({ params: { index } }) {
+    const visible = this.chart.isDatasetVisible(index)
+    this.chart.setDatasetVisibility(index, !visible)
+    this.chart.update()
+    this.dispatch("toggled", { detail: { index, visible: !visible } })
   }
 
   chartConfig() {
@@ -73,6 +81,7 @@ export default class extends Controller {
               data: ds.data,
               borderColor: ds.color || THEME_COLORS[i],
               backgroundColor: ds.color || THEME_COLORS[i],
+              borderDash: ds.dashed ? [5, 4] : [],
               fill: false,
               tension: 0.3,
               pointRadius: 0,
@@ -104,7 +113,7 @@ export default class extends Controller {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: isDoughnut || hasMultiDatasets,
+          display: !this.hideLegendValue && (isDoughnut || hasMultiDatasets),
           position: "bottom",
           labels: {
             color: textColor,

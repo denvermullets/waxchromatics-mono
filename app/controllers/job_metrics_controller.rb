@@ -17,12 +17,10 @@ class JobMetricsController < ApplicationController
   end
 
   def load_chart_series
-    enqueued_raw = build_series(:created_at)
-    finished_raw = build_series(:finished_at)
-    all_times = (enqueued_raw.keys | finished_raw.keys).sort
-    @labels = all_times.map { |t| format_label(t) }
-    @enqueued_series = all_times.map { |t| enqueued_raw[t] || 0 }
-    @finished_series = all_times.map { |t| finished_raw[t] || 0 }
+    @queue_names = SolidQueue::Job.where(created_at: range_start..Time.current).distinct.pluck(:queue_name).sort
+    per_queue = build_per_queue_series
+    @labels = per_queue[:times].map { |t| format_label(t) }
+    @queue_datasets = per_queue[:datasets]
   end
 
   def require_admin
@@ -48,10 +46,28 @@ class JobMetricsController < ApplicationController
     end
   end
 
-  def build_series(column)
+  def build_per_queue_series
+    enqueued_rows = grouped_counts(:created_at)
+    finished_rows = grouped_counts(:finished_at)
+    all_times = (enqueued_rows.keys.map(&:last) | finished_rows.keys.map(&:last)).uniq.sort
+    datasets = @queue_names.flat_map { |q| queue_datasets(q, all_times, enqueued_rows, finished_rows) }
+
+    { times: all_times, datasets: datasets }
+  end
+
+  def queue_datasets(queue, all_times, enqueued_rows, finished_rows)
+    [
+      { label: "#{queue} (enqueued)", data: all_times.map { |t| enqueued_rows[[queue, t]] || 0 },
+        queue: queue, kind: 'enqueued' },
+      { label: "#{queue} (finished)", data: all_times.map { |t| finished_rows[[queue, t]] || 0 },
+        queue: queue, kind: 'finished' }
+    ]
+  end
+
+  def grouped_counts(column)
     SolidQueue::Job
       .where(column => range_start..Time.current)
-      .group(Arel.sql("date_trunc('#{trunc_unit}', #{column})"))
+      .group(:queue_name, Arel.sql("date_trunc('#{trunc_unit}', #{column})"))
       .order(Arel.sql("date_trunc('#{trunc_unit}', #{column})"))
       .count
   end

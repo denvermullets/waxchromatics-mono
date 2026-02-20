@@ -31,17 +31,50 @@
   </div>
 
   <%# Line chart %>
-  <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6">
-    <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest mb-4">Jobs Over Time</h2>
+  <% colors = %w[#f97316 #06b6d4 #a78bfa #34d399 #f472b6 #facc15 #60a5fa #fb923c #2dd4bf #c084fc] %>
+  <div class="bg-woodsmoke-925 border border-woodsmoke-800 rounded-sm p-6" data-controller="queue-filter">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xs font-semibold text-woodsmoke-400 uppercase tracking-widest">Jobs Over Time</h2>
+      <div class="flex gap-2 flex-wrap">
+        <% @queue_names.each_with_index do |queue, i| %>
+          <button
+            class="queue-pill px-2.5 py-1 text-xs rounded-sm border transition-colors cursor-pointer"
+            style="border-color: <%= colors[i % colors.length] %>; color: <%= colors[i % colors.length] %>"
+            data-action="click->queue-filter#toggle"
+            data-queue-filter-index-param="<%= i %>"
+            data-active="true"
+          >
+            <%= queue %>
+          </button>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 mb-4 text-xs text-woodsmoke-400">
+      <span class="flex items-center gap-1.5">
+        <svg width="20" height="4" class="inline-block"><line x1="0" y1="2" x2="20" y2="2" stroke="#a1a1aa" stroke-width="2"/></svg>
+        enqueued
+      </span>
+      <span class="flex items-center gap-1.5">
+        <svg width="20" height="4" class="inline-block"><line x1="0" y1="2" x2="20" y2="2" stroke="#a1a1aa" stroke-width="2" stroke-dasharray="4 3"/></svg>
+        finished
+      </span>
+    </div>
     <div class="h-72">
       <canvas
+        data-queue-filter-target="chart"
         data-controller="chart"
         data-chart-type-value="line"
+        data-chart-hide-legend-value="true"
         data-chart-labels-value="<%= @labels.to_json %>"
-        data-chart-datasets-value="<%= [
-          { label: 'Enqueued', data: @enqueued_series, color: '#f97316' },
-          { label: 'Finished', data: @finished_series, color: '#06b6d4' }
-        ].to_json %>"
+        data-chart-datasets-value="<%= @queue_datasets.map { |ds|
+          color_index = @queue_names.index(ds[:queue])
+          {
+            label: ds[:label],
+            data: ds[:data],
+            color: colors[color_index % colors.length],
+            dashed: ds[:kind] == 'finished'
+          }
+        }.to_json %>"
       ></canvas>
     </div>
   </div>
