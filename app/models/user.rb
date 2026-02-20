@@ -15,6 +15,8 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
+  ADMIN_ROLE = 9000
+
   RESERVED_USERNAMES = %w[session registration passwords releases artists search up jobs admin settings trades].freeze
 
   validates :username, presence: true, uniqueness: true,
@@ -34,6 +36,10 @@ class User < ApplicationRecord
 
   def average_rating
     ratings_received.visible.average(:overall_rating)&.round(1)
+  end
+
+  def admin?
+    role == ADMIN_ROLE
   end
 
   def completed_trade_count
