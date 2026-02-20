@@ -16,17 +16,17 @@
   <%= form_with model: @user, url: edit_profile_path(username: @user.username), method: :patch, class: "space-y-5" do |form| %>
     <div>
       <%= form.label :avatar_url, "Avatar URL", class: "block text-sm font-semibold text-woodsmoke-100" %>
-      <%= form.url_field :avatar_url, placeholder: "https://example.com/avatar.jpg", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+      <%= form.url_field :avatar_url, placeholder: "https://example.com/avatar.jpg", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
     </div>
 
     <div>
       <%= form.label :location, class: "block text-sm font-semibold text-woodsmoke-100" %>
-      <%= form.text_field :location, placeholder: "City, State", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+      <%= form.text_field :location, placeholder: "City, State", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
     </div>
 
     <div>
       <%= form.label :bio, class: "block text-sm font-semibold text-woodsmoke-100" %>
-      <%= form.text_area :bio, rows: 4, placeholder: "Tell us about your collection...", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none resize-none" %>
+      <%= form.text_area :bio, rows: 4, placeholder: "Tell us about your collection...", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 shadow-sm focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none resize-none" %>
     </div>
 
     <div class="flex items-center gap-3">

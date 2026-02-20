@@ -21,9 +21,6 @@
   /* bg color */
   --color-woodsmoke-950: #181818;
 
-  /* grey */
-  --color-wax-grey: #282828;
-
   /* oranges */
   /* main orange is crusta-400 */
   --color-crusta-50: #fef5ee;
@@ -119,10 +116,21 @@
   --color-crusta-800: #2222ab;
   --color-crusta-900: #212387;
   --color-crusta-950: #191952;
+
+  --color-woodsmoke-50: #2d2d2d;
+  --color-woodsmoke-100: #2d2d2d;
+  --color-woodsmoke-200: #2d2d2d;
+  --color-woodsmoke-300: #2d2d2d;
+  --color-woodsmoke-800: #e0e6ed;
+  --color-woodsmoke-900: #e8e8e8;
+  --color-woodsmoke-925: #d5d5d5;
+  --color-woodsmoke-950: #d0d0d0;
 }
 
 /* Moss — same accent, green-tinted backgrounds */
 [data-theme="moss"] {
-  --color-woodsmoke-950: #1a221e;
-  --color-woodsmoke-925: #374741;
+  --color-woodsmoke-800: #333a37;
+  --color-woodsmoke-900: #222725;
+  --color-woodsmoke-925: #282c2a;
+  --color-woodsmoke-950: #1a1e1c;
 }

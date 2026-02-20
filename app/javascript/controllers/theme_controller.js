@@ -7,10 +7,18 @@ export default class extends Controller {
   static values = { current: String }
 
   currentValueChanged() {
-    if (this.currentValue === "ember") {
+    this.#applyTheme(this.currentValue)
+  }
+
+  select(event) {
+    this.#applyTheme(event.target.value)
+  }
+
+  #applyTheme(theme) {
+    if (theme === "ember") {
       delete document.body.dataset.theme
     } else {
-      document.body.dataset.theme = this.currentValue
+      document.body.dataset.theme = theme
     }
   }
 }
