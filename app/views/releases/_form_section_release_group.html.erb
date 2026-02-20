@@ -17,21 +17,21 @@
         <%= form.text_field :release_group_year,
               placeholder: "e.g. 2003",
               value: params.dig(:release, :release_group_year),
-              class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
       </div>
       <div>
         <label class="block text-xs text-woodsmoke-400">Type</label>
         <%= form.select :release_group_type,
               options_for_select(["Album", "EP", "Single", "Compilation", "Unofficial Release"], params.dig(:release, :release_group_type) || "Album"),
               {},
-              class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
       </div>
       <div>
         <label class="block text-xs text-woodsmoke-400">Cover Art URL</label>
         <%= form.text_field :release_group_cover_art_url,
               placeholder: "https://...",
               value: params.dig(:release, :release_group_cover_art_url),
-              class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-wax-grey px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+              class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
       </div>
     </div>
   </div>
