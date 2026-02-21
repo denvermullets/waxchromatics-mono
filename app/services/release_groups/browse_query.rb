@@ -31,9 +31,6 @@ module ReleaseGroups
       scope = apply_search(scope)
       scope = apply_format_filter(scope)
       scope = apply_decade_filter(scope)
-      scope = apply_label_filter(scope)
-      scope = apply_genre_filter(scope)
-      scope = apply_country_filter(scope)
       apply_colored_filter(scope)
     end
 
@@ -48,8 +45,31 @@ module ReleaseGroups
     def apply_search(scope)
       return scope unless @params[:q].present?
 
-      q = "%#{@params[:q]}%"
-      scope.where('artists.name ILIKE :q OR release_groups.title ILIKE :q', q: q)
+      prefix, term = parse_search_query(@params[:q])
+      return scope if term.blank?
+
+      q = "%#{term}%"
+
+      case prefix
+      when 'label'
+        scope.joins('INNER JOIN release_labels AS search_rl ON search_rl.release_id = releases.id')
+             .joins('INNER JOIN labels AS search_labels ON search_labels.id = search_rl.label_id')
+             .where('search_labels.name ILIKE ?', q)
+      when 'genre'
+        scope.joins('INNER JOIN release_genres AS search_rg ON search_rg.release_id = releases.id')
+             .where('search_rg.genre ILIKE ?', q)
+      else
+        scope.where('artists.name ILIKE ?', q)
+      end
+    end
+
+    def parse_search_query(raw)
+      if raw.match?(/\A(artist|label|genre):/i)
+        prefix, term = raw.split(':', 2)
+        [prefix.downcase.strip, term.strip]
+      else
+        ['artist', raw.strip]
+      end
     end
 
     def apply_letter_filter(scope)
@@ -70,27 +90,6 @@ module ReleaseGroups
 
       decade_start = @filters[:decade].to_i
       scope.where('release_groups.year BETWEEN ? AND ?', decade_start, decade_start + 9)
-    end
-
-    def apply_label_filter(scope)
-      return scope unless @filters[:label].present?
-
-      scope.joins('INNER JOIN release_labels ON release_labels.release_id = releases.id')
-           .joins('INNER JOIN labels ON labels.id = release_labels.label_id')
-           .where(labels: { name: @filters[:label] })
-    end
-
-    def apply_genre_filter(scope)
-      return scope unless @filters[:genre].present?
-
-      scope.joins('INNER JOIN release_genres ON release_genres.release_id = releases.id')
-           .where(release_genres: { genre: @filters[:genre] })
-    end
-
-    def apply_country_filter(scope)
-      return scope unless @filters[:country].present?
-
-      scope.where(releases: { country: @filters[:country] })
     end
 
     def apply_colored_filter(scope)

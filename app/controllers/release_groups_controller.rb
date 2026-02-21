@@ -7,8 +7,12 @@ class ReleaseGroupsController < ApplicationController
     @filters = browse_filters
     @letter = @filters[:letter]
 
-    load_dropdown_options
-    load_stats
+    # load_stats
+    @total_release_groups = 0
+    @total_variants = 0
+    @total_labels = 0
+    @total_genres = 0
+
     load_browse_results
   end
 
@@ -52,18 +56,6 @@ class ReleaseGroupsController < ApplicationController
                                 .distinct.count(:genre)
   end
 
-  def load_dropdown_options
-    release_with_rg = Release.where.not(release_group_id: nil)
-    @label_options = Label.joins(release_labels: :release)
-                          .where(releases: { id: release_with_rg })
-                          .distinct.order(:name).pluck(:name)
-    @genre_options = ReleaseGenre.joins(:release)
-                                 .where(releases: { id: release_with_rg })
-                                 .distinct.order(:genre).pluck(:genre)
-    @country_options = release_with_rg.where.not(country: [nil, ''])
-                                      .distinct.order(:country).pluck(:country)
-  end
-
   def load_browse_results
     query = ReleaseGroups::BrowseQuery.new(
       params: params, filters: @filters, sort: @sort,
@@ -85,9 +77,6 @@ class ReleaseGroupsController < ApplicationController
       letter: letter,
       format: params[:format_filter].presence,
       decade: params[:decade].presence,
-      label: params[:label].presence,
-      genre: params[:genre].presence,
-      country: params[:country].presence,
       colored: params[:colored] == '1'
     }
   end
