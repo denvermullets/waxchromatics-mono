@@ -4,7 +4,7 @@ module ReleaseGroups
   class BrowseQuery
     FIRST_ALPHA_SQL = "UPPER(SUBSTRING(artists.name FROM '[A-Za-z]'))"
 
-    attr_reader :pagy, :release_groups, :variant_counts, :grouped, :available_letters
+    attr_reader :pagy, :release_groups, :variant_counts, :grouped
 
     def initialize(params:, filters:, sort:, page:, limit:)
       @params = params
@@ -16,7 +16,6 @@ module ReleaseGroups
 
     def call
       base = build_filtered_scope
-      @available_letters = extract_available_letters(base)
       scope = apply_letter_filter(base)
       sorted = apply_sort(scope)
       @pagy, id_rows = paginate(sorted)
@@ -119,11 +118,6 @@ module ReleaseGroups
         { 'id' => row.id, 'variant_count' => row.variant_count, 'primary_artist_name' => row.primary_artist_name }
       end
       [pagy, rows]
-    end
-
-    def extract_available_letters(scope)
-      # Use the filtered scope (minus grouping) to find letters present in current result set
-      scope.pluck(Arel.sql("UPPER(SUBSTRING(MIN(artists.name) FROM '[A-Za-z]'))")).compact.uniq.sort
     end
 
     def hydrate(id_rows)

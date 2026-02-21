@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_20_135605) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_20_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_135605) do
     t.string "real_name"
     t.datetime "updated_at", null: false
     t.index ["discogs_id"], name: "index_artists_on_discogs_id", unique: true
+    t.index ["name"], name: "index_artists_on_name"
   end
 
   create_table "collection_import_rows", force: :cascade do |t|
@@ -168,6 +169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_135605) do
     t.index ["discogs_id"], name: "index_release_groups_on_discogs_id", unique: true
     t.index ["musicbrainz_id"], name: "index_release_groups_on_musicbrainz_id", unique: true
     t.index ["release_type"], name: "index_release_groups_on_release_type"
+    t.index ["year"], name: "index_release_groups_on_year"
   end
 
   create_table "release_identifiers", force: :cascade do |t|

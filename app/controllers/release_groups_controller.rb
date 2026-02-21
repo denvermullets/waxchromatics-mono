@@ -1,5 +1,5 @@
 class ReleaseGroupsController < ApplicationController
-  BROWSE_PER_PAGE = 60
+  BROWSE_PER_PAGE = 24
 
   def index
     @sort = params[:sort].presence || 'artist_az'
@@ -66,7 +66,6 @@ class ReleaseGroupsController < ApplicationController
     @release_groups = query.release_groups
     @variant_counts = query.variant_counts
     @grouped = query.grouped
-    @available_letters = query.available_letters
   end
 
   def browse_filters
