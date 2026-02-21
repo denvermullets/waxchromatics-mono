@@ -31,14 +31,11 @@
       <%= f.hidden_field :view, value: @view %>
       <%= f.hidden_field :format_filter, value: @format_filter %>
       <%= f.hidden_field :decade, value: @decade %>
-      <%= f.hidden_field :label, value: @label_filter %>
-      <%= f.hidden_field :genre, value: @genre_filter %>
-      <%= f.hidden_field :country, value: @country_filter %>
       <%= f.hidden_field :colored, value: params[:colored] %>
 
-      <%= f.text_field :q, value: params[:q], placeholder: "Search releases...",
+      <%= f.text_field :q, value: params[:q], placeholder: "Search artists, label:name, genre:name...",
             autocomplete: "off",
-            class: "w-full sm:w-48 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+            class: "w-full sm:w-72 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
     <% end %>
 
     <div class="hidden md:flex items-center gap-2">
@@ -121,81 +118,6 @@
     <%= link_to "COLORED VINYL",
                 browse_releases_path(browse_params(colored: @colored ? nil : '1', page: nil)),
                 class: "hidden md:inline-flex px-3 py-1 text-xs font-semibold rounded-sm border transition-colors #{@colored ? 'border-crusta-400 text-crusta-400' : 'border-woodsmoke-700 text-woodsmoke-400 hover:border-woodsmoke-500 hover:text-woodsmoke-200'}" %>
-  </div>
-
-  <%# Dropdown filters %>
-  <div
-    class="hidden md:flex flex-wrap items-center gap-4 mb-4"
-    data-controller="select-nav"
-  >
-    <% if @label_options.any? %>
-      <select
-        data-action="change->select-nav#navigate"
-        data-select-nav-param-value="label"
-        class="
-          rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3
-          py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400
-          focus:ring-1 focus:ring-crusta-400 focus:outline-none
-        "
-      >
-        <option value="">All Labels</option>
-
-        <% @label_options.each do |name| %>
-          <option
-            value="<%= name %>"
-            <%= 'selected' if @label_filter == name %>
-          >
-            <%= name %>
-          </option>
-        <% end %>
-      </select>
-    <% end %>
-
-    <% if @genre_options.any? %>
-      <select
-        data-action="change->select-nav#navigate"
-        data-select-nav-param-value="genre"
-        class="
-          rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3
-          py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400
-          focus:ring-1 focus:ring-crusta-400 focus:outline-none
-        "
-      >
-        <option value="">All Genres</option>
-
-        <% @genre_options.each do |name| %>
-          <option
-            value="<%= name %>"
-            <%= 'selected' if @genre_filter == name %>
-          >
-            <%= name %>
-          </option>
-        <% end %>
-      </select>
-    <% end %>
-
-    <% if @country_options.any? %>
-      <select
-        data-action="change->select-nav#navigate"
-        data-select-nav-param-value="country"
-        class="
-          rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 px-3
-          py-1.5 text-sm text-woodsmoke-300 focus:border-crusta-400
-          focus:ring-1 focus:ring-crusta-400 focus:outline-none
-        "
-      >
-        <option value="">All Countries</option>
-
-        <% @country_options.each do |name| %>
-          <option
-            value="<%= name %>"
-            <%= 'selected' if @country_filter == name %>
-          >
-            <%= name %>
-          </option>
-        <% end %>
-      </select>
-    <% end %>
   </div>
 
   <%# Count %>
