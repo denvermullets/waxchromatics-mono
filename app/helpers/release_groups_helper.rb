@@ -1,5 +1,5 @@
 module ReleaseGroupsHelper
-  BROWSE_PARAMS = %i[sort view letter q format_filter decade label genre country colored page].freeze
+  BROWSE_PARAMS = %i[sort view letter q format_filter decade colored page].freeze
 
   def browse_params(**overrides)
     current = params.permit(*BROWSE_PARAMS).to_h.symbolize_keys
