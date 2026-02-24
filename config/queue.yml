@@ -11,6 +11,10 @@ default: &default
       threads: 1
       processes: 1
       polling_interval: 1
+    - queues: "imports"
+      threads: 2
+      processes: 1
+      polling_interval: 0.1
     - queues: "messaging"
       threads: 2
       processes: 1
