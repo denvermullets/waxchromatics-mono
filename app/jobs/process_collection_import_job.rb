@@ -1,7 +1,7 @@
 require 'csv'
 
 class ProcessCollectionImportJob < ApplicationJob
-  queue_as :default
+  queue_as :imports
 
   BATCH_SIZE = 500
 

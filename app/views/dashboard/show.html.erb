@@ -30,8 +30,3 @@
 </div>
 
 <%= turbo_frame_tag "search-results" %>
-
-<div class="max-w-2xl mt-8 flex gap-4">
-  <%= link_to "Add a Release", new_release_path, class: "rounded-sm px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold transition-colors" %>
-  <%= link_to "Crates", crates_path(username: Current.user.username), class: "rounded-sm px-5 py-2.5 border border-woodsmoke-700 text-woodsmoke-200 hover:border-woodsmoke-500 font-semibold transition-colors" %>
-</div>
