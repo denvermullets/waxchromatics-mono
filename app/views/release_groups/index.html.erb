@@ -122,7 +122,10 @@
 
   <%# Count %>
   <% if @default_browse %>
-    <p class="text-sm text-woodsmoke-500 mb-4">Showing <%= @release_groups.size %> recently updated releases — search or pick a letter for more</p>
+    <p class="text-sm text-woodsmoke-500 mb-4">
+      Showing <%= @release_groups.size %> recently updated releases — search or
+      pick a letter for more
+    </p>
   <% else %>
     <p class="text-sm text-woodsmoke-500 mb-4"><%= @pagy.count %> releases</p>
   <% end %>
@@ -266,14 +269,11 @@
       <% else %>
         <%# Flat view header %>
         <% if @default_browse %>
-          <div class="mb-8">
-            <div class="flex items-baseline gap-3 mb-3">
-              <h2 class="text-3xl font-bold text-crusta-400">Recently Updated</h2>
-            </div>
-            <div class="border-t border-crusta-400 mb-4"></div>
+          <div class="flex items-baseline gap-3 mb-3">
+            <h2 class="text-3xl font-bold text-crusta-400">Recently Updated</h2>
           </div>
+          <div class="border-t border-crusta-400 mb-4"></div>
         <% end %>
-
         <% if @view == 'grid' %>
           <div
             class="

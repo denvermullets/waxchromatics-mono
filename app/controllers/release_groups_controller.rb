@@ -70,6 +70,7 @@ class ReleaseGroupsController < ApplicationController
 
   def load_default_results
     @release_groups = ReleaseGroup
+                      .where(id: Release.where.not(artist_id: nil).select(:release_group_id))
                       .order(updated_at: :desc)
                       .limit(BROWSE_PER_PAGE)
                       .includes(releases: [:release_formats, :artist, { release_labels: :label }])
@@ -79,7 +80,7 @@ class ReleaseGroupsController < ApplicationController
     end
     @grouped = nil
     @default_browse = true
-    @pagy = Pagy::Offset.new(count: BROWSE_PER_PAGE, page: 1, limit: BROWSE_PER_PAGE)
+    @pagy = Pagy::Offset.new(count: @release_groups.size, page: 1, limit: BROWSE_PER_PAGE)
   end
 
   def load_browse_results
