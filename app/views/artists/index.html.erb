@@ -98,33 +98,6 @@
               >
                 <%= link_to artist.name, artist_path(artist),
                             class: "font-medium text-woodsmoke-100 hover:text-crusta-400 transition-colors" %>
-
-                <div class="flex items-center gap-2">
-                  <% releases = @release_counts[artist.id] || 0 %>
-                  <% variants = @variant_counts[artist.id] || 0 %>
-
-                  <% if releases > 0 %>
-                    <span
-                      class="
-                        text-xs font-medium px-2 py-0.5 rounded-full
-                        bg-woodsmoke-800 text-woodsmoke-400
-                      "
-                    >
-                      <%= releases %> release<%= releases == 1 ? '' : 's' %>
-                    </span>
-                  <% end %>
-
-                  <% if variants > 0 %>
-                    <span
-                      class="
-                        text-xs font-medium px-2 py-0.5 rounded-full
-                        bg-woodsmoke-800 text-woodsmoke-500
-                      "
-                    >
-                      <%= variants %> variant<%= variants == 1 ? '' : 's' %>
-                    </span>
-                  <% end %>
-                </div>
               </div>
             <% end %>
           </div>
