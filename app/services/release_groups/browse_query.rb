@@ -4,6 +4,18 @@ module ReleaseGroups
   class BrowseQuery
     FIRST_ALPHA_SQL = "UPPER(SUBSTRING(artists.name FROM '[A-Za-z]'))"
 
+    SORT_ORDERS = {
+      'artist_za' => 'MIN(artists.name) DESC, release_groups.title ASC',
+      'title_az' => 'release_groups.title ASC',
+      'newest' => 'release_groups.year DESC NULLS LAST, release_groups.title ASC',
+      'oldest' => 'release_groups.year ASC NULLS LAST, release_groups.title ASC',
+      'most_variants' => 'COUNT(releases.id) DESC, release_groups.title ASC',
+      'recently_added' => 'release_groups.created_at DESC',
+      'recently_updated' => 'release_groups.updated_at DESC'
+    }.freeze
+
+    DEFAULT_SORT_ORDER = 'MIN(artists.name) ASC, release_groups.title ASC'
+
     attr_reader :pagy, :release_groups, :variant_counts, :grouped
 
     def initialize(params:, filters:, sort:, page:, limit:)
@@ -99,15 +111,7 @@ module ReleaseGroups
     end
 
     def apply_sort(scope)
-      case @sort
-      when 'artist_za'  then scope.order(Arel.sql('MIN(artists.name) DESC, release_groups.title ASC'))
-      when 'title_az'   then scope.order('release_groups.title ASC')
-      when 'newest'     then scope.order('release_groups.year DESC NULLS LAST, release_groups.title ASC')
-      when 'oldest'     then scope.order('release_groups.year ASC NULLS LAST, release_groups.title ASC')
-      when 'most_variants'   then scope.order(Arel.sql('COUNT(releases.id) DESC, release_groups.title ASC'))
-      when 'recently_added'  then scope.order('release_groups.created_at DESC')
-      else scope.order(Arel.sql('MIN(artists.name) ASC, release_groups.title ASC'))
-      end
+      scope.order(Arel.sql(SORT_ORDERS.fetch(@sort, DEFAULT_SORT_ORDER)))
     end
 
     def paginate(scope)

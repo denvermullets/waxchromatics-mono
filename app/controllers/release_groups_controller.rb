@@ -1,19 +1,22 @@
 class ReleaseGroupsController < ApplicationController
-  BROWSE_PER_PAGE = 24
+  BROWSE_PER_PAGE = 25
 
   def index
-    @sort = params[:sort].presence || 'artist_az'
+    @sort = params[:sort].presence || 'recently_updated'
     @view = params[:view].presence || 'grid'
     @filters = browse_filters
     @letter = @filters[:letter]
 
-    # load_stats
     @total_release_groups = 0
     @total_variants = 0
     @total_labels = 0
     @total_genres = 0
 
-    load_browse_results
+    if default_browse?
+      load_default_results
+    else
+      load_browse_results
+    end
   end
 
   def search
@@ -54,6 +57,29 @@ class ReleaseGroupsController < ApplicationController
     @total_genres = ReleaseGenre.joins(:release)
                                 .where.not(releases: { release_group_id: nil })
                                 .distinct.count(:genre)
+  end
+
+  def default_browse?
+    @sort == 'recently_updated' &&
+      params[:q].blank? &&
+      @filters[:letter].blank? &&
+      @filters[:format].blank? &&
+      @filters[:decade].blank? &&
+      !@filters[:colored]
+  end
+
+  def load_default_results
+    @release_groups = ReleaseGroup
+                      .order(updated_at: :desc)
+                      .limit(BROWSE_PER_PAGE)
+                      .includes(releases: [:release_formats, :artist, { release_labels: :label }])
+
+    @variant_counts = @release_groups.each_with_object({}) do |rg, h|
+      h[rg.id] = rg.releases.size
+    end
+    @grouped = nil
+    @default_browse = true
+    @pagy = Pagy::Offset.new(count: BROWSE_PER_PAGE, page: 1, limit: BROWSE_PER_PAGE)
   end
 
   def load_browse_results
