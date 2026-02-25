@@ -99,7 +99,6 @@ class ArtistsController < ApplicationController
     scope = filter_artist_scope(base_scope)
     @pagy, @artists = pagy(scope, limit: ARTISTS_PER_PAGE)
     @grouped_artists = @artists.group_by { |a| a.name[/[A-Za-z]/]&.upcase || '#' }
-    load_artist_counts
   end
 
   def filter_artist_scope(scope)
@@ -109,21 +108,8 @@ class ArtistsController < ApplicationController
     scope
   end
 
-  def load_artist_counts
-    artist_ids = @artists.map(&:id)
-    @release_counts = release_group_counts_for(artist_ids)
-    @variant_counts = Release.where(artist_id: artist_ids).group(:artist_id).count
-  end
-
   def artist_browse_scope
     @filter == 'all' ? Artist.all : Artist.where(id: Release.select(:artist_id))
-  end
-
-  def release_group_counts_for(artist_ids)
-    ReleaseGroup.joins(:releases)
-                .where(releases: { artist_id: artist_ids })
-                .group('releases.artist_id')
-                .count('DISTINCT release_groups.id')
   end
 
   def load_artist
