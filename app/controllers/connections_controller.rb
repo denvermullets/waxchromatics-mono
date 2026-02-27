@@ -24,4 +24,14 @@ class ConnectionsController < ApplicationController
       }, layout: false
     end
   end
+
+  def destroy_cache
+    unless Current.user&.admin?
+      head :forbidden
+      return
+    end
+
+    ConnectionCache.invalidate_pair(params[:artist_a_id], params[:artist_b_id])
+    redirect_to connections_path, notice: 'Cache cleared for this pair'
+  end
 end

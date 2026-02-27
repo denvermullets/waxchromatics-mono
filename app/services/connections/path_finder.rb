@@ -14,7 +14,12 @@ module Connections
       artist_b = Artist.find_by(id: @artist_b_id)
       return error_result('Artist not found') unless artist_a && artist_b
 
-      bfs(artist_a, artist_b)
+      cached = ConnectionCache.lookup(@artist_a_id, @artist_b_id)
+      return build_cached_result(cached, artist_a, artist_b) if cached
+
+      result = bfs(artist_a, artist_b)
+      cache_result(result)
+      result
     end
 
     private
@@ -74,6 +79,41 @@ module Connections
       end
 
       path
+    end
+
+    def build_cached_result(cached, artist_a, artist_b)
+      unless cached.found
+        return { found: false, degrees: nil, shortest_path: [], alternate_paths: [],
+                 artist_a: artist_a, artist_b: artist_b }
+      end
+
+      path = cached.oriented_path(@artist_a_id)
+      PathEnricher.call(path)
+
+      { found: true, degrees: cached.degrees, shortest_path: path,
+        alternate_paths: [], artist_a: artist_a, artist_b: artist_b }
+    end
+
+    def cache_result(result)
+      return if result[:error]
+
+      ConnectionCache.store(
+        @artist_a_id, @artist_b_id,
+        found: result[:found],
+        degrees: result[:degrees],
+        path_data: raw_path_data(result[:shortest_path])
+      )
+    end
+
+    def raw_path_data(path)
+      path.map do |edge|
+        {
+          from_artist_id: edge[:from_artist_id],
+          to_artist_id: edge[:to_artist_id],
+          release_id: edge[:release_id],
+          role: edge[:role]
+        }
+      end
     end
 
     def error_result(message)

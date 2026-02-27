@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   get 'connections', to: 'connections#show', as: :connections
   get 'connections/search', to: 'connections#search', as: :search_connections
+  delete 'connections/cache', to: 'connections#destroy_cache', as: :destroy_connections_cache
   # Trade form Turbo endpoints (HTML responses, not JSON)
   get 'trades/search_users', to: 'trades#search_users', as: :search_users_trades
   get 'trades/search_collection', to: 'trades#search_collection', as: :search_collection_trades
