@@ -126,7 +126,7 @@ module ReleaseGroups
 
     def hydrate(id_rows)
       ids = id_rows.map { |r| r['id'] }
-      @variant_counts = id_rows.each_with_object({}) { |r, h| h[r['id']] = r['variant_count'].to_i }
+      @variant_counts = id_rows.to_h { |r| [r['id'], r['variant_count'].to_i] }
 
       records = ReleaseGroup.where(id: ids)
                             .includes(releases: [:release_formats, :artist, { release_labels: :label }])
@@ -137,7 +137,7 @@ module ReleaseGroups
     end
 
     def build_alpha_groups(id_rows)
-      artist_names = id_rows.each_with_object({}) { |r, h| h[r['id']] = r['primary_artist_name'] }
+      artist_names = id_rows.to_h { |r| [r['id'], r['primary_artist_name']] }
 
       @grouped = @release_groups.group_by do |rg|
         first_letter(artist_names[rg.id])

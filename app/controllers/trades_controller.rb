@@ -151,8 +151,8 @@ class TradesController < ApplicationController
       pending: base.with_status('proposed').count
     }
 
-    @status_counts = Trade::STATUSES.each_with_object({}) do |s, h|
-      h[s] = base.with_status(s).count
+    @status_counts = Trade::STATUSES.to_h do |s|
+      [s, base.with_status(s).count]
     end
     @status_counts['all'] = base.count
   end

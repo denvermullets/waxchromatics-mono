@@ -1,5 +1,10 @@
 class ConnectionsController < ApplicationController
-  def show; end
+  def show
+    return unless params[:artist_a].present? && params[:artist_b].present?
+
+    @artist_a = Artist.find_by(id: params[:artist_a])
+    @artist_b = Artist.find_by(id: params[:artist_b])
+  end
 
   def search
     result = Connections::PathFinder.call(
@@ -23,5 +28,15 @@ class ConnectionsController < ApplicationController
         artist_b: result[:artist_b]
       }, layout: false
     end
+  end
+
+  def destroy_cache
+    unless Current.user&.admin?
+      head :forbidden
+      return
+    end
+
+    ConnectionCache.invalidate_pair(params[:artist_a_id], params[:artist_b_id])
+    redirect_to connections_path, notice: 'Cache cleared for this pair'
   end
 end

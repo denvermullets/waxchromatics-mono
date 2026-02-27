@@ -7,9 +7,22 @@ export default class extends Controller {
     "submitBtn", "resultsContainer", "loading"
   ]
 
+  static values = {
+    artistAId: { type: String, default: "" },
+    artistAName: { type: String, default: "" },
+    artistBId: { type: String, default: "" },
+    artistBName: { type: String, default: "" }
+  }
+
   connect() {
     this.timeoutA = null
     this.timeoutB = null
+
+    if (this.artistAIdValue && this.artistBIdValue) {
+      this.setSelected("a", this.artistAIdValue, this.artistANameValue)
+      this.setSelected("b", this.artistBIdValue, this.artistBNameValue)
+      this.performSearch()
+    }
   }
 
   // ── Search ──
@@ -163,6 +176,10 @@ export default class extends Controller {
 
   async findConnections(event) {
     event.preventDefault()
+    this.performSearch()
+  }
+
+  async performSearch() {
     const artistAId = this.hiddenATarget.value
     const artistBId = this.hiddenBTarget.value
     if (!artistAId || !artistBId) return
@@ -179,6 +196,9 @@ export default class extends Controller {
       const html = await response.text()
       this.loadingTarget.classList.add("hidden")
       this.resultsContainerTarget.innerHTML = html
+
+      const shareUrl = `${window.location.pathname}?artist_a=${artistAId}&artist_b=${artistBId}`
+      history.replaceState(null, "", shareUrl)
     } catch {
       this.loadingTarget.classList.add("hidden")
       this.resultsContainerTarget.innerHTML =

@@ -75,8 +75,8 @@ class ReleaseGroupsController < ApplicationController
                       .limit(BROWSE_PER_PAGE)
                       .includes(releases: [:release_formats, :artist, { release_labels: :label }])
 
-    @variant_counts = @release_groups.each_with_object({}) do |rg, h|
-      h[rg.id] = rg.releases.size
+    @variant_counts = @release_groups.to_h do |rg|
+      [rg.id, rg.releases.size]
     end
     @grouped = nil
     @default_browse = true

@@ -24,9 +24,9 @@ module Connections
                         .where.not(artist_id: @artist_ids)
                         .select(:artist_id, :release_id, :role)
                         .each do |rc|
-                          from_id = release_map[rc.release_id]
-                          @edges[from_id] << { neighbor_id: rc.artist_id, release_id: rc.release_id,
-                                               role: rc.role, from_id: from_id }
+        from_id = release_map[rc.release_id]
+        @edges[from_id] << { neighbor_id: rc.artist_id, release_id: rc.release_id,
+                             role: rc.role, from_id: from_id }
       end
     end
 
@@ -38,10 +38,10 @@ module Connections
              .where.not(artist_id: [nil] + @artist_ids)
              .select(:id, :artist_id)
              .each do |r|
-               contributor_map[r.id]&.each do |entry|
-                 @edges[entry[:artist_id]] << { neighbor_id: r.artist_id, release_id: r.id,
-                                                role: entry[:role], from_id: entry[:artist_id] }
-               end
+        contributor_map[r.id]&.each do |entry|
+          @edges[entry[:artist_id]] << { neighbor_id: r.artist_id, release_id: r.id,
+                                         role: entry[:role], from_id: entry[:artist_id] }
+        end
       end
     end
 
@@ -73,14 +73,14 @@ module Connections
     def primary_release_map
       @primary_release_map ||= Release.where(artist_id: @artist_ids)
                                       .select(:id, :artist_id)
-                                      .each_with_object({}) { |r, h| h[r.id] = r.artist_id }
+                                      .to_h { |r| [r.id, r.artist_id] }
     end
 
     def contributor_map
       @contributor_map ||= ReleaseContributor.where(artist_id: @artist_ids)
                                              .select(:artist_id, :release_id, :role)
                                              .each_with_object({}) do |rc, h|
-                                               (h[rc.release_id] ||= []) << { artist_id: rc.artist_id, role: rc.role }
+        (h[rc.release_id] ||= []) << { artist_id: rc.artist_id, role: rc.role }
       end
     end
   end
