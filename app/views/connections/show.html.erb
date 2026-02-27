@@ -1,4 +1,13 @@
-<div class="max-w-3xl mx-auto px-4 py-8" data-controller="degrees">
+<div
+  class="max-w-3xl mx-auto px-4 py-8"
+  data-controller="degrees"
+  <% if @artist_a && @artist_b %>
+    data-degrees-artist-a-id-value="<%= @artist_a.id %>"
+    data-degrees-artist-a-name-value="<%= @artist_a.name %>"
+    data-degrees-artist-b-id-value="<%= @artist_b.id %>"
+    data-degrees-artist-b-name-value="<%= @artist_b.name %>"
+  <% end %>
+>
   <%# Header %>
   <div class="mb-8 text-center">
     <p class="text-xs font-semibold tracking-widest text-crusta-400 uppercase mb-1">

@@ -58,4 +58,14 @@
       <%= render "connections/alternate_paths", alternate_paths: alternate_paths, artist_a: artist_a, artist_b: artist_b %>
     </div>
   <% end %>
+
+  <% if Current.user&.admin? %>
+    <div class="mt-4 text-center">
+      <%= button_to "Clear cache",
+            destroy_connections_cache_path(artist_a_id: artist_a.id, artist_b_id: artist_b.id),
+            method: :delete,
+            class: "inline-flex items-center gap-1 px-3 py-1 text-xs font-medium text-crusta-400 bg-woodsmoke-900 border border-woodsmoke-700 rounded hover:border-crusta-500/40 transition-colors",
+            data: { turbo_confirm: "Clear cached result for this pair?" } %>
+    </div>
+  <% end %>
 </div>
