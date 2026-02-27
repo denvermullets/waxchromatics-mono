@@ -1,5 +1,10 @@
 class ConnectionsController < ApplicationController
-  def show; end
+  def show
+    return unless params[:artist_a].present? && params[:artist_b].present?
+
+    @artist_a = Artist.find_by(id: params[:artist_a])
+    @artist_b = Artist.find_by(id: params[:artist_b])
+  end
 
   def search
     result = Connections::PathFinder.call(
