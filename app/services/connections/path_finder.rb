@@ -1,6 +1,7 @@
 module Connections
   class PathFinder < Service
     MAX_DEPTH = 6
+    BATCH_SIZE = 100
 
     def initialize(artist_a_id:, artist_b_id:)
       @artist_a_id = artist_a_id.to_i
@@ -40,12 +41,16 @@ module Connections
     def expand_level(queue, visited, target_id)
       next_queue = []
 
-      NeighborQuery.call(queue).each_value do |edges|
-        edges.each do |edge|
-          next if visited.key?(edge[:neighbor_id])
+      queue.each_slice(BATCH_SIZE) do |batch|
+        NeighborQuery.call(batch).each_value do |edges|
+          edges.each do |edge|
+            next if visited.key?(edge[:neighbor_id])
 
-          visited[edge[:neighbor_id]] = edge.slice(:from_id, :release_id, :role)
-          next_queue << edge[:neighbor_id]
+            visited[edge[:neighbor_id]] = edge.slice(:from_id, :release_id, :role)
+            next_queue << edge[:neighbor_id]
+          end
+
+          break if visited.key?(target_id)
         end
 
         break if visited.key?(target_id)
