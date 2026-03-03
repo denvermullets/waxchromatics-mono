@@ -3,8 +3,7 @@
   <%= turbo_stream_from "search_updates" %>
 
   <% if @query.present? %>
-    <%
-      partial_map = {
+    <% partial_map = {
         'artist'  => 'dashboard/artist_row_search',
         'album'   => 'dashboard/album_row',
         'label'   => 'dashboard/label_row',
@@ -12,17 +11,17 @@
         'barcode' => 'dashboard/barcode_row',
         'credit'  => 'dashboard/credit_row',
       }
-      row_partial = partial_map[@search_type]
-    %>
-
+      row_partial = partial_map[@search_type] %>
     <div class="mt-8">
       <%# Results header: "RESULTS (N)" + type badge + separator line %>
       <div class="flex items-center justify-between mb-1">
         <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400">
           Results (<%= @total_count %>)
         </p>
+
         <%= render "dashboard/search_type_badge", type: @search_type %>
       </div>
+
       <hr class="border-woodsmoke-800 mb-4">
 
       <% if @results.any? %>
@@ -33,11 +32,66 @@
         </div>
       <% else %>
         <div class="py-12 text-center">
-          <svg class="w-10 h-10 mx-auto text-woodsmoke-700 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          <svg
+            class="w-10 h-10 mx-auto text-woodsmoke-700 mb-3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
           </svg>
+
           <p class="text-woodsmoke-400">No results found for "<%= @term %>"</p>
-          <p class="text-xs text-woodsmoke-500 mt-1">Try a different search term</p>
+
+          <p class="text-xs text-woodsmoke-500 mt-1">
+            Try a different search term
+          </p>
+        </div>
+      <% end %>
+
+      <% if @search_type == 'artist' %>
+        <div class="mt-6">
+          <p
+            class="
+              text-xs font-semibold uppercase tracking-wider
+              text-woodsmoke-400 mb-3
+            "
+          >
+            External Results
+          </p>
+
+          <hr class="border-woodsmoke-800 mb-4">
+
+          <%= turbo_frame_tag "external-results", src: external_search_path(query: @term, page: @page), loading: :lazy, class: "flex flex-col gap-2" do %>
+            <% 3.times do %>
+              <div
+                class="
+                  p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+                  bg-woodsmoke-925
+                "
+              >
+                <div class="flex items-start gap-3 sm:gap-4">
+                  <div
+                    class="
+                      shrink-0 w-16 sm:w-20 h-16 sm:h-20 rounded
+                      bg-woodsmoke-700 animate-pulse
+                    "
+                  ></div>
+
+                  <div class="flex-1 min-w-0 space-y-2">
+                    <div class="h-4 rounded bg-woodsmoke-700 animate-pulse w-3/4"></div>
+                    <div class="h-3 rounded bg-woodsmoke-700 animate-pulse w-1/2"></div>
+                    <div class="h-5 rounded bg-woodsmoke-700 animate-pulse w-1/4 mt-1"></div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
         </div>
       <% end %>
     </div>
