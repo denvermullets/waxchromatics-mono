@@ -60,7 +60,7 @@
           autocomplete: "off",
           placeholder: "Search artists, or use a prefix...",
           class: "flex-1 min-w-0 bg-transparent px-3 sm:px-4 py-3 text-sm sm:text-base text-woodsmoke-50 placeholder-woodsmoke-500 focus:outline-none",
-          data: { search_prefix_target: "input", action: "input->search-prefix#detect" } %>
+          data: { search_prefix_target: "input", action: "input->search-prefix#detect keydown->search-prefix#handleKeydown" } %>
 
         <%= f.submit "Search", class: "shrink-0 px-4 sm:px-6 py-3 text-sm sm:text-base bg-crusta-400 text-woodsmoke-950 font-semibold transition-all cursor-pointer rounded-r-sm", data: { search_prefix_target: "submitBtn" } %>
       </div>
