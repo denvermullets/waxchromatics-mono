@@ -20,7 +20,10 @@
 ] %>
 
 <%# Controller wraps search form + turbo frame so chips inside frame can call insertPrefix %>
-<div data-controller="search-prefix" class="px-32 lg:px-64">
+<div
+  data-controller="search-prefix"
+  class="px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64"
+>
   <h1 class="text-3xl font-bold text-woodsmoke-50">
     Welcome back,
     <span class="text-crusta-400"><%= Current.user.username %></span>
@@ -55,11 +58,11 @@
 
         <%= f.text_field :query,
           autocomplete: "off",
-          placeholder: "Search artists, or use prefix (e.g. label: interscope)",
-          class: "flex-1 min-w-0 bg-transparent px-4 py-3 text-woodsmoke-50 placeholder-woodsmoke-500 focus:outline-none",
+          placeholder: "Search artists, or use a prefix...",
+          class: "flex-1 min-w-0 bg-transparent px-3 sm:px-4 py-3 text-sm sm:text-base text-woodsmoke-50 placeholder-woodsmoke-500 focus:outline-none",
           data: { search_prefix_target: "input", action: "input->search-prefix#detect" } %>
 
-        <%= f.submit "Search", class: "shrink-0 px-6 py-3 bg-crusta-400 text-woodsmoke-950 font-semibold transition-all cursor-pointer rounded-r-sm", data: { search_prefix_target: "submitBtn" } %>
+        <%= f.submit "Search", class: "shrink-0 px-4 sm:px-6 py-3 text-sm sm:text-base bg-crusta-400 text-woodsmoke-950 font-semibold transition-all cursor-pointer rounded-r-sm", data: { search_prefix_target: "submitBtn" } %>
       </div>
     <% end %>
 
@@ -89,7 +92,7 @@
         Search Prefixes
       </p>
 
-      <div class="grid grid-cols-2 gap-x-8 gap-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
         <% prefixes.each do |p| %>
           <%= render "dashboard/prefix_button", prefix: p[:prefix], label: p[:label], variant: :panel %>
         <% end %>
