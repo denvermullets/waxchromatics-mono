@@ -1,13 +1,11 @@
 <% label = result
   release_count = @variant_counts[label.id] || 0 %>
 
-<div
-  class="
-    flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+<%= link_to label_path(label), data: { turbo_frame: "_top" }, class: "
+    block flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
     bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
-    hover:border-l-crusta-400 transition-colors group
-  "
->
+    hover:border-l-crusta-400 transition-colors group no-underline
+  " do %>
   <div
     class="
       shrink-0 w-10 h-10 rounded bg-woodsmoke-950 flex items-center
@@ -72,4 +70,4 @@
       </svg>
     </div>
   </div>
-</div>
+<% end %>

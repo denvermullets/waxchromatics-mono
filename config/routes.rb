@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :releases, only: %i[index new create]
   get 'artists/search', to: 'artists#search', as: :search_artists
   get 'release_groups/search', to: 'release_groups#search', as: :search_release_groups
+  resources :labels, only: %i[show]
   resources :artists, only: %i[index show new create edit update] do
     get :discography_section, on: :member
     get 'discography/:release_type', action: :discography_type, as: :discography_type, on: :member
