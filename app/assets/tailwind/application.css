@@ -175,49 +175,14 @@
   box-shadow: 0 0 0 1px var(--color-crusta-400);
 }
 
-.search-bar-border[data-type="artist"] {
+.search-bar-border[data-type] {
   border-color: var(--color-crusta-400);
   box-shadow: 0 0 0 1px var(--color-crusta-400);
 }
-.search-bar-border[data-type="album"] {
-  border-color: var(--color-bright-turquoise-400);
-  box-shadow: 0 0 0 1px var(--color-bright-turquoise-400);
-}
-.search-bar-border[data-type="label"] {
-  border-color: var(--color-prelude-400);
-  box-shadow: 0 0 0 1px var(--color-prelude-400);
-}
-.search-bar-border[data-type="cat"] {
-  border-color: var(--color-azalea-400);
-  box-shadow: 0 0 0 1px var(--color-azalea-400);
-}
-.search-bar-border[data-type="barcode"] {
-  border-color: #facc15;
-  box-shadow: 0 0 0 1px #facc15;
-}
-.search-bar-border[data-type="credit"] {
-  border-color: var(--color-blue-ribbon-400);
-  box-shadow: 0 0 0 1px var(--color-blue-ribbon-400);
-}
 
-/* Badge dot colors */
-.search-badge[data-search-type="artist"] .badge-dot {
+/* Badge dot color */
+.search-badge[data-active] .badge-dot {
   color: var(--color-crusta-400);
-}
-.search-badge[data-search-type="album"] .badge-dot {
-  color: var(--color-bright-turquoise-400);
-}
-.search-badge[data-search-type="label"] .badge-dot {
-  color: var(--color-prelude-400);
-}
-.search-badge[data-search-type="cat"] .badge-dot {
-  color: var(--color-azalea-400);
-}
-.search-badge[data-search-type="barcode"] .badge-dot {
-  color: #facc15;
-}
-.search-badge[data-search-type="credit"] .badge-dot {
-  color: var(--color-blue-ribbon-400);
 }
 
 /* Prefix help panel — shown via CSS :focus-within on the search-focus-container */

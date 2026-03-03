@@ -1,5 +1,4 @@
-<%
-  display_labels = {
+<% display_labels = {
     'artist'  => 'Artist',
     'album'   => 'Album',
     'label'   => 'Label',
@@ -7,16 +6,8 @@
     'barcode' => 'Barcode',
     'credit'  => 'Credit',
   }
-  border_colors = {
-    'artist'  => 'border-crusta-700 text-crusta-400',
-    'album'   => 'border-bright-turquoise-700 text-bright-turquoise-400',
-    'label'   => 'border-prelude-700 text-prelude-400',
-    'cat#'    => 'border-azalea-700 text-azalea-400',
-    'barcode' => 'border-yellow-700 text-yellow-400',
-    'credit'  => 'border-blue-ribbon-700 text-blue-ribbon-400',
-  }
-  css = border_colors[type] || border_colors['artist']
-%>
+  css = 'border-crusta-700 text-crusta-400' %>
+
 <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm border bg-woodsmoke-925 <%= css %>">
   <%= display_labels[type] || type %>
 </span>

@@ -1,0 +1,13 @@
+<% if variant == :panel %>
+  <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="<%= prefix %>"
+    class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+    <span class="text-crusta-400 text-xs">&#9679;</span>
+    <span class="text-crusta-400 font-mono"><%= prefix %></span>
+    <span class="text-woodsmoke-400"><%= label %></span>
+  </button>
+<% else %>
+  <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="<%= prefix %>"
+    class="px-3 py-1.5 text-xs rounded-sm border border-crusta-800 bg-crusta-950 text-crusta-400 hover:border-crusta-400 transition-colors cursor-pointer font-mono">
+    <%= prefix %>
+  </button>
+<% end %>

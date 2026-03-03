@@ -1,15 +1,17 @@
 import { Controller } from "@hotwired/stimulus"
 
+const ACCENT = { colorClass: "text-crusta-400", btnBg: "var(--color-crusta-400)", btnText: "var(--color-woodsmoke-950)" }
+
 const PREFIXES = {
-  "artist:":  { label: "ARTIST",  type: "artist",  plural: "artists",    colorClass: "text-crusta-400",        btnBg: "var(--color-crusta-400)",          btnText: "var(--color-woodsmoke-950)" },
-  "album:":   { label: "ALBUM",   type: "album",   plural: "albums",     colorClass: "text-bright-turquoise-400", btnBg: "var(--color-bright-turquoise-400)", btnText: "var(--color-woodsmoke-950)" },
-  "label:":   { label: "LABEL",   type: "label",   plural: "labels",     colorClass: "text-prelude-400",       btnBg: "var(--color-prelude-400)",         btnText: "var(--color-woodsmoke-950)" },
-  "cat#:":    { label: "CAT#",    type: "cat",     plural: "catalog #s", colorClass: "text-azalea-400",        btnBg: "var(--color-azalea-400)",          btnText: "var(--color-woodsmoke-950)" },
-  "barcode:": { label: "BARCODE", type: "barcode", plural: "barcodes",   colorClass: "text-yellow-400",        btnBg: "#facc15",                         btnText: "var(--color-woodsmoke-950)" },
-  "credit:":  { label: "CREDIT",  type: "credit",  plural: "credits",    colorClass: "text-blue-ribbon-400",   btnBg: "var(--color-blue-ribbon-400)",     btnText: "#ffffff" },
+  "artist:":  { label: "ARTIST",  type: "artist",  plural: "artists",    ...ACCENT },
+  "album:":   { label: "ALBUM",   type: "album",   plural: "albums",     ...ACCENT },
+  "label:":   { label: "LABEL",   type: "label",   plural: "labels",     ...ACCENT },
+  "cat#:":    { label: "CAT#",    type: "cat",     plural: "catalog #s", ...ACCENT },
+  "barcode:": { label: "BARCODE", type: "barcode", plural: "barcodes",   ...ACCENT },
+  "credit:":  { label: "CREDIT",  type: "credit",  plural: "credits",    ...ACCENT },
 }
 
-const DEFAULT_HINT = `<span class="text-woodsmoke-500">&#9679;</span> Default: searching <span class="text-crusta-400">artists</span> &middot; Type a prefix like <span class="text-prelude-400">label:</span> to switch`
+const DEFAULT_HINT = `<span class="text-woodsmoke-500">&#9679;</span> Default: searching <span class="text-crusta-400">artists</span> &middot; Type a prefix like <span class="text-crusta-400">label:</span> to switch`
 
 export default class extends Controller {
   static targets = ["input", "badge", "badgeText", "hint", "searchBar", "submitBtn"]
