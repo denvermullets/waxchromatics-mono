@@ -1,0 +1,13 @@
+<% display_labels = {
+    'artist'  => 'Artist',
+    'album'   => 'Album',
+    'label'   => 'Label',
+    'cat#'    => 'Catalog #',
+    'barcode' => 'Barcode',
+    'credit'  => 'Credit',
+  }
+  css = 'border-woodsmoke-000 text-crusta-400' %>
+
+<span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm border bg-woodsmoke-925 <%= css %>">
+  <%= display_labels[type] || type %>
+</span>

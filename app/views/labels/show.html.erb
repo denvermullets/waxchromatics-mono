@@ -1,0 +1,19 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 text-sm text-woodsmoke-400">
+      <%= link_to "Home", root_path, class: "hover:text-crusta-400 transition-colors" %>
+      <span>/</span>
+      <span class="text-woodsmoke-300"><%= @label.name %></span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-1 space-y-6">
+      <%= render "labels/label_header" %>
+    </div>
+
+    <div class="lg:col-span-2">
+      <%= render "labels/discography" %>
+    </div>
+  </div>
+</div>
