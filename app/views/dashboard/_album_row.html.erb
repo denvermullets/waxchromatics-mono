@@ -1,45 +1,54 @@
 <% rg = result
   primary_release = rg.releases.first
-  artist_name = primary_release&.artist&.name
+  artist = primary_release&.artist
+  artist_name = artist&.name
   label_name = primary_release&.release_labels&.first&.label&.name
   variants = @variant_counts[rg.id] || 0
-  owned = (@collection_counts[rg.id] || 0) > 0 %>
+  owned = (@collection_counts[rg.id] || 0) > 0
+  thumb = rg.cover_art_url.presence || primary_release&.cover_art_url %>
 
-<div
-  class="
-    flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
-    bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
-    hover:border-l-crusta-400 transition-colors group
-  "
->
+<%= link_to (artist ? artist_release_group_path(artist, rg) : "#"),
+    data: { turbo_frame: "_top" },
+    class: "
+      flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+      bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
+      hover:border-l-crusta-400 transition-colors group cursor-pointer no-underline
+    " do %>
   <div
     class="
       shrink-0 w-10 h-10 rounded bg-woodsmoke-950 flex items-center
-      justify-center
+      justify-center overflow-hidden relative
     "
+    data-controller="hover-preview"
+    data-hover-preview-url-value="<%= thumb %>"
   >
-    <svg
-      class="w-5 h-5 text-crusta-400"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      viewBox="0 0 24 24"
-    >
-      <circle cx="12" cy="12" r="9" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
+    <% if thumb.present? %>
+      <%= image_tag thumb, alt: rg.title, loading: "lazy", decoding: "async",
+          class: "w-full h-full object-cover" %>
+    <% else %>
+      <svg
+        class="w-5 h-5 text-crusta-400"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    <% end %>
   </div>
 
   <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
     <div class="flex-1 min-w-0">
       <p class="font-semibold text-woodsmoke-50 truncate"><%= rg.title %></p>
 
-      <p class="text-sm truncate">
-        <span class="text-woodsmoke-300"><%= artist_name %></span>
+      <p class="text-sm text-woodsmoke-300 truncate">
+        <%= artist_name %>
 
         <% if label_name.present? %>
           <span class="text-woodsmoke-600"> &middot; </span>
-          <span class="text-crusta-400"><%= label_name %></span>
+          <%= label_name %>
         <% end %>
       </p>
     </div>
@@ -88,4 +97,4 @@
       </svg>
     </div>
   </div>
-</div>
+<% end %>
