@@ -4,13 +4,13 @@
   label_name = release&.release_labels&.first&.label&.name
   format_name = release&.release_formats&.first&.name&.upcase %>
 
-<div
-  class="
-    flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
-    bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
-    hover:border-l-crusta-400 transition-colors group
-  "
->
+<%= link_to artist_release_group_path(release.artist, release.release_group),
+    data: { turbo_frame: "_top" },
+    class: "
+      flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+      bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
+      hover:border-l-crusta-400 transition-colors group cursor-pointer no-underline
+    " do %>
   <span
     class="
       shrink-0 px-3 py-2 rounded-sm bg-woodsmoke-950 border border-crusta-400
@@ -75,4 +75,4 @@
       </svg>
     </div>
   </div>
-</div>
+<% end %>
