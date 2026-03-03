@@ -1,0 +1,82 @@
+<% artist = result
+  release_group_count = artist.try(:release_group_count).to_i
+  release_count = artist.try(:release_count).to_i %>
+
+<%= turbo_frame_tag "external-artist-#{artist.discogs_id}" do %>
+  <%= link_to artist_path(artist), data: { turbo_frame: "_top" }, class: "flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2 hover:border-l-crusta-400 transition-colors no-underline group" do %>
+    <div
+      class="
+        shrink-0 w-10 h-10 rounded-full bg-woodsmoke-800 flex items-center
+        justify-center
+      "
+    >
+      <svg
+        class="w-5 h-5 text-woodsmoke-500"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"
+        />
+      </svg>
+    </div>
+
+    <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-woodsmoke-50"><%= artist.name %></p>
+
+        <% if artist.real_name.present? %>
+          <p class="text-sm text-crusta-400"><%= artist.real_name %></p>
+        <% end %>
+
+        <% if artist.profile.present? %>
+          <p class="mt-1 text-sm text-woodsmoke-400 line-clamp-2">
+            <%= artist.profile %>
+          </p>
+        <% end %>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap">
+        <% if release_group_count > 0 %>
+          <span
+            class="
+              px-2 py-0.5 text-xs rounded-sm border border-crusta-400
+              text-crusta-400 font-medium
+            "
+          >
+            <%= release_group_count %>
+            <%= "release".pluralize(release_group_count) %>
+          </span>
+        <% end %>
+
+        <% if release_count > 0 %>
+          <span
+            class="
+              px-2 py-0.5 text-xs rounded-sm bg-woodsmoke-800
+              text-woodsmoke-300 font-medium
+            "
+          >
+            <%= release_count %> variants
+          </span>
+        <% end %>
+
+        <svg
+          class="
+            hidden sm:block w-4 h-4 text-woodsmoke-600
+            group-hover:text-woodsmoke-400
+          "
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </div>
+    </div>
+  <% end %>
+<% end %>

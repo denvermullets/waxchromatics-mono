@@ -1,0 +1,20 @@
+<div>
+  <h2 class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-4">
+    Catalog
+  </h2>
+
+  <% if @sections.any? %>
+    <div>
+      <% @sections.each do |section| %>
+        <%= render "labels/discography_section",
+                   pagy: section[:pagy],
+                   release_groups: section[:release_groups],
+                   release_type: section[:type] %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="p-8 text-center rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
+      <p class="text-woodsmoke-400">No releases found for this label.</p>
+    </div>
+  <% end %>
+</div>

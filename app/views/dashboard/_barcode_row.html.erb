@@ -1,0 +1,78 @@
+<% ri = result
+  release = ri.release
+  artist_name = release&.artist&.name
+  label_name = release&.release_labels&.first&.label&.name
+  format_name = release&.release_formats&.first&.name&.upcase %>
+
+<%= link_to artist_release_group_path(release.artist, release.release_group),
+    data: { turbo_frame: "_top" },
+    class: "
+      flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+      bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
+      hover:border-l-crusta-400 transition-colors group cursor-pointer no-underline
+    " do %>
+  <span
+    class="
+      shrink-0 px-3 py-2 rounded-sm bg-woodsmoke-950 border border-crusta-400
+      text-crusta-400 text-xs font-bold font-mono whitespace-nowrap
+      self-start
+    "
+  >
+    <%= ri.value %>
+  </span>
+
+  <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
+    <div class="flex-1 min-w-0">
+      <p class="font-semibold text-woodsmoke-50 truncate">
+        <%= release&.title %>
+      </p>
+
+      <p class="text-sm truncate">
+        <span class="text-woodsmoke-300"><%= artist_name %></span>
+
+        <% if label_name.present? %>
+          <span class="text-woodsmoke-600"> &middot; </span>
+          <span class="text-woodsmoke-400"><%= label_name %></span>
+        <% end %>
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <% if release&.country.present? %>
+        <span class="text-xs text-woodsmoke-500 uppercase font-medium">
+          <%= release.country %>
+        </span>
+      <% end %>
+
+      <% if release&.released.present? %>
+        <span class="text-sm text-crusta-400 font-medium">
+          <%= release.released.to_s[0..3] %>
+        </span>
+      <% end %>
+
+      <% if format_name.present? %>
+        <span
+          class="
+            px-2 py-0.5 text-xs rounded-sm bg-woodsmoke-800
+            text-woodsmoke-400 font-medium
+          "
+        >
+          <%= format_name %>
+        </span>
+      <% end %>
+
+      <svg
+        class="
+          hidden sm:block w-4 h-4 text-woodsmoke-600
+          group-hover:text-woodsmoke-400
+        "
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
+  </div>
+<% end %>

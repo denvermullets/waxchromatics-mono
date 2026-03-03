@@ -1,19 +1,14 @@
 class DashboardController < ApplicationController
   def show; end
 
-  PER_PAGE = 25
-
   def search
     @query = params[:query].to_s.strip
     @page = [params[:page].to_i, 1].max
     return if @query.blank?
 
-    # Only fetch local results initially - external loads via lazy Turbo Frame
-    @local_results = search_local_artists(@query, @page)
-
-    # Top result from local
-    @top_artist = @local_results[:artists].first
-    @key_releases = @top_artist&.releases&.limit(4) || []
+    service = Dashboard::SearchQuery.new(query: @query, page: @page, user: Current.user).call
+    assign_search_results(service)
+    assign_artist_details if @search_type == 'artist'
   end
 
   def external_search
@@ -47,26 +42,21 @@ class DashboardController < ApplicationController
 
   private
 
-  def search_local_artists(query, page)
-    # Strip Discogs-style numeric indicators like (2), (3) from the query for matching
-    normalized_query = query.gsub(/\s*\(\d+\)\s*$/, '').strip
+  def assign_search_results(service)
+    @search_type = service.search_type
+    @term = service.term
+    @results = service.results
+    @total_count = service.total_count
+    @total_pages = service.total_pages
+    @variant_counts = service.variant_counts
+    @collection_counts = service.collection_counts
+    @roles_map = service.roles_map
+    @sample_releases = service.sample_releases
+  end
 
-    exact_match_sql = <<~SQL.squish
-      CASE WHEN REGEXP_REPLACE(artists.name, '\\s*\\(\\d+\\)\\s*$', '') ILIKE ? THEN 0 ELSE 1 END
-    SQL
-
-    results = Artist
-              .where('name ILIKE ?', "%#{normalized_query}%")
-              .left_joins(:releases)
-              .group('artists.id')
-              .order(
-                Arel.sql(ActiveRecord::Base.sanitize_sql_array([exact_match_sql, normalized_query])),
-                Arel.sql('COUNT(releases.id) DESC')
-              )
-
-    total = Artist.where('name ILIKE ?', "%#{normalized_query}%").count
-    artists = results.offset((page - 1) * PER_PAGE).limit(PER_PAGE)
-    { artists: artists, total_pages: (total.to_f / PER_PAGE).ceil, total_count: total }
+  def assign_artist_details
+    @top_artist = @results.first
+    @key_releases = @top_artist&.releases&.limit(4) || []
   end
 
   def search_external_artists(query, page)

@@ -4,7 +4,7 @@
   </h3>
 
   <div class="flex flex-col gap-3">
-    <% remaining = @local_results[:artists].reject { |a| a == @top_artist } %>
+    <% remaining = @results.reject { |a| a == @top_artist } %>
 
     <% remaining.each do |artist| %>
       <%= render "dashboard/artist_row_local", artist: artist %>
