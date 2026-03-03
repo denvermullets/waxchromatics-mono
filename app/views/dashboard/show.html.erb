@@ -36,7 +36,7 @@
       Search
     </p>
 
-    <%= form_with url: search_path, method: :get, data: { turbo_frame: "search-results" } do |f| %>
+    <%= form_with url: search_path, method: :get, data: { turbo_frame: "search-results", action: "submit->search-prefix#submit" } do |f| %>
       <div
         class="
           flex search-bar-border rounded-sm border border-woodsmoke-700

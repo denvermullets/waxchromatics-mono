@@ -78,6 +78,10 @@ export default class extends Controller {
     this.hintTarget.innerHTML = DEFAULT_HINT
   }
 
+  submit() {
+    this.inputTarget.blur()
+  }
+
   insertPrefix(event) {
     event.preventDefault()
     const prefix = event.currentTarget.dataset.prefix

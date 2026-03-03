@@ -1,35 +1,77 @@
-<%
-  artist = result
+<% artist = result
   appearances = @variant_counts[artist.id] || 0
   roles = @roles_map[artist.id] || []
   samples = @sample_releases[artist.id] || []
-  sample_titles = samples.map(&:title).compact.first(3).join(", ")
-%>
-<div class="flex items-start gap-4 p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 hover:border-blue-ribbon-400 hover:border-l-2 hover:border-l-blue-ribbon-400 transition-colors group">
-  <div class="shrink-0 w-10 h-10 rounded-full bg-blue-ribbon-950 flex items-center justify-center mt-0.5">
-    <svg class="w-5 h-5 text-blue-ribbon-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+  sample_titles = samples.map(&:title).compact.first(3).join(", ") %>
+
+<div
+  class="
+    flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+    bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
+    hover:border-l-crusta-400 transition-colors group
+  "
+>
+  <div
+    class="
+      shrink-0 w-10 h-10 rounded-full bg-crusta-950 flex items-center
+      justify-center mt-0.5
+    "
+  >
+    <svg
+      class="w-5 h-5 text-crusta-400"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+      />
     </svg>
   </div>
 
-  <div class="flex-1 min-w-0">
-    <p class="font-semibold text-woodsmoke-50"><%= artist.name %></p>
-    <% if roles.any? %>
-      <p class="text-sm text-blue-ribbon-400"><%= roles.first(4).join(", ") %></p>
-    <% end %>
-    <% if sample_titles.present? %>
-      <p class="text-sm text-woodsmoke-500 truncate mt-0.5"><%= sample_titles %></p>
-    <% end %>
-  </div>
+  <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
+    <div class="flex-1 min-w-0">
+      <p class="font-semibold text-woodsmoke-50"><%= artist.name %></p>
 
-  <div class="shrink-0 flex items-center gap-2">
-    <% if appearances > 0 %>
-      <span class="px-2 py-0.5 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-300 font-medium">
-        <%= appearances %> <%= "appearance".pluralize(appearances) %>
-      </span>
-    <% end %>
-    <svg class="w-4 h-4 text-woodsmoke-600 group-hover:text-woodsmoke-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
+      <% if roles.any? %>
+        <p class="text-sm text-crusta-400"><%= roles.first(4).join(", ") %></p>
+      <% end %>
+
+      <% if sample_titles.present? %>
+        <p class="text-sm text-woodsmoke-500 truncate mt-0.5">
+          <%= sample_titles %>
+        </p>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <% if appearances > 0 %>
+        <span
+          class="
+            px-2 py-0.5 text-xs rounded-sm bg-woodsmoke-800
+            text-woodsmoke-300 font-medium
+          "
+        >
+          <%= appearances %>
+          <%= "appearance".pluralize(appearances) %>
+        </span>
+      <% end %>
+
+      <svg
+        class="
+          hidden sm:block w-4 h-4 text-woodsmoke-600
+          group-hover:text-woodsmoke-400
+        "
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
   </div>
 </div>

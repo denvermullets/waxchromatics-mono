@@ -1,46 +1,91 @@
-<%
-  rg = result
+<% rg = result
   primary_release = rg.releases.first
   artist_name = primary_release&.artist&.name
   label_name = primary_release&.release_labels&.first&.label&.name
   variants = @variant_counts[rg.id] || 0
-  owned = (@collection_counts[rg.id] || 0) > 0
-%>
-<div class="flex items-center gap-4 p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 hover:border-bright-turquoise-400 hover:border-l-2 hover:border-l-bright-turquoise-400 transition-colors group">
-  <div class="shrink-0 w-10 h-10 rounded bg-bright-turquoise-950 flex items-center justify-center">
-    <svg class="w-5 h-5 text-bright-turquoise-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+  owned = (@collection_counts[rg.id] || 0) > 0 %>
+
+<div
+  class="
+    flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-sm border border-woodsmoke-700
+    bg-woodsmoke-925 hover:border-crusta-400 hover:border-l-2
+    hover:border-l-crusta-400 transition-colors group
+  "
+>
+  <div
+    class="
+      shrink-0 w-10 h-10 rounded bg-crusta-950 flex items-center
+      justify-center
+    "
+  >
+    <svg
+      class="w-5 h-5 text-crusta-400"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+    >
       <circle cx="12" cy="12" r="9" />
       <circle cx="12" cy="12" r="3" />
     </svg>
   </div>
 
-  <div class="flex-1 min-w-0">
-    <p class="font-semibold text-woodsmoke-50 truncate"><%= rg.title %></p>
-    <p class="text-sm truncate">
-      <span class="text-woodsmoke-300"><%= artist_name %></span>
-      <% if label_name.present? %>
-        <span class="text-woodsmoke-600"> &middot; </span>
-        <span class="text-bright-turquoise-400"><%= label_name %></span>
-      <% end %>
-    </p>
-  </div>
+  <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
+    <div class="flex-1 min-w-0">
+      <p class="font-semibold text-woodsmoke-50 truncate"><%= rg.title %></p>
 
-  <div class="shrink-0 flex items-center gap-2">
-    <% if rg.year.present? %>
-      <span class="text-sm text-woodsmoke-300 font-medium"><%= rg.year %></span>
-    <% end %>
-    <% if variants > 0 %>
-      <span class="px-2 py-0.5 text-xs rounded-sm border border-bright-turquoise-800 text-bright-turquoise-400 font-medium">
-        <%= variants %> <%= "version".pluralize(variants) %>
-      </span>
-    <% end %>
-    <% if owned %>
-      <span class="px-2 py-0.5 text-xs rounded-sm border border-bright-turquoise-600 text-bright-turquoise-300 font-medium">
-        owned
-      </span>
-    <% end %>
-    <svg class="w-4 h-4 text-woodsmoke-600 group-hover:text-woodsmoke-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
+      <p class="text-sm truncate">
+        <span class="text-woodsmoke-300"><%= artist_name %></span>
+
+        <% if label_name.present? %>
+          <span class="text-woodsmoke-600"> &middot; </span>
+          <span class="text-crusta-400"><%= label_name %></span>
+        <% end %>
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <% if rg.year.present? %>
+        <span class="text-sm text-woodsmoke-300 font-medium">
+          <%= rg.year %>
+        </span>
+      <% end %>
+
+      <% if variants > 0 %>
+        <span
+          class="
+            px-2 py-0.5 text-xs rounded-sm border border-crusta-800
+            text-crusta-400 font-medium
+          "
+        >
+          <%= variants %>
+          <%= "version".pluralize(variants) %>
+        </span>
+      <% end %>
+
+      <% if owned %>
+        <span
+          class="
+            px-2 py-0.5 text-xs rounded-sm border border-crusta-600
+            text-crusta-300 font-medium
+          "
+        >
+          owned
+        </span>
+      <% end %>
+
+      <svg
+        class="
+          hidden sm:block w-4 h-4 text-woodsmoke-600
+          group-hover:text-woodsmoke-400
+        "
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
   </div>
 </div>
