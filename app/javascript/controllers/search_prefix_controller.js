@@ -15,17 +15,27 @@ const DEFAULT_HINT = `<span class="text-woodsmoke-500">&#9679;</span> Default: s
 
 export default class extends Controller {
   static targets = ["input", "badge", "badgeText", "hint", "searchBar", "submitBtn"]
+  static values = { activePrefix: String }
 
   connect() {
     this.currentType = null
-    this.activePrefix = null
     this.prefixConfig = null
+
+    // Restore prefix state from DOM attribute (survives Turbo cache)
+    if (this.activePrefixValue) {
+      const config = PREFIXES[this.activePrefixValue]
+      if (config) {
+        this.activate({ prefix: this.activePrefixValue, ...config })
+        return
+      }
+    }
+
     this.detect()
   }
 
   detect() {
     // Already in prefix mode — just update the hint
-    if (this.activePrefix) {
+    if (this.activePrefixValue) {
       this.updateHint()
       return
     }
@@ -44,13 +54,14 @@ export default class extends Controller {
       // Strip the prefix from the input, keep only the search term
       const remaining = this.inputTarget.value.slice(matched.prefix.length).trimStart()
       this.inputTarget.value = remaining
-      this.activePrefix = matched.prefix
+      this.activePrefixValue = matched.prefix
       this.activate(matched)
     }
   }
 
   activate({ prefix, label, type, plural, colorClass, btnBg, btnText }) {
     this.currentType = type
+    this.activePrefixValue = prefix
     this.prefixConfig = { prefix, label, type, plural, colorClass, btnBg, btnText }
 
     // Badge
@@ -83,7 +94,7 @@ export default class extends Controller {
   deactivate() {
     if (this.currentType === null) return
     this.currentType = null
-    this.activePrefix = null
+    this.activePrefixValue = ""
     this.prefixConfig = null
 
     delete this.badgeTarget.dataset.active
@@ -98,7 +109,7 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    if (event.key === "Backspace" && this.activePrefix && this.inputTarget.value === "") {
+    if (event.key === "Backspace" && this.activePrefixValue && this.inputTarget.value === "") {
       event.preventDefault()
       this.deactivate()
     }
@@ -107,12 +118,12 @@ export default class extends Controller {
   submit() {
     const term = this.inputTarget.value
     // Prepend the prefix back so the server receives the full query
-    if (this.activePrefix) {
-      this.inputTarget.value = this.activePrefix + " " + term
+    if (this.activePrefixValue) {
+      this.inputTarget.value = this.activePrefixValue + " " + term
     }
     this.inputTarget.blur()
     // Restore clean value after Turbo captures form data
-    if (this.activePrefix) {
+    if (this.activePrefixValue) {
       requestAnimationFrame(() => { this.inputTarget.value = term })
     }
   }
@@ -122,7 +133,7 @@ export default class extends Controller {
     const prefix = event.currentTarget.dataset.prefix
     const config = PREFIXES[prefix]
     if (config) {
-      this.activePrefix = prefix
+      this.activePrefixValue = prefix
       this.inputTarget.value = ""
       this.activate({ prefix, ...config })
     }
