@@ -1,32 +1,95 @@
 <% if notice = flash[:notice] %>
-  <p
-    class="
-      py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300
-      font-medium rounded-sm inline-block
-    "
-    id="notice"
-  >
+  <p class="py-2 px-3 bg-bright-turquoise-950 mb-5 text-bright-turquoise-300 font-medium rounded-sm inline-block" id="notice">
     <%= notice %>
   </p>
 <% end %>
 
-<div class="max-w-2xl">
+<%# Controller wraps search form + turbo frame so chips inside frame can call insertPrefix %>
+<div data-controller="search-prefix">
   <h1 class="text-3xl font-bold text-woodsmoke-50">
-    Welcome back, <%= Current.user.username %>
+    Welcome back, <span class="text-crusta-400"><%= Current.user.username %></span>
   </h1>
+  <p class="mt-2 text-woodsmoke-400">What would you like to do?</p>
 
-  <p class="mt-2 text-woodsmoke-300">What would you like to do?</p>
-
-  <div class="mt-8 p-6 rounded-sm border border-woodsmoke-800 bg-woodsmoke-925">
-    <h2 class="text-lg font-semibold text-woodsmoke-100">Search</h2>
+  <div class="mt-8 search-focus-container">
+    <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Search</p>
 
     <%= form_with url: search_path, method: :get, data: { turbo_frame: "search-results" } do |f| %>
-      <div class="mt-3 flex gap-3">
-        <%= f.text_field :query, autocomplete: "off", placeholder: "Search by artist name...", class: "flex-1 rounded-sm border border-woodsmoke-700 bg-woodsmoke-950 px-3 py-2.5 text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
-        <%= f.submit "Search", class: "rounded-sm px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold transition-colors cursor-pointer" %>
+      <div class="flex search-bar-border rounded-sm border border-woodsmoke-700 bg-woodsmoke-925" data-search-prefix-target="searchBar">
+        <span class="search-badge flex items-center gap-1.5 pl-3 pr-3 text-xs font-semibold text-woodsmoke-200 border-r border-woodsmoke-700 shrink-0" data-search-prefix-target="badge">
+          <span class="badge-dot">&#9679;</span>
+          <span data-search-prefix-target="badgeText"></span>
+        </span>
+
+        <%= f.text_field :query,
+          autocomplete: "off",
+          placeholder: "Search artists, or use prefix (e.g. label: interscope)",
+          class: "flex-1 min-w-0 bg-transparent px-4 py-3 text-woodsmoke-50 placeholder-woodsmoke-500 focus:outline-none",
+          data: { search_prefix_target: "input", action: "input->search-prefix#detect" } %>
+
+        <%= f.submit "Search", class: "shrink-0 px-6 py-3 bg-crusta-400 text-woodsmoke-950 font-semibold transition-all cursor-pointer rounded-r-sm", data: { search_prefix_target: "submitBtn" } %>
       </div>
     <% end %>
-  </div>
-</div>
 
-<%= turbo_frame_tag "search-results" %>
+    <%# Hint — hidden while input is focused (CSS), updated by Stimulus %>
+    <p class="search-hint mt-2 text-xs text-woodsmoke-500" data-search-prefix-target="hint">
+      <span class="text-woodsmoke-500">&#9679;</span>
+      Default: searching <span class="text-crusta-400">artists</span>
+      &middot; Type a prefix like <span class="text-prelude-400">label:</span> to switch
+    </p>
+
+    <%# Prefix panel — shown via CSS :focus-within %>
+    <div class="prefix-help-panel mt-2 p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925">
+      <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">Search Prefixes</p>
+      <div class="grid grid-cols-2 gap-x-8 gap-y-3">
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="artist:" class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-crusta-400 text-xs">&#9679;</span>
+          <span class="text-crusta-400 font-mono">artist:</span>
+          <span class="text-woodsmoke-400">Artist</span>
+        </button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="album:" class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-bright-turquoise-400 text-xs">&#9679;</span>
+          <span class="text-bright-turquoise-400 font-mono">album:</span>
+          <span class="text-woodsmoke-400">Album</span>
+        </button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="label:" class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-prelude-400 text-xs">&#9679;</span>
+          <span class="text-prelude-400 font-mono">label:</span>
+          <span class="text-woodsmoke-400">Label</span>
+        </button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="credit:" class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-blue-ribbon-400 text-xs">&#9679;</span>
+          <span class="text-blue-ribbon-400 font-mono">credit:</span>
+          <span class="text-woodsmoke-400">Credit</span>
+        </button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="cat#:" class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-azalea-400 text-xs">&#9679;</span>
+          <span class="text-azalea-400 font-mono">cat#:</span>
+          <span class="text-woodsmoke-400">Catalog #</span>
+        </button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="barcode:" class="flex items-center gap-2 text-left text-sm cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-yellow-400 text-xs">&#9679;</span>
+          <span class="text-yellow-400 font-mono">barcode:</span>
+          <span class="text-woodsmoke-400">Barcode</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag "search-results" do %>
+    <div class="mt-16">
+      <svg class="w-10 h-10 text-woodsmoke-700 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+      <p class="text-sm text-woodsmoke-500 mb-6">Start typing to search, or use a prefix to narrow results</p>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="artist:"  class="px-3 py-1.5 text-xs rounded-sm border border-crusta-800       bg-crusta-950       text-crusta-400       hover:border-crusta-400       transition-colors cursor-pointer font-mono">artist:</button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="album:"   class="px-3 py-1.5 text-xs rounded-sm border border-bright-turquoise-900 bg-bright-turquoise-950 text-bright-turquoise-400 hover:border-bright-turquoise-400 transition-colors cursor-pointer font-mono">album:</button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="label:"   class="px-3 py-1.5 text-xs rounded-sm border border-prelude-900      bg-prelude-950      text-prelude-400      hover:border-prelude-400      transition-colors cursor-pointer font-mono">label:</button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="credit:"  class="px-3 py-1.5 text-xs rounded-sm border border-blue-ribbon-900  bg-blue-ribbon-950  text-blue-ribbon-400  hover:border-blue-ribbon-400  transition-colors cursor-pointer font-mono">credit:</button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="cat#:"    class="px-3 py-1.5 text-xs rounded-sm border border-azalea-900       bg-azalea-950       text-azalea-400       hover:border-azalea-400       transition-colors cursor-pointer font-mono">cat#:</button>
+        <button type="button" data-action="click->search-prefix#insertPrefix" data-prefix="barcode:" class="px-3 py-1.5 text-xs rounded-sm border border-yellow-900       bg-yellow-950       text-yellow-400       hover:border-yellow-400       transition-colors cursor-pointer font-mono">barcode:</button>
+      </div>
+    </div>
+  <% end %>
+</div>

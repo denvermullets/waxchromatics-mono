@@ -1,0 +1,36 @@
+<%
+  rl = result
+  release = rl.release
+  artist_name = release&.artist&.name
+  label_name = rl.label&.name
+  format_name = release&.release_formats&.first&.name&.upcase
+  year = release&.released.to_s[0..3].presence
+%>
+<div class="flex items-center gap-4 p-4 rounded-sm border border-woodsmoke-700 bg-woodsmoke-925 hover:border-azalea-400 hover:border-l-2 hover:border-l-azalea-400 transition-colors group">
+  <span class="shrink-0 px-3 py-2 rounded-sm bg-azalea-950 border border-azalea-800 text-azalea-400 text-xs font-bold font-mono whitespace-nowrap">
+    <%= rl.catalog_number %>
+  </span>
+
+  <div class="flex-1 min-w-0">
+    <p class="font-semibold text-woodsmoke-50 truncate"><%= release&.title %></p>
+    <p class="text-sm truncate">
+      <span class="text-woodsmoke-300"><%= artist_name %></span>
+      <% if label_name.present? %>
+        <span class="text-woodsmoke-600"> &middot; </span>
+        <span class="text-azalea-400"><%= label_name %></span>
+      <% end %>
+    </p>
+  </div>
+
+  <div class="shrink-0 flex items-center gap-2">
+    <% if year.present? %>
+      <span class="text-sm text-azalea-400 font-medium"><%= year %></span>
+    <% end %>
+    <% if format_name.present? %>
+      <span class="px-2 py-0.5 text-xs rounded-sm bg-woodsmoke-800 text-woodsmoke-400 font-medium"><%= format_name %></span>
+    <% end %>
+    <svg class="w-4 h-4 text-woodsmoke-600 group-hover:text-woodsmoke-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </div>
+</div>

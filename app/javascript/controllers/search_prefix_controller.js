@@ -1,0 +1,86 @@
+import { Controller } from "@hotwired/stimulus"
+
+const PREFIXES = {
+  "artist:":  { label: "ARTIST",  type: "artist",  plural: "artists",    colorClass: "text-crusta-400",        btnBg: "var(--color-crusta-400)",          btnText: "var(--color-woodsmoke-950)" },
+  "album:":   { label: "ALBUM",   type: "album",   plural: "albums",     colorClass: "text-bright-turquoise-400", btnBg: "var(--color-bright-turquoise-400)", btnText: "var(--color-woodsmoke-950)" },
+  "label:":   { label: "LABEL",   type: "label",   plural: "labels",     colorClass: "text-prelude-400",       btnBg: "var(--color-prelude-400)",         btnText: "var(--color-woodsmoke-950)" },
+  "cat#:":    { label: "CAT#",    type: "cat",     plural: "catalog #s", colorClass: "text-azalea-400",        btnBg: "var(--color-azalea-400)",          btnText: "var(--color-woodsmoke-950)" },
+  "barcode:": { label: "BARCODE", type: "barcode", plural: "barcodes",   colorClass: "text-yellow-400",        btnBg: "#facc15",                         btnText: "var(--color-woodsmoke-950)" },
+  "credit:":  { label: "CREDIT",  type: "credit",  plural: "credits",    colorClass: "text-blue-ribbon-400",   btnBg: "var(--color-blue-ribbon-400)",     btnText: "#ffffff" },
+}
+
+const DEFAULT_HINT = `<span class="text-woodsmoke-500">&#9679;</span> Default: searching <span class="text-crusta-400">artists</span> &middot; Type a prefix like <span class="text-prelude-400">label:</span> to switch`
+
+export default class extends Controller {
+  static targets = ["input", "badge", "badgeText", "hint", "searchBar", "submitBtn"]
+
+  connect() {
+    this.currentType = null
+    this.detect()
+  }
+
+  detect() {
+    const value = this.inputTarget.value.toLowerCase()
+    let matched = null
+
+    for (const [prefix, config] of Object.entries(PREFIXES)) {
+      if (value.startsWith(prefix)) {
+        matched = { prefix, ...config }
+        break
+      }
+    }
+
+    if (matched) {
+      this.activate(matched)
+    } else {
+      this.deactivate()
+    }
+  }
+
+  activate({ prefix, label, type, plural, colorClass, btnBg, btnText }) {
+    this.currentType = type
+
+    // Badge
+    this.badgeTextTarget.textContent = label
+    this.badgeTarget.dataset.active = ""
+    this.badgeTarget.dataset.searchType = type
+
+    // Search bar border
+    this.searchBarTarget.dataset.type = type
+
+    // Submit button color
+    this.submitBtnTarget.style.backgroundColor = btnBg
+    this.submitBtnTarget.style.color = btnText
+
+    // Hint text with colored spans
+    const rawTerm = this.inputTarget.value.slice(prefix.length).trim()
+    const safeTerm = rawTerm.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+    const hintHTML = rawTerm
+      ? `<span class="${colorClass}">&#9679;</span> Searching <span class="${colorClass}">${plural}</span> for &ldquo;${safeTerm}&rdquo;`
+      : `<span class="${colorClass}">&#9679;</span> Searching <span class="${colorClass}">${plural}</span>&hellip;`
+    this.hintTarget.innerHTML = hintHTML
+  }
+
+  deactivate() {
+    if (this.currentType === null) return
+    this.currentType = null
+
+    delete this.badgeTarget.dataset.active
+    delete this.badgeTarget.dataset.searchType
+    delete this.searchBarTarget.dataset.type
+
+    // Reset submit button to default orange
+    this.submitBtnTarget.style.backgroundColor = ""
+    this.submitBtnTarget.style.color = ""
+
+    this.hintTarget.innerHTML = DEFAULT_HINT
+  }
+
+  insertPrefix(event) {
+    event.preventDefault()
+    const prefix = event.currentTarget.dataset.prefix
+    this.inputTarget.value = prefix + " "
+    this.inputTarget.focus()
+    this.detect()
+  }
+}
