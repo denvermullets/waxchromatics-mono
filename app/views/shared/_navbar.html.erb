@@ -57,6 +57,7 @@
 
             <% if Current.user&.admin? %>
               <%= link_to "Job Metrics", job_metrics_path, class: "block px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50" %>
+              <%= button_to "Reclassify Releases", reclassify_release_groups_path, method: :post, class: "block w-full text-left px-4 py-2 text-sm text-woodsmoke-300 hover:bg-woodsmoke-800 hover:text-woodsmoke-50 cursor-pointer" %>
             <% end %>
           </div>
         </div>
@@ -300,6 +301,7 @@
 
       <% if Current.user&.admin? %>
         <%= link_to "Job Metrics", job_metrics_path, class: "block py-1.5 text-sm text-woodsmoke-300 hover:text-woodsmoke-50" %>
+        <%= button_to "Reclassify Releases", reclassify_release_groups_path, method: :post, class: "block w-full text-left py-1.5 text-sm text-woodsmoke-300 hover:text-woodsmoke-50 cursor-pointer" %>
       <% end %>
     </div>
 
