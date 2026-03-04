@@ -18,7 +18,7 @@ module Releases
       update_release_group_type
     end
 
-    TYPE_PRIORITY = ['Album', 'Single', 'EP', 'Compilation', 'Unofficial Release'].freeze
+    TYPE_PRIORITY = ['Single', 'EP', 'Compilation', 'Album', 'Unofficial Release'].freeze
 
     private
 
