@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   get 'jobs/metrics', to: 'job_metrics#show', as: :job_metrics
+  post 'admin/reclassify_release_groups', to: 'admin#reclassify_release_groups', as: :reclassify_release_groups
   mount MissionControl::Jobs::Engine, at: '/jobs'
 
   resource :session, only: %i[new create destroy]

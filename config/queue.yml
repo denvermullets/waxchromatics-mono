@@ -19,6 +19,10 @@ default: &default
       threads: 2
       processes: 1
       polling_interval: 0.1
+    - queues: "reclassify"
+      threads: 1
+      processes: 1
+      polling_interval: 1
 
 development:
   <<: *default
