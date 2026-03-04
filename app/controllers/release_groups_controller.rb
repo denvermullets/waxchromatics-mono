@@ -42,6 +42,7 @@ class ReleaseGroupsController < ApplicationController
                               .order(:released)
     @artist = Artist.find(params[:artist_id])
     @artists = [@artist]
+    partition_releases
     main_release = @releases.find { |r| r.discogs_id == @release_group.main_release_id } || @releases.first
     @main_release = main_release
     @tracklist = main_release&.tracks&.order(:sequence) || Track.none
@@ -105,6 +106,12 @@ class ReleaseGroupsController < ApplicationController
       decade: params[:decade].presence,
       colored: params[:colored] == '1'
     }
+  end
+
+  def partition_releases
+    @official_releases, @unofficial_releases = @releases.partition do |release|
+      release.release_formats.none? { |fmt| fmt.descriptions&.include?('Unofficial Release') }
+    end
   end
 
   def default_letter?
