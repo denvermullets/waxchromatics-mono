@@ -56,41 +56,8 @@
 
       <% if @search_type == 'artist' %>
         <div class="mt-6">
-          <p
-            class="
-              text-xs font-semibold uppercase tracking-wider
-              text-woodsmoke-400 mb-3
-            "
-          >
-            External Results
-          </p>
-
-          <hr class="border-woodsmoke-800 mb-4">
-
           <%= turbo_frame_tag "external-results", src: external_search_path(query: @term, page: @page), loading: :lazy, class: "flex flex-col gap-2" do %>
-            <% 3.times do %>
-              <div
-                class="
-                  p-3 sm:p-4 rounded-sm border border-woodsmoke-700
-                  bg-woodsmoke-925
-                "
-              >
-                <div class="flex items-start gap-3 sm:gap-4">
-                  <div
-                    class="
-                      shrink-0 w-16 sm:w-20 h-16 sm:h-20 rounded
-                      bg-woodsmoke-700 animate-pulse
-                    "
-                  ></div>
-
-                  <div class="flex-1 min-w-0 space-y-2">
-                    <div class="h-4 rounded bg-woodsmoke-700 animate-pulse w-3/4"></div>
-                    <div class="h-3 rounded bg-woodsmoke-700 animate-pulse w-1/2"></div>
-                    <div class="h-5 rounded bg-woodsmoke-700 animate-pulse w-1/4 mt-1"></div>
-                  </div>
-                </div>
-              </div>
-            <% end %>
+            <%= render "shared/loading_dots", message: "Searching external sources..." %>
           <% end %>
         </div>
       <% end %>
