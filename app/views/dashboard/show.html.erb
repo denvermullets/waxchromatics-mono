@@ -100,17 +100,23 @@
     </div>
   </div>
 
-  <%= turbo_frame_tag "search-results" do %>
-    <div class="mt-16 text-center">
-      <p class="text-sm text-woodsmoke-500 mb-6">
-        Start typing to search, or use a prefix to narrow results
-      </p>
+  <div class="hidden mt-8" data-search-prefix-target="loading">
+    <%= render "shared/loading_dots", message: "Searching..." %>
+  </div>
 
-      <div class="flex flex-wrap gap-2 justify-center">
-        <% prefixes.each do |p| %>
-          <%= render "dashboard/prefix_button", prefix: p[:prefix], label: p[:label], variant: :chip %>
-        <% end %>
+  <div data-search-prefix-target="results">
+    <%= turbo_frame_tag "search-results" do %>
+      <div class="mt-16 text-center">
+        <p class="text-sm text-woodsmoke-500 mb-6">
+          Start typing to search, or use a prefix to narrow results
+        </p>
+
+        <div class="flex flex-wrap gap-2 justify-center">
+          <% prefixes.each do |p| %>
+            <%= render "dashboard/prefix_button", prefix: p[:prefix], label: p[:label], variant: :chip %>
+          <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
