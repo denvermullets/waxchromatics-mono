@@ -14,12 +14,25 @@ const PREFIXES = {
 const DEFAULT_HINT = `<span class="text-woodsmoke-500">&#9679;</span> Default: searching <span class="text-crusta-400">artists</span> &middot; Type a prefix like <span class="text-crusta-400">label:</span> to switch`
 
 export default class extends Controller {
-  static targets = ["input", "badge", "badgeText", "hint", "searchBar", "submitBtn"]
+  static targets = ["input", "badge", "badgeText", "hint", "searchBar", "submitBtn", "loading", "results"]
   static values = { activePrefix: String }
 
   connect() {
     this.currentType = null
     this.prefixConfig = null
+
+    // Hide loading and show results when turbo frame finishes loading
+    this.handleFrameLoad = () => {
+      if (this.hasLoadingTarget && this.hasResultsTarget) {
+        this.loadingTarget.classList.add("hidden")
+        this.resultsTarget.classList.remove("hidden")
+      }
+    }
+
+    const frame = this.element.querySelector("turbo-frame#search-results")
+    if (frame) {
+      frame.addEventListener("turbo:frame-load", this.handleFrameLoad)
+    }
 
     // Restore prefix state from DOM attribute (survives Turbo cache)
     if (this.activePrefixValue) {
@@ -31,6 +44,13 @@ export default class extends Controller {
     }
 
     this.detect()
+  }
+
+  disconnect() {
+    const frame = this.element.querySelector("turbo-frame#search-results")
+    if (frame) {
+      frame.removeEventListener("turbo:frame-load", this.handleFrameLoad)
+    }
   }
 
   detect() {
@@ -122,6 +142,13 @@ export default class extends Controller {
       this.inputTarget.value = this.activePrefixValue + " " + term
     }
     this.inputTarget.blur()
+
+    // Show loading dots, hide current results
+    if (this.hasLoadingTarget && this.hasResultsTarget) {
+      this.resultsTarget.classList.add("hidden")
+      this.loadingTarget.classList.remove("hidden")
+    }
+
     // Restore clean value after Turbo captures form data
     if (this.activePrefixValue) {
       requestAnimationFrame(() => { this.inputTarget.value = term })

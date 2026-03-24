@@ -1,5 +1,9 @@
 <%= turbo_frame_tag "external-results", class: "flex flex-col gap-3" do %>
   <% if @external_results[:artists].any? %>
+    <p class="text-xs font-semibold uppercase tracking-wider text-woodsmoke-400 mb-3">
+      External Results
+    </p>
+    <hr class="border-woodsmoke-800 mb-4">
     <% @external_results[:artists].each do |artist_data| %>
       <%= render "dashboard/artist_row_external", artist_data: artist_data %>
     <% end %>

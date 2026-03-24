@@ -9,6 +9,11 @@
       Artist Details
     </span>
 
+    <div>
+      <%= form.label :name, "Name", class: "block text-xs text-woodsmoke-400" %>
+      <%= form.text_field :name, required: true, placeholder: "Artist Name", class: "block w-full mt-1 rounded-sm border border-woodsmoke-800 bg-woodsmoke-950 px-3 py-2 text-sm text-woodsmoke-50 placeholder-woodsmoke-500 focus:border-crusta-400 focus:ring-1 focus:ring-crusta-400 focus:outline-none" %>
+    </div>
+
     <div class="grid grid-cols-2 gap-4">
       <div>
         <%= form.label :real_name, "Real Name", class: "block text-xs text-woodsmoke-400" %>

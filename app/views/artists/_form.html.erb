@@ -46,16 +46,12 @@
       </div>
 
       <div class="pt-2">
-        <%= form.submit @artist.persisted? ? "Update Artist" : "Create Artist", class: "w-full rounded-sm px-5 py-2.5 bg-crusta-400 hover:bg-crusta-500 text-woodsmoke-950 font-semibold cursor-pointer transition-colors" %>
+        <%= form.submit @artist.persisted? ? "Update Artist" : "Create Artist", class: "w-full rounded-sm px-5 py-2.5 bg-crusta-400 border border-crusta-400 text-woodsmoke-950 font-semibold cursor-pointer transition-colors hover:bg-transparent hover:text-crusta-400" %>
       </div>
     </div>
 
-    <%# Right column: name + sections %>
+    <%# Right column: info + discography sections %>
     <div class="lg:col-span-2 space-y-6">
-      <div class="flex flex-col gap-1">
-        <%= form.text_field :name, required: true, placeholder: "Artist Name", class: "w-full bg-transparent text-3xl font-bold text-woodsmoke-50 placeholder-woodsmoke-700 border-none focus:ring-0 focus:outline-none p-0" %>
-      </div>
-
       <%= render "artists/form_section_info", form: form %>
       <%= render "artists/form_section_discography" %>
     </div>
