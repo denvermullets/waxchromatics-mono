@@ -6,7 +6,7 @@ gem "rails", "~> 8.1.2"
 gem "bcrypt", "~> 3.1.22"
 gem "bootsnap", require: false
 gem 'httparty'
-gem "image_processing", "~> 1.14.0"
+gem "image_processing", "~> 2.0.1"
 gem "importmap-rails"
 gem "mission_control-jobs"
 gem "pagy"
