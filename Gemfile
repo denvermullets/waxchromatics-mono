@@ -1,19 +1,19 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.2"
+gem "rails", "~> 8.1.4.1"
 
 gem "bcrypt", "~> 3.1.22"
 gem "bootsnap", require: false
 gem 'httparty'
-gem "image_processing", "~> 1.14.0"
+gem "image_processing", "~> 2.2.0"
 gem "importmap-rails"
 gem "mission_control-jobs"
 gem "pagy"
 gem "paper_trail"
-gem "pg", "~> 1.6.3"
+gem "pg", "~> 1.7.0"
 gem "propshaft"
-gem "puma", ">= 7.2.0"
+gem "puma", ">= 8.1.2"
 gem "solid_cable"
 gem "solid_cache"
 gem "solid_queue"

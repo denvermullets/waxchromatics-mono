@@ -1,5 +1,5 @@
 module Releases
-  # rubocop:disable Metrics/ClassLength
+  # rubocop:disable-next Metrics/ClassLength
   class IngestAssociationsService < Service
     def initialize(release:, data:)
       @release = release
@@ -201,5 +201,4 @@ module Releases
       record
     end
   end
-  # rubocop:enable Metrics/ClassLength
 end
